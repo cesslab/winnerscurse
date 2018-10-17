@@ -1,4 +1,4 @@
-from experiment.lotteryspecification import LotterySpecification
+from experiment.lottery import LotterySpecification
 
 def test_lottery_creation():
     pass
