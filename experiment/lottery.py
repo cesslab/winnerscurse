@@ -2,7 +2,7 @@ import random
 
 
 class LotterySpecification:
-    def __init__(self, alpha: int, beta: int, p: float, epsilon: float):
+    def __init__(self, alpha: int, beta: int, p: float, epsilon: int):
         assert(epsilon <= beta)
         self.alpha = alpha
         self.beta = beta
@@ -18,6 +18,8 @@ class Lottery:
 
         self.r1 = random.random()
         if self.r1 <= (1 - spec.p):
-            self.realized_value = 0
+            self.outcome = 0
         else:
-            self.realized_value = self.value
+            self.outcome = self.value
+
+
