@@ -17,6 +17,9 @@ SESSION_CONFIGS = [
        'display_name': "Winners Curse",
        'num_demo_participants': 4,
        'app_sequence': ['auction'],
+       'rounds_per_lottery': 4,
+       'players_per_group': 4,
+       'endowment': 100,
     },
 ]
 
