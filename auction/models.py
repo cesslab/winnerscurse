@@ -1,35 +1,80 @@
+import math
+import random
+
 from otree.api import (
     models, widgets, BaseConstants, BaseSubsession, BaseGroup, BasePlayer,
     Currency as c, currency_range
 )
 
 from experiment.lottery import LotterySpecification
-from experiment.participant import Participant
-from experiment.auction import Auction
 
 
 class Constants(BaseConstants):
     name_in_url = 'auction'
     players_per_group = 4
-    rounds_per_lottery = 2
     num_rounds = 4
 
 
 class Subsession(BaseSubsession):
+    def set_group_size(self):
+        players = self.get_players()
+        players_per_group = self.session.config['players_per_group']
+        group_matrix = []
+        for i in range(0, len(players), players_per_group):
+            group_matrix.append(players[i:i + players_per_group])
+        self.set_group_matrix(group_matrix)
+
     def creating_session(self):
+        self.set_group_size()
         self.group_randomly()
 
-        if self.round_number == 1:
-            lottery_specs = [
-                LotterySpecification(1, 5, 0.5, 2),
-                LotterySpecification(10, 20, 0.5, 2)]
-            for player in self.get_players():
-                Participant.set_experiment(player, Auction(Constants.rounds_per_lottery, lottery_specs))
+        specs = [
+            LotterySpecification(60, 90, .75, 4),
+            LotterySpecification(10, 40, .25, 4),
+            LotterySpecification(60, 90, .25, 4),
+            LotterySpecification(10, 40, .75, 4),
+            LotterySpecification(60, 90, .75, 8),
+            LotterySpecification(10, 40, .25, 8),
+            LotterySpecification(60, 90, .25, 8),
+            LotterySpecification(10, 40, .75, 8),
+        ]
+
+        for group in self.get_groups():
+            group.set_lottery(specs)
+            for player in group.get_players():
+                player.signal = group.get_signal()
 
 
 class Group(BaseGroup):
-    pass
+    alpha = models.IntegerField()
+    beta = models.IntegerField()
+    p = models.FloatField()
+    epsilon = models.IntegerField()
+    value = models.IntegerField()
+    random_value = models.FloatField()
+    outcome = models.IntegerField()
+
+    def set_lottery(self, specs):
+        ppg = self.session.config['players_per_group']
+        lottery = specs[math.floor((self.round_number - 1) / ppg)]
+
+        self.alpha = lottery.alpha
+        self.beta = lottery.beta
+        self.p = lottery.p
+        self.epsilon = lottery.epsilon
+        self.value = random.randint(self.alpha, self.beta)
+
+        self.random_value = random.random()
+        if self.random_value <= (1 - self.p):
+            self.outcome = 0
+        else:
+            self.outcome = self.value
+
+    def get_signal(self):
+        return random.randint(self.value - self.epsilon, self.value + self.epsilon)
 
 
 class Player(BasePlayer):
-    pass
+    bid = models.IntegerField()
+    signal = models.IntegerField()
+    funds_remaining = models.IntegerField()
