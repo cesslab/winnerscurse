@@ -1,0 +1,102 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'auction/bid.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="grid-container">
+        <div class="header-item">
+            <p>text here</p>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <div class="card-body">
+                    <div class="underscored">
+                        <h5>Lottery</h5>
+                    </div>
+                    {% include 'auction/lottery.html' %}
+                </div>
+            </div>
+        </div>
+
+        <div class="grid-bid-container">
+            <div class="signal-update-container">
+                <div class="text-center">
+                    <h5>Your Signal</h5>
+                </div>
+
+                <div class="text-center">
+                    <h5>{{ signal }}</h5>
+                </div>
+            </div>
+
+            <div class="title-item">
+                <h4>Your Bid</h4>
+            </div>
+            <div>
+                <input
+                        type="text"
+                        onkeypress="return validateFloatKeyPress(this,event);"
+                        id="id_bid"
+                        name="bid"
+                        data-min="{{ min_bid }}"
+                        data-max="{{ max_bid }}"
+                        class="center-input form-control"
+                        maxlength="6"
+                        value="{{ form.bid.value|default_if_none:"" }}"
+                        placeholder="Enter Your Bid" required>
+
+                <small id="bidhelp" class="form-text text-muted">Your bid must be between 0.00
+                    and {{ max_bid }}.00
+                </small>
+                {% if form.bid.errors %}
+                    <div class="alert alert-danger">
+                        {{ form.bid.errors }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    {% next_button %}
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        function validateFloatKeyPress(el, evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            var number = el.value.split('.');
+            if (charCode != 46 && charCode > 31 && (charCode < 48 || charCode > 57)) {
+                return false;
+            }
+            //just one dot
+            if(number.length>1 && charCode == 46){
+                return false;
+            }
+            //get the carat position
+            var caratPos = getSelectionStart(el);
+            var dotPos = el.value.indexOf(".");
+            if( caratPos > dotPos && dotPos>-1 && (number[1].length > 1)){
+                return false;
+            }
+            return true;
+        }
+
+        //thanks: http://javascript.nwbox.com/cursor_position/
+        function getSelectionStart(o) {
+            if (o.createTextRange) {
+                var r = document.selection.createRange().duplicate()
+                r.moveEnd('character', o.value.length)
+                if (r.text == '') return o.value.length
+                return o.value.lastIndexOf(r.text)
+            } else return o.selectionStart
+        }
+
+    </script>
+{% endblock %}
