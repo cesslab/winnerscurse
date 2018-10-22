@@ -21,5 +21,3 @@ class Lottery:
             self.outcome = 0
         else:
             self.outcome = self.value
-
-
