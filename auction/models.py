@@ -53,6 +53,7 @@ class Group(BaseGroup):
     value = models.IntegerField()
     random_value = models.FloatField()
     outcome = models.IntegerField()
+    highest_bid = models.IntegerField()
 
     def set_lottery(self, specs):
         ppg = self.session.config['players_per_group']
@@ -73,8 +74,22 @@ class Group(BaseGroup):
     def get_signal(self):
         return random.randint(self.value - self.epsilon, self.value + self.epsilon)
 
+    def set_winning_player(self):
+        players = self.get_players()
+        player = players[0]
+        for p in players[1:]:
+            if player.bid < p.bid:
+                player.payoff = 0
+                player.winner = False
+                player = p
+        player.winner = True
+        player.payoff = player.bid - self.outcome
+        self.highest_bid = player.bid
+
 
 class Player(BasePlayer):
     bid = models.IntegerField()
     signal = models.IntegerField()
-    funds_remaining = models.IntegerField()
+    winner = models.BooleanField()
+    payoff = models.IntegerField()
+
