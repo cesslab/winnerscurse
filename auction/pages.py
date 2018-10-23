@@ -19,6 +19,27 @@ class BidPage(Page):
         }
 
 
+class DetermineGroupWinnerWaitPage(WaitPage):
+    def after_all_players_arrive(self):
+        self.group.set_winning_player()
+
+
+class OutcomePage(Page):
+    def vars_for_template(self):
+        return {
+            'winner': self.player.winner,
+            'bid': self.player.bid,
+            'highest_bid': self.group.highest_bid,
+            'signal': self.player.signal,
+            'alpha': self.group.alpha,
+            'beta': self.group.beta,
+            'p': self.group.p,
+            'outcome': self.group.outcome,
+            'comp_p': 1 - self.group.p,
+            'payoff': self.player.payoff
+        }
+
+
 page_sequence = [
-    BidPage,
+    BidPage, DetermineGroupWinnerWaitPage, OutcomePage
 ]

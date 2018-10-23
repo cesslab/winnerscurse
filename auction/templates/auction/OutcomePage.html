@@ -1,0 +1,86 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'global/experiment.css' %}">
+    <link rel="stylesheet" href="{% static 'payoffs/outcome.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="main-container">
+        <div class="title-item">
+            <h3>Outcome</h3>
+        </div>
+        <div class="grid-container">
+            <div class="card">
+                <div class="card-body">
+                    <div class="underscored">
+                        <h5>Lottery</h5>
+                    </div>
+                    {% include 'auction/lottery.html' %}
+                </div>
+            </div>
+
+            <div class="grid-bid-container">
+                <div class="signal-update-container">
+                    <div class="end underscored">
+                        <h5>Your Signal</h5>
+                    </div>
+                    <div class="end">
+                    </div>
+                    <div class="text-center">
+                        <h5>{{ signal }}</h5>
+                    </div>
+                    <div class="text-center">
+                    </div>
+                </div>
+
+                <div class="signal-update-container">
+                    <div class="end underscored">
+                        <h5>Your Bid</h5>
+                    </div>
+
+                    <div class="end underscored">
+                        <h5>Highest Bid</h5>
+                    </div>
+
+                    <div class="text-center">
+                        <h5>{{ bid }}</h5>
+                    </div>
+
+                    <div class="text-center">
+                        <h5>{{ highest_bid }}</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="plain-title-item">
+            <h5>
+                {% if winner %}
+                    You won the auction.
+                {% else %}
+                    You did not win the auction.
+                {% endif %}
+            </h5>
+        </div>
+
+        <div class="plain-title-item">
+            <h5>
+                The outcome of the lottery was {{ outcome }}.
+            </h5>
+        </div>
+        <div class="plain-title-item">
+            <h5>
+                Your payoff for this round is {{ payoff }}
+            </h5>
+        </div>
+    </div>
+
+    {% next_button %}
+{% endblock %}
+
+
