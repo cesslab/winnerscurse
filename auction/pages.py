@@ -3,6 +3,11 @@ from ._builtin import Page, WaitPage
 from .models import Constants
 
 
+class InstructionPage(Page):
+    def is_displayed(self):
+        return self.round_number == 1
+
+
 class BidPage(Page):
     form_model = 'player'
     form_fields = ['bid']
@@ -43,5 +48,5 @@ class OutcomePage(Page):
 
 
 page_sequence = [
-    BidPage, DetermineGroupWinnerWaitPage, OutcomePage
+    InstructionPage, BidPage, DetermineGroupWinnerWaitPage, OutcomePage
 ]
