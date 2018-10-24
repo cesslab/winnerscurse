@@ -2,6 +2,7 @@
 {% load otree static %}
 
 {% block title %}
+    Round {{ round_number }}
 {% endblock %}
 
 {% block styles %}
@@ -41,19 +42,18 @@
             </div>
             <div>
                 <input
-                        type="text"
-                        onkeypress="return validateFloatKeyPress(this,event);"
+                        type="number"
                         id="id_bid"
                         name="bid"
-                        data-min="{{ min_bid }}"
-                        data-max="{{ max_bid }}"
+                        min="{{ min_bid }}"
+                        max="{{ max_bid }}"
+                        step="1"
                         class="center-input form-control"
-                        maxlength="6"
                         value="{{ form.bid.value|default_if_none:"" }}"
                         placeholder="Enter Your Bid" required>
 
-                <small id="bidhelp" class="form-text text-muted">Your bid must be between 0.00
-                    and {{ max_bid }}.00
+                <small id="bidhelp" class="form-text text-muted">Your bid must be between {{ min_bid }}
+                    and {{ max_bid }}.
                 </small>
                 {% if form.bid.errors %}
                     <div class="alert alert-danger">
@@ -65,38 +65,4 @@
     </div>
 
     {% next_button %}
-{% endblock %}
-
-{% block scripts %}
-    <script>
-        function validateFloatKeyPress(el, evt) {
-            var charCode = (evt.which) ? evt.which : event.keyCode;
-            var number = el.value.split('.');
-            if (charCode != 46 && charCode > 31 && (charCode < 48 || charCode > 57)) {
-                return false;
-            }
-            //just one dot
-            if(number.length>1 && charCode == 46){
-                return false;
-            }
-            //get the carat position
-            var caratPos = getSelectionStart(el);
-            var dotPos = el.value.indexOf(".");
-            if( caratPos > dotPos && dotPos>-1 && (number[1].length > 1)){
-                return false;
-            }
-            return true;
-        }
-
-        //thanks: http://javascript.nwbox.com/cursor_position/
-        function getSelectionStart(o) {
-            if (o.createTextRange) {
-                var r = document.selection.createRange().duplicate()
-                r.moveEnd('character', o.value.length)
-                if (r.text == '') return o.value.length
-                return o.value.lastIndexOf(r.text)
-            } else return o.selectionStart
-        }
-
-    </script>
 {% endblock %}
