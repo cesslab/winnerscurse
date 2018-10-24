@@ -15,7 +15,8 @@ class BidPage(Page):
             'p': self.group.p,
             'comp_p': 1 - self.group.p,
             'min_bid': 0,
-            'max_bid': 100
+            'max_bid': 100,
+            'round_number': self.round_number,
         }
 
 
@@ -36,7 +37,8 @@ class OutcomePage(Page):
             'p': self.group.p,
             'outcome': self.group.outcome,
             'comp_p': 1 - self.group.p,
-            'payoff': self.player.payoff
+            'payoff': self.player.payoff,
+            'round_number': self.round_number,
         }
 
 
