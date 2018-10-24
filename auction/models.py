@@ -78,7 +78,13 @@ class Group(BaseGroup):
         players = self.get_players()
         player = players[0]
         for p in players[1:]:
-            if player.bid < p.bid:
+            if player.bid == p.bid:
+                # Break ties randomly
+                if random.random() < 0.5:
+                    player.payoff = 0
+                    player.winner = False
+                    player = p
+            elif player.bid < p.bid:
                 player.payoff = 0
                 player.winner = False
                 player = p
