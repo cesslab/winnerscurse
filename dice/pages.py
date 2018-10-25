@@ -22,10 +22,6 @@ class RollDicePage(Page):
         if not ('die_side' not in values or 1 <= int(values['die_side']) <= 6):
             return 'You must roll the die before continuing.'
 
-    def before_next_page(self):
-        experiment = Participant.get_experiment(self.player)
-        experiment.phase_four.set_die_side(self.player.die_side)
-
 
 class MinBuyoutBetForLotteryPage(Page):
     form_model = 'player'
