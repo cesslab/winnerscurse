@@ -46,6 +46,10 @@ class OutcomePage(Page):
             'round_number': self.round_number,
         }
 
+    def before_next_page(self):
+        if self.player.participant["payment_round"] == self.round_number:
+            self.player.participant["auction_payoff"] = self.player.payoff
+
 
 page_sequence = [
     InstructionPage, BidPage, DetermineGroupWinnerWaitPage, OutcomePage

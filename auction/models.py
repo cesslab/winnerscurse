@@ -44,6 +44,12 @@ class Subsession(BaseSubsession):
             for player in group.get_players():
                 player.signal = group.get_signal()
 
+        # Set the payoff relevant round
+        if self.round_number == 1:
+            for player in self.get_players():
+                player.payment_round = random.randint(1, Constants.num_rounds)
+                player.participant.vars["payment_round"] = player.payment_round
+
 
 class Group(BaseGroup):
     alpha = models.IntegerField()
