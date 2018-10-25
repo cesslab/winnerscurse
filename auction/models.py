@@ -95,7 +95,7 @@ class Group(BaseGroup):
                 player.winner = False
                 player = p
         player.winner = True
-        player.payoff = player.bid - self.outcome
+        player.payoff = self.outcome - player.bid
         self.highest_bid = player.bid
 
 
