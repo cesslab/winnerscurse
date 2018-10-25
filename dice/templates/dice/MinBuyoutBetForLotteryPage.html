@@ -1,0 +1,105 @@
+{% extends "global/Page.html" %}
+{% load staticfiles otree %}
+{% load staticfiles %}
+
+{% block styles %}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rangeslider.js/2.3.2/rangeslider.min.css">
+  <link rel="stylesheet" href="{% static 'dice/buyout_bet_lottery.css' %}">
+{% endblock %}
+
+{% block body_main %}
+  {% include 'dice/navbar.html' %}
+  {{ block.super }}
+{% endblock %}
+
+{% block content %}
+  <div>
+    {% if player.round_number == 1 %}
+      {% include 'dice/instructions/task_1.html' %}
+    {% elif player.round_number == 2 %}
+      {% include 'dice/instructions/task_2.html' %}
+    {% elif player.round_number == 3 %}
+      {% include 'dice/instructions/task_3.html' %}
+    {% elif player.round_number == 4 %}
+      {% include 'dice/instructions/task_4.html' %}
+    {% elif player.round_number == 5 %}
+      {% include 'dice/instructions/task_5.html' %}
+    {% else %}
+      {% include 'dice/instructions/task_6.html' %}
+    {% endif %}
+  </div>
+
+  {% if lottery_type == 1 %}
+    {% include 'dice/lottery_types/type_1.html' %}
+  {% elif lottery_type == 2 %}
+    {% include 'dice/lottery_types/type_2.html' %}
+  {% else %}
+    {% include 'dice/lottery_types/type_3.html' %}
+  {% endif %}
+
+  <button id="next-button" class="btn btn-info next-button">Next</button>
+{% endblock %}
+
+
+
+
+{% block scripts %}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/rangeslider.js/2.3.2/rangeslider.min.js"></script>
+  <script>
+      var $element = $('input#cutoff');
+      var $hidden = $('input#clicked');
+      var $output = $('#output');
+      var betInput = document.getElementById("bet");
+      var betDisplayElement = document.getElementById("your-bet");
+      var blueCard = document.getElementById("blue-card");
+      var redCard = document.getElementById("red-card");
+
+      function betBlue() {
+          betDisplayElement.classList.remove('text-danger');
+          betDisplayElement.classList.add('text-primary');
+          betDisplayElement.textContent = '{{ high_value }} on Blue, {{ low_value }} on Red';
+          betInput.value = {{ bet_high_blue }};
+          redCard.classList.remove('red-selected');
+          blueCard.classList.add('blue-selected');
+      }
+
+      function betRed() {
+          betDisplayElement.classList.remove('text-primary');
+          betDisplayElement.classList.add('text-danger');
+          betDisplayElement.textContent = '{{ high_value }} on Red, {{ low_value }} on Blue';
+          betInput.value = {{ bet_high_red }};
+          blueCard.classList.remove('blue-selected');
+          redCard.classList.add('red-selected');
+      }
+
+      function updateOutput(el, val) {
+          el.textContent = val;
+      }
+
+      $element.rangeslider({
+          polyfill: false,
+          onInit: function () {
+              $('.rangeslider__handle').hide();
+              $('.rangeslider__fill').hide();
+          },
+
+          // Callback function
+          onSlide: function (position, value) {
+              $('.rangeslider__handle').show();
+              $('.rangeslider__fill').show();
+              $element.val(value);
+              $hidden.val(1);
+              updateOutput($output[0], value)
+          },
+
+          // Callback function
+          onSlideEnd: function (position, value) {
+          }
+      });
+
+
+      $(function () {
+          $('input#cutoff').val(0);
+      })
+  </script>
+{% endblock %}

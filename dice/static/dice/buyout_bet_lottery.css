@@ -1,0 +1,111 @@
+.otree-body {
+    max-width: 1200px;
+}
+
+.page-header {
+    padding-top: 0;
+}
+
+.bag {
+    margin: 2px;
+}
+
+.badge {
+    font-size: 0.9em;
+    font-weight: normal;
+}
+
+.next-button {
+    margin-top: 20px;
+}
+
+.pull-left {
+    display: inline-block;
+}
+
+button {
+    margin: 10px;
+}
+
+.red-selected {
+    border: 3px solid rgba(255, 0, 0, .25);
+}
+
+.blue-selected {
+    border: 3px solid rgba(0, 0, 255, .25);
+}
+
+.grid-container {
+    display: grid;
+    grid-gap: 1em;
+    grid-template-columns: auto auto;
+}
+
+.lottery-container {
+    display: grid;
+    grid-column-gap: 1em;
+    grid-template-columns: auto auto;
+    grid-area: 3/1;
+}
+
+.bag-container {
+    display: grid;
+    grid-template-columns: auto auto auto auto auto auto;
+    grid-area: 2/1;
+}
+
+.grid-auction-container {
+    display: grid;
+    grid-gap: 1em;
+}
+
+.grid-slider-label-container {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-template-rows: auto auto;
+}
+
+.grid-slider-container {
+    display: grid;
+    grid-gap: 1em;
+    grid-area: 3/2;
+}
+
+.table-header {
+    background-color: #f8f9fa;
+}
+
+.header-item {
+    grid-column: 1 / span 2;
+}
+
+.slider-item {
+    grid-column: 1 / span 2;
+}
+
+.underscored {
+    text-align: center;
+    margin-bottom: 15px;
+    border-bottom: 1px solid lightgrey;
+}
+
+/* Table */
+.borderless th {
+    border: none;
+}
+
+thead.table-top th {
+    border-bottom: 1px solid #969696;
+}
+
+td.auction-cell {
+    border: 1px solid #dee2e6;
+}
+
+th.table-header {
+    border: 1px solid #969696;
+}
+
+th.header-blank {
+    border-bottom: 1px solid #969696;
+}

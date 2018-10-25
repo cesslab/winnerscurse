@@ -1,0 +1,25 @@
+{% extends 'global/experiment/lottery_table.html' %}
+
+{% block top_left %}
+  {% if type == bet_high_red %}
+    {{ high_value }}
+  {% else %}
+    {{ low_value }}
+  {% endif %}
+{% endblock %}
+
+{% block top_right %}
+  {% if type == bet_high_blue %}
+    {{ high_value }}
+  {% else %}
+    {{ low_value }}
+  {% endif %}
+{% endblock %}
+
+{% block bottom_left %}
+  {{ num_red }}
+{% endblock %}
+
+{% block bottom_right %}
+  {{ num_blue }}
+{% endblock %}

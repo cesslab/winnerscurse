@@ -1,0 +1,84 @@
+<div class="grid-container">
+  <div class="header-item">
+  </div>
+
+  <div class="">
+    <div class="card">
+      <div class="card-header"><h5>Bags</h5></div>
+      <div class="card-body">
+        <div class="bag-container">
+          {% for bag in bags %}
+            <div class="bag border badge badge-pill badge-light">
+              <span class="chip badge badge-danger">{{ bag.0 }}</span>
+              <span class="chip badge badge-primary">{{ bag.1 }}</span>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="lottery-container">
+    <div id="red-card" class="card">
+      <div class="card-body">
+        <div class="underscored">
+          <h5>Bet: {{ high_value }} on Red, {{ low_value }} on Blue</h5>
+        </div>
+        <div class="grid-auction-container">
+          <div class="">
+            {% include 'dice/lottery_types/lottery_type_2.html' with type=bet_high_red %}
+          </div>
+        </div>
+      </div>
+
+      <button type="button" id="red-bet-button" class="btn btn-danger" onclick="betRed()">Bet on Red</button>
+    </div>
+
+    <div id="blue-card" class="card">
+      <div class="card-body">
+        <div class="underscored">
+          <h5>Bet: {{ high_value }} on Blue, {{ low_value }} on Red</h5>
+        </div>
+        <div class="grid-auction-container">
+          <div class="">
+            {% include 'dice/lottery_types/lottery_type_2.html' with type=bet_high_blue %}
+          </div>
+        </div>
+      </div>
+
+      <button type="button" id="blue-bet-button" class="btn btn-primary" onclick="betBlue()">Bet on Blue</button>
+    </div>
+
+  </div>
+
+  <div class="grid-slider-container">
+    <div class="item text-center">
+      <h5>Your Bet</h5>
+    </div>
+    <div class="item text-center">
+      <h5 id="your-bet"></h5>
+    </div>
+
+    <div class="item text-center">
+      <h5>Your minimum compensation for this bet</h5>
+    </div>
+
+    <div class="item text-center">
+      <h4 id="output">&ndash;</h4>
+    </div>
+    <div class="grid-slider-label-container">
+      <div class="slider-item">
+        <input
+            id="cutoff"
+            name="cutoff"
+            type="range"
+            min="{{ lottery.min_cutoff }}"
+            max="{{ lottery.max_cutoff }}"
+            step="0.5"
+        >
+        <input type="hidden" name="bet" id="bet" value="-1">
+        <input type="hidden" name="clicked" id="clicked" value="0">
+      </div>
+    </div>
+  </div>
+</div>

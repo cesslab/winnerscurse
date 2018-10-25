@@ -1,0 +1,84 @@
+{% extends "global/Page.html" %}
+{% load staticfiles otree %}
+
+{% block title %}
+{% endblock %}
+
+{% block styles %}
+  <link href="{% static "dice/dice.css" %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+  <div>
+  <p>We will first determine the payoff relevant task.</p>
+  <p>Please click on the button to roll the dice. The letter that comes up on your dice will
+    determine which task will be relevant for your payment. The decodings from the letters A to F to the tasks will be revealed to you at the end of the experiment.
+  </p>
+  </div>
+  <div class="die-container">
+    <div id="ui_dado">
+      <div id="platform">
+        <div id="dice">
+          <div class="side front">
+            <div class="dtext center">B</div>
+          </div>
+          <div class="side front inner"></div>
+
+          <div class="side top">
+            <div class="center dtext">A</div>
+          </div>
+          <div class="side top inner"></div>
+
+          <div class="side right">
+            <div class="dtext center">C</div>
+          </div>
+          <div class="side right inner"></div>
+
+          <div class="side left">
+            <div class="dtext center">E</div>
+          </div>
+          <div class="side left inner"></div>
+
+          <div class="side bottom">
+            <div class="dtext center">F</div>
+          </div>
+          <div class="side bottom inner"></div>
+
+          <div class="side back">
+            <div class="dtext center">D</div>
+          </div>
+          <div class="side back inner"></div>
+
+          <div class="side cover x"></div>
+          <div class="side cover y"></div>
+          <div class="side cover z"></div>
+        </div>
+      </div>
+    </div>
+    <div class="single-column-container">
+      <div class="end underscored">
+        <h4>Side Rolled</h4>
+      </div>
+      <div>
+        <h4 id="outcome">-</h4>
+      </div>
+    </div>
+  </div>
+  <div class="single-column-container">
+    <div class="item">
+      <input type="hidden" name="die_side" id='side' value="-1">
+      <button id="die-button" type="button" onclick="dado()" class="btn btn-success">Roll Die</button>
+    </div>
+  </div>
+  <button id="next-button" class="otree-btn-next btn btn-primary">Next</button>
+  {% if form.bid.die_side %}
+    <div class="alert alert-danger">
+      {{ form.bid.die_side }}
+    </div>
+  {% endif %}
+{% endblock %}
+
+{% block scripts %}
+  <script src={% static 'dice/dice.js' %}></script>
+{% endblock %}
+

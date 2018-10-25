@@ -1,0 +1,22 @@
+{% extends "global/Page.html" %}
+{% load staticfiles otree %}
+
+{% block title %}
+  Part Two
+{% endblock %}
+
+{% block content %}
+  <div>
+    <p>You have completed Part One.</p>
+    <p>The experimenter will now give you the instructions for the second part of the experiment.</p>
+  </div>
+  <div>
+    <label for="pass_code">Password</label>
+    <input type="text" id="pass_code" name="pass_code">
+  </div>
+
+  <div>
+    <button id="next-button" class="btn btn-info next-button">Next</button>
+  </div>
+
+{% endblock %}
