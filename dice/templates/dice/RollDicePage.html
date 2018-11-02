@@ -71,9 +71,9 @@
     </div>
   </div>
   <button id="next-button" class="otree-btn-next btn btn-primary">Next</button>
-  {% if form.bid.die_side %}
+  {% if form.die_side.errors %}
     <div class="alert alert-danger">
-      {{ form.bid.die_side }}
+      {{ form.die_side.errors }}
     </div>
   {% endif %}
 {% endblock %}
