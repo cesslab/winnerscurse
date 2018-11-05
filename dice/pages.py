@@ -22,7 +22,8 @@ class RollDicePage(Page):
             return 'You must roll the die before continuing.'
 
     def before_next_page(self):
-        lottery: RedBlueLottery = self.player.participant.vars["RedBlueLotteries"][self.player.die_side - 1]
+        print(self.player.die_side)
+        lottery: RedBlueLottery = self.player.participant.vars["RedBlueLotteries"][self.player.die_side]
         self.player.participant.vars["red_blue_lottery"] = lottery
         self.player.participant.vars["die_side"] = self.player.die_side
 

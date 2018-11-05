@@ -28,7 +28,7 @@ class Player(BasePlayer):
     random_cutoff = models.FloatField()
     random_chip_id = models.IntegerField()
     num_red_chips = models.IntegerField()
-    num_blue_chips = models.IntegerField()
+    total_chips = models.IntegerField()
     red_chosen = models.BooleanField()
     phase_two_earnings = models.FloatField()
     earnings = models.FloatField()
@@ -36,11 +36,11 @@ class Player(BasePlayer):
     play_lottery = models.BooleanField()
 
     def player_dice_phase_payoffs(self):
-        lottery: RedBlueLottery = self.player.participant.vars["red_blue_lottery"]
-        self.task_id = self.player.participant.vars["die_side"]
+        lottery: RedBlueLottery = self.participant.vars["red_blue_lottery"]
+        self.task_id = self.participant.vars["die_side"]
         self.random_cutoff = random.randint(lottery.min_cutoff, lottery.max_cutoff)
 
-        self.play_lottery = self.random_cutoff < self.player.participant.vars["cutoff"]
+        self.play_lottery = self.random_cutoff < self.participant.vars["cutoff"]
 
         if not self.play_lottery:
             self.earnings = float(self.random_cutoff)
@@ -49,21 +49,21 @@ class Player(BasePlayer):
         if self.lottery_type == RedBlueLottery.ALL_KNOWN:
             self.random_chip_id = random.randint(1, lottery.total)
             self.num_red_chips = lottery.number_red
-            self.num_blue_chips = lottery.number_blue
+            self.total_chips = lottery.total
             self.red_chosen = self.random_chip_id <= self.num_red_chips
 
         elif self.lottery_type == RedBlueLottery.COMPOUND_RISK:
             self.num_red_chips = random.randint(0, lottery.total)
-            self.num_blue_chips = lottery.total - self.num_red_chips
+            self.total_chips = lottery.total
             self.random_chip_id = random.randint(1, lottery.total)
             self.red_chosen = self.random_chip_id <= self.num_red_chips
         else:
             self.random_chip_id = random.randint(1, lottery.total)
             self.num_red_chips = lottery.number_red
-            self.num_blue_chips = lottery.number_blue
+            self.total_chips = lottery.total
             self.red_chosen = self.random_chip_id <= self.num_red_chips
 
-        if self.red_chosen and self.player.participant.vars["bet"] == RedBlueLottery.BET_HIGH_RED:
+        if self.red_chosen and self.participant.vars["bet"] == RedBlueLottery.BET_HIGH_RED:
             self.realized_value = lottery.high_value
         else:
             self.realized_value = lottery.low_value

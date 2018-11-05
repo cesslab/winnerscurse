@@ -8,7 +8,7 @@ from experiment.lottery import RedBlueLottery
 class PayoffCalculationWaitPage(WaitPage):
     def after_all_players_arrive(self):
         for player in self.group.get_players():
-            player.set_dice_payoff()
+            player.player_dice_phase_payoffs()
 
 
 class MethodThreeResultsPage(Page):
@@ -24,7 +24,7 @@ class MethodThreeResultsPage(Page):
             'rolled_side': self.player.participant.vars["die_side"],
             'rolled_side_encoded': die_labels[self.player.task_id-1],
             'die_encoding': die_lottery_ids,
-            'bet_color': self.player.bet,
+            'bet_color': self.player.participant.vars["bet"],
             'bet_high_red': RedBlueLottery.BET_HIGH_RED,
             'bet_high_blue': RedBlueLottery.BET_HIGH_BLUE,
             'high_value': lottery.high_value,
@@ -35,7 +35,7 @@ class MethodThreeResultsPage(Page):
             'random_cutoff': self.player.random_cutoff,
             'play_lottery': self.player.play_lottery,
             'num_red': self.player.num_red_chips,
-            'num_blue': self.player.num_blue_chips,
+            'num_blue': self.player.total_chips - self.player.num_red_chips,
             'realized_value': self.player.realized_value,
             'earnings': self.player.earnings
         }

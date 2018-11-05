@@ -43,9 +43,6 @@ class RedBlueLottery:
         self.max_cutoff = max_cutoff
         self.min_cutoff = min_cutoff
 
-        self.cutoff: float = -1.0
-        self.bet: int = -1
-
     @property
     def high_value(self):
         return self.matrix[RedBlueLottery.VALUE][RedBlueLottery.HIGH]
@@ -56,19 +53,19 @@ class RedBlueLottery:
 
     @property
     def number_red(self):
-        assert self.ltype == 1 or self.ltype == 3
+        assert self.ltype == RedBlueLottery.ALL_KNOWN or self.ltype == RedBlueLottery.AMBIGUITY
         return self.matrix[RedBlueLottery.NUMBER][RedBlueLottery.HIGH]
 
     @property
     def number_blue(self):
-        assert self.ltype == 1
+        assert self.ltype == RedBlueLottery.ALL_KNOWN
         return self.matrix[RedBlueLottery.NUMBER][RedBlueLottery.LOW]
 
     def has_number_blue(self):
-        return self.ltype == 1
+        return self.ltype == RedBlueLottery.ALL_KNOWN
 
     def has_number_red(self):
-        return self.ltype == 1 or self.ltype == 3
+        return self.ltype == RedBlueLottery.ALL_KNOWN or self.ltype == RedBlueLottery.AMBIGUITY
 
     def __str__(self):
         return 'RedBlueLottery ' % self.lid
