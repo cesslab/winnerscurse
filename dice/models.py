@@ -78,6 +78,7 @@ class Subsession(BaseSubsession):
             )
         for player in self.get_players():
             player.participant.vars['RedBlueLotteries'] = lotteries
+            player.participant.vars['die_labels'] = ['B', 'A', 'C', 'E', 'F', 'D']
 
 
 class Group(BaseGroup):
