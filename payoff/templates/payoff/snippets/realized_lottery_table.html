@@ -1,0 +1,26 @@
+{% extends 'global/experiment/lottery_table.html' %}
+
+{% block top_left %}
+  {% if bet_color == 'Red' %}
+    {{ high_value }}
+  {% else %}
+    {{ low_value }}
+  {% endif %}
+{% endblock %}
+
+{% block top_right %}
+  {% if bet_color == 'Red' %}
+    {{ low_value }}
+  {% else %}
+    {{ high_value }}
+  {% endif %}
+{% endblock %}
+
+
+{% block bottom_left %}
+  {{ num_red }}
+{% endblock %}
+
+{% block bottom_right %}
+  {{ num_blue }}
+{% endblock %}

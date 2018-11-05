@@ -1,0 +1,218 @@
+{% extends "global/Page.html" %}
+{% load staticfiles otree %}
+
+{% block styles %}
+  <link rel="stylesheet" href="{% static 'dice/buyout_bet_lottery.css' %}">
+  <link rel="stylesheet" href="{% static 'global/experiment.css' %}">
+  <link href="{% static "dice/dice.css" %}" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'payoffs/payoff.css' %}">
+{% endblock %}
+
+{% block title %}
+  Earnings in Part Two
+{% endblock %}
+
+{% block content %}
+  <div class="main-container">
+    <div class="title-item">
+      <h3>Task Selection</h3>
+    </div>
+    <div class="single-column-container-span-2">
+      <div class="full-width end underscored">
+        <h4>You Rolled</h4>
+      </div>
+      <div class="die-container">
+        <div id="ui_dado">
+          <div id="platform">
+            <div id="dice">
+              <div class="side front">
+                <div class="dtext center">B</div>
+              </div>
+              <div class="side front inner"></div>
+
+              <div class="side top">
+                <div class="center dtext">A</div>
+              </div>
+              <div class="side top inner"></div>
+
+              <div class="side right">
+                <div class="dtext center">C</div>
+              </div>
+              <div class="side right inner"></div>
+
+              <div class="side left">
+                <div class="dtext center">E</div>
+              </div>
+              <div class="side left inner"></div>
+
+              <div class="side bottom">
+                <div class="dtext center">F</div>
+              </div>
+              <div class="side bottom inner"></div>
+
+              <div class="side back">
+                <div class="dtext center">D</div>
+              </div>
+              <div class="side back inner"></div>
+
+              <div class="side cover x"></div>
+              <div class="side cover y"></div>
+              <div class="side cover z"></div>
+            </div>
+          </div>
+        </div>
+        <div class="single-column-container">
+          <div class="end underscored">
+            <h4>Side Rolled</h4>
+          </div>
+          <div>
+            <h4 id="outcome">-</h4>
+          </div>
+        </div>
+      </div>
+      <div class="full-width end underscored">
+        <h4>You randomly rolled side {{ rolled_side_encoded }} corresponding to Task {{ lottery.lid }} (See
+          below for encodings)</h4>
+      </div>
+      <div class="encoding-container">
+        {% for pair in die_encoding %}
+          <div><span class="badge badge-secondary">{{ pair.0 }}: Task {{ pair.1 }}</span></div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="title-item">
+      <h3>Random Price</h3>
+    </div>
+
+    <div class="single-column-container full-width">
+      <div class="full-width end underscored">
+        {% if bet_color == bet_high_red %}
+          <h4>You Bet: {{ high_value }} on Red, {{ low_value }} on Blue</h4>
+        {% else %}
+          <h4>You Bet: {{ high_value }} on Blue, {{ low_value }} on Red</h4>
+        {% endif %}
+      </div>
+      {% if lottery_type == 1 %}
+        {% include 'dice/lottery_types/lottery_type_1.html' with type=bet_color %}
+      {% else %}
+        {% include 'dice/lottery_types/lottery_type_2.html' with type=bet_color %}
+      {% endif %}
+    </div>
+
+    <div class="single-column-container full-width">
+      <div class="full-width end underscored">
+        <h4>Minimum Compensation</h4>
+      </div>
+      <div><h4>{{ cutoff }}</h4></div>
+      <div class="full-width end underscored">
+        <h4>Random Price</h4>
+      </div>
+      <div><h4>{{ random_cutoff }}</h4></div>
+    </div>
+
+    {% if not play_lottery %}
+      <div class="plain-title-item">
+        <h4>
+          The random price of {{ random_cutoff }} was greater than or equal to your minimum compensation
+          of {{ cutoff }}.
+        </h4>
+      </div>
+      <div class="plain-title-item">
+        <h4>Your earnings in part two are the random price {{ random_cutoff }}.</h4>
+      </div>
+    {% else %}
+      <div class="plain-title-item">
+        <h4>
+          The random price of {{ random_cutoff }} was <b>less than your minimum compensation</b>
+          of {{ cutoff }}.
+        </h4>
+      </div>
+      <div class="plain-title-item">
+        <h4>
+          You will play the lottery.
+        </h4>
+      </div>
+    {% endif %}
+
+    <div class="title-item top-margin">
+      <h3>Bet Outcome</h3>
+    </div>
+    <div class="single-column-container full-width">
+      {% include 'payoffs/snippets/realized_lottery_table.html' %}
+    </div>
+
+    <div class="single-column-container full-width">
+      <div class="full-width end underscored">
+        <h4>Selected Chip Value</h4>
+      </div>
+      <div><h4>{{ realized_value }}</h4></div>
+    </div>
+
+
+    {% if play_lottery %}
+      <div class="plain-title-item">
+        <h5>
+          Your earnings in part two are <b>{{ earnings|floatformat }}</b>.
+        </h5>
+      </div>
+    {% endif %}
+
+  </div>
+  <button id="next-button" class="otree-btn-next btn btn-primary">Next</button>
+{% endblock %}
+
+{% block scripts %}
+  <script>
+      var platform = $('#platform');
+      var letters = ['B', 'A', 'C', 'E', 'F', 'D'];
+      var number = {{ rolled_side }};
+
+      (function () {
+          var x = 0, y = 20, z = -20;
+          switch (number) {
+              case 1:
+                  x = 0;
+                  y = 20;
+                  z = -20;
+                  break;
+              case 2:
+                  x = -100;
+                  y = -150;
+                  z = 10;
+                  break;
+              case 3:
+                  x = 0;
+                  y = -100;
+                  z = -10;
+                  break;
+              case 4:
+                  x = 0;
+                  y = 100;
+                  z = -10;
+                  break;
+              case 5:
+                  x = 80;
+                  y = 120;
+                  z = -10;
+                  break;
+              case 6:
+                  x = 0;
+                  y = 200;
+                  x = 10;
+                  break;
+          }
+
+          $('#dice').css({
+              'transform': 'rotateX(' + x + 'deg) rotateY(' + y + 'deg) rotateZ(' + z + 'deg)'
+          });
+
+          platform.css({
+              'transform': 'translate3d(0,0, 0px)'
+          });
+
+          $('#outcome').text(letters[number - 1]);
+      })();
+
+  </script>
+{% endblock %}
