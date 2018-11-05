@@ -21,6 +21,11 @@ class RollDicePage(Page):
         if not ('die_side' not in values or 1 <= int(values['die_side']) <= 6):
             return 'You must roll the die before continuing.'
 
+    def before_next_page(self):
+        lottery: RedBlueLottery = self.player.participant.vars["RedBlueLotteries"][self.player.die_side - 1]
+        self.player.participant.vars["red_blue_lottery"] = lottery
+        self.player.participant.vars["die_side"] = self.player.die_side
+
 
 class MinBuyoutBetForLotteryPage(Page):
     form_model = 'player'
@@ -55,7 +60,9 @@ class MinBuyoutBetForLotteryPage(Page):
             return 'Please select your preferred bet by pressing the red or blue button.'
 
     def before_next_page(self):
-        pass
+        if self.player.participant.vars["die_side"] == self.round_number:
+            self.player.participant.vars["cutoff"] = self.player.cutoff
+            self.player.participant.vars["bet"] = self.player.bet
 
 
 class PlayerWaitPage(WaitPage):
