@@ -47,8 +47,8 @@ class OutcomePage(Page):
         }
 
     def before_next_page(self):
-        if self.player.participant["payment_round"] == self.round_number:
-            self.player.participant["auction_payoff"] = self.player.payoff
+        if self.player.participant.vars["payment_round"] == self.round_number:
+            self.player.participant.vars["auction_payoff"] = self.player.payoff
 
 
 page_sequence = [

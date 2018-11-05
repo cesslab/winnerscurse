@@ -104,4 +104,5 @@ class Player(BasePlayer):
     signal = models.IntegerField()
     winner = models.BooleanField()
     payoff = models.IntegerField()
+    payment_round = models.IntegerField()
 

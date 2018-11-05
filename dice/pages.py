@@ -1,8 +1,7 @@
 from otree.api import Currency as c, currency_range
 from ._builtin import Page, WaitPage
 
-from exp.util import Participant
-from exp.lottery import Lottery
+from experiment.lottery import RedBlueLottery
 
 
 class InstructionsPage(Page):
@@ -28,8 +27,7 @@ class MinBuyoutBetForLotteryPage(Page):
     form_fields = ['cutoff', 'bet', 'clicked']
 
     def vars_for_template(self):
-        experiment = Participant.get_experiment(self.player)
-        lottery = experiment.phase_four.get_lottery(self.round_number)
+        lottery: RedBlueLottery = self.player.participant.vars["RedBlueLotteries"][self.round_number]
         return {
             'lottery': lottery,
             'lottery_type': lottery.ltype,
@@ -43,26 +41,21 @@ class MinBuyoutBetForLotteryPage(Page):
         }
 
     def cutoff_max(self):
-        experiment = Participant.get_experiment(self.player)
-        return experiment.phase_four.get_lottery(self.round_number).max_cutoff
+        lottery: RedBlueLottery = self.player.participant.vars["RedBlueLotteries"][self.round_number]
+        return lottery.max_cutoff
 
     def cutoff_min(self):
-        experiment = Participant.get_experiment(self.player)
-        return experiment.phase_four.get_lottery(self.round_number).min_cutoff
+        lottery: RedBlueLottery = self.player.participant.vars["RedBlueLotteries"][self.round_number]
+        return lottery.min_cutoff
 
     def error_message(self, values):
         if not int(values['clicked']) == 1:
             return 'Please enter a minimum compensation for your preferred bet.'
-        elif not (values['bet'] == Lottery.BET_HIGH_RED or values['bet'] == Lottery.BET_HIGH_BLUE):
+        elif not (values['bet'] == RedBlueLottery.BET_HIGH_RED or values['bet'] == RedBlueLottery.BET_HIGH_BLUE):
             return 'Please select your preferred bet by pressing the red or blue button.'
 
     def before_next_page(self):
-        experiment = Participant.get_experiment(self.player)
-        experiment.phase_four.set_cutoff(self.round_number, float(self.player.cutoff))
-        experiment.phase_four.set_bet(self.round_number, self.player.bet)
-
-        self.player.lottery = Participant.get_experiment(self.player).phase_four.get_lottery(self.round_number).lid
-        self.player.question = experiment.phase_four.get_lottery(self.round_number).lid
+        pass
 
 
 class PlayerWaitPage(WaitPage):
