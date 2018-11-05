@@ -1,0 +1,18 @@
+.borderless th {
+    border: none;
+}
+thead.table-top th {
+  border-bottom: 1px solid #969696;
+}
+
+td.auction-cell {
+  border: 1px solid #dee2e6;
+}
+
+th.table-header {
+  border: 1px solid #969696;
+}
+
+th.header-blank {
+  border-bottom: 1px solid #969696;
+}

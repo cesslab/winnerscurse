@@ -1,11 +1,11 @@
 {% extends "global/Page.html" %}
-{% load staticfiles otree %}
+{% load otree static %}
 
 {% block styles %}
   <link rel="stylesheet" href="{% static 'dice/buyout_bet_lottery.css' %}">
-  <link rel="stylesheet" href="{% static 'global/experiment.css' %}">
+  <link rel="stylesheet" href="{% static 'payoff/experiment.css' %}">
   <link href="{% static "dice/dice.css" %}" rel="stylesheet">
-  <link rel="stylesheet" href="{% static 'payoffs/payoff.css' %}">
+<link rel="stylesheet" href="{% static 'payoff/method_four.css' %}">
 {% endblock %}
 
 {% block title %}
@@ -139,7 +139,7 @@
       <h3>Bet Outcome</h3>
     </div>
     <div class="single-column-container full-width">
-      {% include 'payoffs/snippets/realized_lottery_table.html' %}
+      {% include 'payoff/snippets/realized_lottery_table.html' %}
     </div>
 
     <div class="single-column-container full-width">
