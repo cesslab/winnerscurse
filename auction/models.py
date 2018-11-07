@@ -52,6 +52,7 @@ class Subsession(BaseSubsession):
 
 
 class Group(BaseGroup):
+    lottery_id = models.IntegerField()
     alpha = models.IntegerField()
     beta = models.IntegerField()
     p = models.FloatField()
@@ -62,8 +63,9 @@ class Group(BaseGroup):
     highest_bid = models.IntegerField()
 
     def set_lottery(self, specs):
-        ppg = self.session.config['players_per_group']
-        lottery = specs[math.floor((self.round_number - 1) / ppg)]
+        rounds_per_lottery = self.session.config['rounds_per_lottery']
+        self.lottery_id = math.floor((self.round_number - 1) / rounds_per_lottery)
+        lottery = specs[self.lottery_id]
 
         self.alpha = lottery.alpha
         self.beta = lottery.beta
