@@ -64,8 +64,8 @@ class Group(BaseGroup):
 
     def set_lottery(self, specs):
         rounds_per_lottery = self.session.config['rounds_per_lottery']
-        self.lottery_id = math.floor((self.round_number - 1) / rounds_per_lottery)
-        lottery = specs[self.lottery_id]
+        self.lottery_id = math.floor((self.round_number - 1) / rounds_per_lottery) + 1
+        lottery = specs[self.lottery_id - 1]
 
         self.alpha = lottery.alpha
         self.beta = lottery.beta

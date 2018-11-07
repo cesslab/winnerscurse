@@ -34,6 +34,21 @@
   grid-column : 1 / span 2;
 }
 
+#outcome-header {
+  margin-bottom: 50px;
+}
+
+#lottery-ticket-header {
+  margin-top: 40px;
+}
+
+#earnings-header {
+  margin-top: 40px;
+}
+
+#played-outcome {
+  margin-top: 30px;
+}
 .grid-auction-container {
   display  : grid;
   grid-gap : 1em;
@@ -50,6 +65,12 @@
   grid-row-gap : 2em;
   grid-template-columns : auto;
   grid-template-rows    : auto auto auto;
+}
+
+.two-column-container {
+  display  : grid;
+  grid-column-gap : 2em;
+  grid-template-columns : auto auto;
 }
 
 .underscored {

@@ -10,57 +10,56 @@
 {% endblock %}
 
 {% block content %}
-    <div class="grid-container">
-        <div class="header-item">
-            <p>text here</p>
+    <div>
+        <p>Consider the following lottery ticket that the winner will get in the auction:</p>
+    </div>
+
+    <div>
+        <h4 class="text-center"><u>Lottery {{ lottery_id }}</u></h4>
+        <p class="text-center">
+            “ With a probability of {{ p }}% you get a value  v between {{ alpha }} and {{ beta }}, otherwise you get 0.”
+        </p>
+    </div>
+
+    <div>
+        <h4 class="text-center"><u>Your Signal</u></h4>
+        <p class="text-center">
+            Your signal about v is: {{ signal }}.
+        </p>
+    </div>
+
+    <div>
+        <h5 class=""><u>Signal Interpretation</u></h5>
+        <span>
+            Your signal about the high value v is at most {{ epsilon }} units away from the true v.
+            Given your signal, the high value must lie between {{ min_signal }} and {{ max_signal }}.
+        </span>
+    </div>
+
+    <div class="grid-bid-container">
+        <div class="text-center">
+            <h4><u>Your Bid</u></h4>
         </div>
+        <div>
+            <input
+                    type="number"
+                    id="id_bid"
+                    name="bid"
+                    min="{{ min_bid }}"
+                    max="{{ max_bid }}"
+                    step="1"
+                    class="center-input form-control"
+                    value="{{ form.bid.value|default_if_none:"" }}"
+                    placeholder="Enter Your Bid" required>
 
-        <div class="card">
-            <div class="card-body">
-                <div class="card-body">
-                    <div class="underscored">
-                        <h5>Lottery</h5>
-                    </div>
-                    {% include 'auction/lottery.html' %}
+            <small id="bidhelp" class="form-text text-muted">Your bid must be between {{ min_bid }}
+                and {{ max_bid }}.
+            </small>
+            {% if form.bid.errors %}
+                <div class="alert alert-danger">
+                    {{ form.bid.errors }}
                 </div>
-            </div>
-        </div>
-
-        <div class="grid-bid-container">
-            <div class="signal-update-container">
-                <div class="text-center">
-                    <h5>Your Signal</h5>
-                </div>
-
-                <div class="text-center">
-                    <h5>{{ signal }}</h5>
-                </div>
-            </div>
-
-            <div class="title-item">
-                <h4>Your Bid</h4>
-            </div>
-            <div>
-                <input
-                        type="number"
-                        id="id_bid"
-                        name="bid"
-                        min="{{ min_bid }}"
-                        max="{{ max_bid }}"
-                        step="1"
-                        class="center-input form-control"
-                        value="{{ form.bid.value|default_if_none:"" }}"
-                        placeholder="Enter Your Bid" required>
-
-                <small id="bidhelp" class="form-text text-muted">Your bid must be between {{ min_bid }}
-                    and {{ max_bid }}.
-                </small>
-                {% if form.bid.errors %}
-                    <div class="alert alert-danger">
-                        {{ form.bid.errors }}
-                    </div>
-                {% endif %}
-            </div>
+            {% endif %}
         </div>
     </div>
 
