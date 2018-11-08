@@ -34,13 +34,18 @@ class Player(BasePlayer):
     earnings = models.FloatField()
     realized_value = models.FloatField()
     play_lottery = models.BooleanField()
+    phase_one_payment_round = models.IntegerField()
+
+    def player_auction_payoff(self):
+        print(self.participant.vars['auction_data'])
+        self.phase_one_payment_round = self.participant.vars['auction_data']['round_number']
 
     def player_dice_phase_payoffs(self):
-        lottery: RedBlueLottery = self.participant.vars["red_blue_lottery"]
-        self.task_id = self.participant.vars["die_side"]
+        lottery: RedBlueLottery = self.participant.vars['red_blue_lottery']
+        self.task_id = self.participant.vars['die_side']
         self.random_cutoff = random.randint(lottery.min_cutoff, lottery.max_cutoff)
 
-        self.play_lottery = self.random_cutoff < self.participant.vars["cutoff"]
+        self.play_lottery = self.random_cutoff < self.participant.vars['cutoff']
 
         if not self.play_lottery:
             self.earnings = float(self.random_cutoff)

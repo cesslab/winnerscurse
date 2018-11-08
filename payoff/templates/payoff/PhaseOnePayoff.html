@@ -1,0 +1,60 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    Payoff in Part 1
+{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'payoff/outcome.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div id="outcome-header">
+        <h3 class="text-center">Payoff in Part 1</h3>
+    </div>
+    <div class="text-center">
+        <span>
+            The computer selected round {{ round_number }} for Payoff.
+        </span>
+    </div>
+
+    <div>
+        <h4 class="text-center">Auction</h4>
+    </div>
+
+    <div class="two-column-container">
+        <div class="item text-center">
+            <h5>Your Bid</h5>
+            <p>{{ bid }}</p>
+        </div>
+        <div class="item text-center">
+            <h5>Highest Bid</h5>
+            <span>{{ highest_bid }}</span>
+        </div>
+    </div>
+    <div class="text-center">
+        <span>
+        {% if winner %}
+            You won the auction.
+        {% else %}
+            You did not win the auction.
+        {% endif %}
+        </span>
+    </div>
+    <div id="lottery-ticket-header" class="text-center">
+        <h4>Actual Lottery with Selected Value</h4>
+        <p>The actual lottery ticket was:</p>
+        <p>"With a probability of {{ p }}% you get a high value of {{ value }} otherwise you get 0."</p>
+    </div>
+    <div id="played-outcome" class="text-center">
+        <p>The lottery was played and its outcome was {{ outcome }}.</p>
+    </div>
+    <div id="earnings-header" class="text-center">
+        <h4>Your Earnings</h4>
+        <p>Your earnings for this round is {{ payoff }} credits.</p>
+    </div>
+    {% next_button %}
+{% endblock %}
+
+

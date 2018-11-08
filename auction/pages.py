@@ -43,7 +43,7 @@ class OutcomePage(Page):
             'signal': self.player.signal,
             'alpha': self.group.alpha,
             'beta': self.group.beta,
-            'p': self.group.p,
+            'p': int(self.group.p*100),
             'value': self.group.value,
             'outcome': self.group.outcome,
             'comp_p': 1 - self.group.p,
@@ -52,8 +52,21 @@ class OutcomePage(Page):
         }
 
     def before_next_page(self):
-        if self.player.participant.vars["payment_round"] == self.round_number:
-            self.player.participant.vars["auction_payoff"] = self.player.payoff
+        if self.player.participant.vars['payment_round'] == self.round_number:
+            self.player.participant.vars['auction_data'] = {
+            'winner': self.player.winner,
+            'bid': self.player.bid,
+            'highest_bid': self.group.highest_bid,
+            'signal': self.player.signal,
+            'alpha': self.group.alpha,
+            'beta': self.group.beta,
+            'p': int(self.group.p*100),
+            'value': self.group.value,
+            'outcome': self.group.outcome,
+            'comp_p': 1 - self.group.p,
+            'payoff': self.player.payoff,
+            'round_number': self.round_number,
+            }
 
 
 page_sequence = [
