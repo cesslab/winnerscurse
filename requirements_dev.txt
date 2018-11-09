@@ -1,3 +1,5 @@
 -r requirements_base.txt
+
+# Note: chromedriver required (brew cask install chromedriver)
 selenium>=3.12.0
 pytest>=2.9.2
