@@ -7,7 +7,7 @@ from os import environ
 
 SESSION_CONFIG_DEFAULTS = {
     'real_world_currency_per_point': 1.00,
-    'participation_fee': 0.00,
+    'participation_fee': 10.00,
     'doc': "",
 }
 
@@ -19,7 +19,7 @@ SESSION_CONFIGS = [
        'app_sequence': ['auction', 'dice', 'payoff'],
        'rounds_per_lottery': 4,
        'players_per_group': 4,
-       'endowment': 100,
+       'endowment': 10,
     },
 ]
 
@@ -28,9 +28,10 @@ SESSION_CONFIGS = [
 # for example: de, fr, ja, ko, zh-hans
 LANGUAGE_CODE = 'en'
 
-# e.g. EUR, GBP, CNY, JPY
+# e.g. EUR, GBP, CNY, JPY, USD
 REAL_WORLD_CURRENCY_CODE = 'USD'
 USE_POINTS = True
+POINTS_CUSTOM_NAME = 'Credits'
 
 ROOMS = []
 
