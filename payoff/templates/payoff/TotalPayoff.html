@@ -1,0 +1,66 @@
+{% extends "global/Page.html" %}
+{% load staticfiles otree %}
+
+{% block title %}
+  Final Earnings
+{% endblock %}
+{% block styles %}
+  <link rel="stylesheet" href="{% static 'payoff/final_payoff.css' %}">
+{% endblock %}
+
+{% block content %}
+  <div class="main-container">
+      <div class="single-column-container-span-4 underscored heading">
+          <h4>Part One Earnings in Credits</h4>
+      </div>
+      <div class="single-column-container-span-4 text-center">
+          <h5>{{ phase_one_payoff_credits }}</h5>
+      </div>
+
+    <div class="single-column-container-span-4 underscored heading">
+      <h4>Part Two Earnings in Credits</h4>
+    </div>
+    <div class="single-column-container-span-4 text-center">
+      <h5>{{ phase_two_payoff_credits }}</h5>
+    </div>
+
+    <div class="single-column-container-span-4 underscored heading">
+      <h4>Final Payoffs in Dollars</h4>
+    </div>
+    <div class="single-column-container-span-4 two-column-container">
+      <div class="underscored">
+        <h5>Show-up Fee</h5>
+      </div>
+      <div class="underscored">
+        <h5>Endowment</h5>
+      </div>
+      <div class="text-center">
+        <h5>{{ show_up_fee }}</h5>
+      </div>
+      <div class="text-center">
+        <h5>{{ endowment }}</h5>
+      </div>
+      <div class="underscored">
+        <h5>Earnings in Part One</h5>
+      </div>
+      <div class="underscored">
+        <h5>Earnings in part Two</h5>
+      </div>
+      <div class="text-center">
+        <h5>{{ phase_one_payoff_dollars }} (= 3/4 * ({{ phase_one_payoff_credits }}) * 1/8)</h5>
+      </div>
+      <div class="text-center">
+        <h5>{{ phase_two_payoff_dollars }} (= 1/4 * ({{ phase_two_payoff_credits }}) * 1/8)</h5>
+      </div>
+    </div>
+  </div>
+  <div class="single-column-container-span-4 underscored heading">
+    <h4>Your final payoff</h4>
+  </div>
+  <div class="single-column-container-span-4 text-center">
+    <h5>{{ final_payoff }}</h5>
+  </div>
+
+  <button id="next-button" class="btn btn-info next-button">Next</button>
+
+{% endblock %}

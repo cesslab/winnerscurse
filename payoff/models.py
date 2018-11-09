@@ -30,17 +30,29 @@ class Player(BasePlayer):
     num_red_chips = models.IntegerField()
     total_chips = models.IntegerField()
     red_chosen = models.BooleanField()
-    phase_two_earnings = models.FloatField()
-    earnings = models.FloatField()
     realized_value = models.FloatField()
     play_lottery = models.BooleanField()
     phase_one_payment_round = models.IntegerField()
+    phase_one_payoff_credits = models.CurrencyField()
+    phase_two_payoff_credits = models.CurrencyField()
+    phase_one_payoff_dollars = models.CurrencyField()
+    phase_two_payoff_dollars = models.CurrencyField()
+    total_payoff_dollars = models.CurrencyField()
 
-    def player_auction_payoff(self):
+    def final_payoff(self):
+        self.phase_one_payoff_dollars = c(float(self.phase_one_payoff_credits) * 0.09375)
+        self.phase_two_payoff_dollars = c(float(self.phase_two_payoff_credits) * 0.03125)
+        endowment = c(self.session.config['endowment'])
+        showup = c(self.session.config['participation_fee'])
+        self.total_payoff_dollars = self.phase_one_payoff_dollars + self.phase_two_payoff_dollars + endowment + showup
+        self.participant.payoff = self.phase_one_payoff_dollars + self.phase_two_payoff_dollars
+
+    def auction_payoff(self):
         print(self.participant.vars['auction_data'])
         self.phase_one_payment_round = self.participant.vars['auction_data']['round_number']
+        self.phase_one_payoff_credits = self.participant.vars['auction_data']['payoff']
 
-    def player_dice_phase_payoffs(self):
+    def dice_phase_payoffs(self):
         lottery: RedBlueLottery = self.participant.vars['red_blue_lottery']
         self.task_id = self.participant.vars['die_side']
         self.random_cutoff = random.randint(lottery.min_cutoff, lottery.max_cutoff)
@@ -48,7 +60,7 @@ class Player(BasePlayer):
         self.play_lottery = self.random_cutoff < self.participant.vars['cutoff']
 
         if not self.play_lottery:
-            self.earnings = float(self.random_cutoff)
+            self.phase_two_payoff_credits = c(float(self.random_cutoff))
 
         self.lottery_type = lottery.ltype
         if self.lottery_type == RedBlueLottery.ALL_KNOWN:
@@ -74,5 +86,5 @@ class Player(BasePlayer):
             self.realized_value = lottery.low_value
 
         if self.play_lottery:
-            self.earnings = self.realized_value
+            self.phase_two_payoff_credits = c(self.realized_value)
 

@@ -8,8 +8,9 @@ from experiment.lottery import RedBlueLottery
 class PayoffCalculationWaitPage(WaitPage):
     def after_all_players_arrive(self):
         for player in self.group.get_players():
-            player.player_dice_phase_payoffs()
-            player.player_auction_payoff()
+            player.dice_phase_payoffs()
+            player.auction_payoff()
+            player.final_payoff()
 
 
 class MethodThreeResultsPage(Page):
@@ -38,7 +39,7 @@ class MethodThreeResultsPage(Page):
             'num_red': self.player.num_red_chips,
             'num_blue': self.player.total_chips - self.player.num_red_chips,
             'realized_value': self.player.realized_value,
-            'earnings': self.player.earnings
+            'earnings': self.player.phase_two_payoff_credits
         }
 
         return context
@@ -49,8 +50,22 @@ class PhaseOnePayoff(Page):
         return self.player.participant.vars['auction_data']
 
 
+class TotalPayoff(Page):
+    def vars_for_template(self):
+        return {
+            'phase_one_payoff_credits': self.player.phase_one_payoff_credits,
+            'phase_two_payoff_credits': self.player.phase_two_payoff_credits,
+            'phase_one_payoff_dollars': self.player.phase_one_payoff_dollars.to_real_world_currency(self.session),
+            'phase_two_payoff_dollars': self.player.phase_two_payoff_dollars.to_real_world_currency(self.session),
+            'endowment': c(self.session.config['endowment']).to_real_world_currency(self.session),
+            'show_up_fee': c(self.session.config['participation_fee']).to_real_world_currency(self.session),
+            'final_payoff': self.player.total_payoff_dollars.to_real_world_currency(self.session)
+        }
+
+
 page_sequence = [
     PayoffCalculationWaitPage,
     PhaseOnePayoff,
     MethodThreeResultsPage,
+    TotalPayoff
 ]
