@@ -14,17 +14,32 @@ PHASE_ONE_ROUNDS = 4
 NUMBER_OF_TASKS = 6
 
 
-def play_instructions(browser, phase):
+def instructions(browser, phase):
     browser.save_screenshot('{}/phase_{}_instructions.png'.format(SCREEN_SHOT_PATH, phase))
     browser.find_element(By.XPATH, '//button').click()
 
 
-def play_outcome(browser, phase):
-    browser.save_screenshot('{}/phase_{}_outcome.png'.format(SCREEN_SHOT_PATH, phase))
+def auction_outcome(browser, phase):
+    browser.save_screenshot('{}/auction_outcome_round_{}.png'.format(SCREEN_SHOT_PATH, phase))
     browser.find_element(By.XPATH, '//button').click()
 
 
-def play_phase_one_bid(browser, round_number):
+def final_payoffs(browser, player):
+    browser.save_screenshot('{}/final_payoff_player_{}.png'.format(SCREEN_SHOT_PATH, player))
+    browser.find_element(By.XPATH, '//button').click()
+
+
+def phase_one_outcome(browser, player):
+    browser.save_screenshot('{}/phase_1_outcome_player_{}.png'.format(SCREEN_SHOT_PATH, player))
+    browser.find_element(By.XPATH, '//button').click()
+
+
+def phase_two_outcome(browser, player):
+    browser.save_screenshot('{}/phase_2_outcome_player_{}.png'.format(SCREEN_SHOT_PATH, player))
+    browser.find_element(By.XPATH, '//button').click()
+
+
+def auction_bid(browser, round_number):
     if round_number == 1:
         browser.save_screenshot('{}/phase_one_bid_screen.png'.format(SCREEN_SHOT_PATH))
 
@@ -48,7 +63,7 @@ def enter_password(browser):
     browser.find_element(By.XPATH, '//button').click()
 
 
-def choose_color_and_bet(browser, task_number):
+def lottery_bet(browser, task_number):
     browser.save_screenshot('{}/phase_choose_color_bet_task_{}.png'.format(task_number, SCREEN_SHOT_PATH))
 
     browser.find_element(By.XPATH, "//input[@id='clicked']").value = '1'
@@ -105,12 +120,12 @@ if __name__ == "__main__":
             # switch to new tab
             driver.switch_to.window(driver.window_handles[player])
             if round_id == 1:
-                play_instructions(driver, round_id)
-            play_phase_one_bid(driver, round_id)
+                instructions(driver, round_id)
+            auction_bid(driver, round_id)
 
         for player in range(1, len(player_links) + 1):
             driver.switch_to.window(driver.window_handles[player])
-            play_outcome(driver, round_id)
+            auction_outcome(driver, round_id)
 
     # Phase 2
     for player in range(1, len(player_links) + 1):
@@ -118,4 +133,10 @@ if __name__ == "__main__":
         enter_password(driver)
         roll_die(driver)
         for task_number in range(NUMBER_OF_TASKS):
-            choose_color_and_bet(driver, task_number)
+            lottery_bet(driver, task_number)
+
+    # Outcome and Payoffs
+    for player in range(1, len(player_links) + 1):
+        phase_one_outcome(driver, player)
+        phase_two_outcome(driver, player)
+        final_payoffs(driver, player)
