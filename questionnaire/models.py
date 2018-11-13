@@ -27,7 +27,7 @@ class Group(BaseGroup):
 
 class Player(BasePlayer):
     gender = models.StringField()
-    age = models.IntegerField()
+    age = models.IntegerField(min=18, max=100)
     major = models.StringField()
     q1a = models.IntegerField()
     q1b = models.IntegerField()
