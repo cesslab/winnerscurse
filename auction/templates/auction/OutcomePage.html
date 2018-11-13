@@ -14,7 +14,7 @@
         <h3 class="text-center">Outcome</h3>
     </div>
 
-    <div>
+    <div class="lottery-header">
         <h4 class="text-center">Auction</h4>
     </div>
 
@@ -48,8 +48,11 @@
         {% endif %}
         </span>
     </div>
-    <div id="lottery-ticket-header" class="text-center">
+
+    <div class="text-center lottery-header">
         <h4>Actual Lottery with Selected Value</h4>
+    </div>
+    <div id="lottery-ticket-header" class="text-center">
         <p>
             {% if treatment == 'cv' %}
                 The Selected Value was {{ value }}. Therefore, the actual lottery ticket was:
@@ -58,7 +61,7 @@
             {% endif %}
         </p>
     </div>
-    <div>
+    <div class="lottery">
         <p>
             With a probability of {{ p }}% you get a value of {{ value }}, <br>otherwise you get 0.
         </p>
@@ -68,8 +71,10 @@
         <p>The lottery was played and its outcome was {{ outcome }}.</p>
     </div>
 
-    <div id="earnings-header" class="text-center">
+    <div class="lottery-header">
         <h4>Your Earnings</h4>
+    </div>
+    <div id="earnings-header" class="text-center">
         <p>Your earnings for this round is {{ payoff }} credits.</p>
     </div>
 
