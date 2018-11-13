@@ -71,6 +71,7 @@ class OutcomePage(Page):
             'outcome': self.group.outcome,
             'payoff': self.player.payoff,
             'round_number': self.round_number,
+            'tie': self.player.tie
             }
 
 
