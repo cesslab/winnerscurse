@@ -29,14 +29,14 @@ class Subsession(BaseSubsession):
         self.group_randomly()
 
         specs = [
-            LotterySpecification(60, 90, .75, 4),
-            LotterySpecification(10, 40, .25, 4),
-            LotterySpecification(60, 90, .25, 4),
-            LotterySpecification(10, 40, .75, 4),
-            LotterySpecification(60, 90, .75, 8),
-            LotterySpecification(10, 40, .25, 8),
-            LotterySpecification(60, 90, .25, 8),
-            LotterySpecification(10, 40, .75, 8),
+            LotterySpecification(60, 90, 75, 4),
+            LotterySpecification(10, 40, 25, 4),
+            LotterySpecification(60, 90, 25, 4),
+            LotterySpecification(10, 40, 75, 4),
+            LotterySpecification(60, 90, 75, 8),
+            LotterySpecification(10, 40, 25, 8),
+            LotterySpecification(60, 90, 25, 8),
+            LotterySpecification(10, 40, 75, 8),
         ]
 
         for group in self.get_groups():
@@ -55,29 +55,54 @@ class Group(BaseGroup):
     lottery_id = models.IntegerField()
     alpha = models.IntegerField()
     beta = models.IntegerField()
-    p = models.FloatField()
+    p = models.IntegerField()
     epsilon = models.IntegerField()
     value = models.IntegerField()
-    random_value = models.FloatField()
+    random_value = models.IntegerField()
     outcome = models.IntegerField()
     highest_bid = models.IntegerField()
+    treatment = models.StringField(choices=['cp', 'cv'])
+
+    def get_treatment(self):
+        treatment = self.session.config['treatment']
+        print(self.session.config['treatment'])
+        if treatment != 'cp' and treatment != 'cv':
+            treatment = 'cp'
+        return treatment
+
+    def get_lottery_id(self):
+        rounds_per_lottery = self.session.config['rounds_per_lottery']
+        return math.floor((self.round_number - 1) / rounds_per_lottery) + 1
 
     def set_lottery(self, specs):
-        rounds_per_lottery = self.session.config['rounds_per_lottery']
-        self.lottery_id = math.floor((self.round_number - 1) / rounds_per_lottery) + 1
-        lottery = specs[self.lottery_id - 1]
+        self.lottery_id = self.get_lottery_id()
+        self.treatment = self.get_treatment()
 
-        self.alpha = lottery.alpha
-        self.beta = lottery.beta
-        self.p = lottery.p
-        self.epsilon = lottery.epsilon
-        self.value = random.randint(self.alpha, self.beta)
+        lottery_spec: LotterySpecification = specs[self.lottery_id - 1]
 
-        self.random_value = random.random()
-        if self.random_value <= (1 - self.p):
-            self.outcome = 0
+        self.alpha = lottery_spec.alpha
+        self.beta = lottery_spec.beta
+        # epsilon is used to determine the player's signal
+        self.epsilon = lottery_spec.epsilon
+
+        if self.treatment == 'cv':
+            self.p = lottery_spec.c
+            self.value = random.randint(self.alpha, self.beta)
+
+            self.random_value = random.randint(0, 100)
+            if self.random_value <= self.p:
+                self.outcome = self.value
+            else:
+                self.outcome = 0
         else:
-            self.outcome = self.value
+            self.p = random.randint(self.alpha, self.beta)
+            self.value = lottery_spec.c
+
+            self.random_value = random.randint(0, 100)
+            if self.random_value <= self.p:
+                self.outcome = self.value
+            else:
+                self.outcome = 0
 
     def get_signal(self):
         return random.randint(self.value - self.epsilon, self.value + self.epsilon)
@@ -87,6 +112,7 @@ class Group(BaseGroup):
         player = players[0]
         for p in players[1:]:
             if player.bid == p.bid:
+                player.tie = True
                 # Break ties randomly
                 if random.random() < 0.5:
                     player.payoff = 0
@@ -104,6 +130,7 @@ class Group(BaseGroup):
 class Player(BasePlayer):
     bid = models.IntegerField()
     signal = models.IntegerField()
+    tie = models.BooleanField(default=False)
     winner = models.BooleanField()
     payoff = models.IntegerField()
     payment_round = models.IntegerField()

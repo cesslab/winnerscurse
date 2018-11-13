@@ -11,28 +11,41 @@
 
 {% block content %}
     <div>
-        <p>Consider the following lottery ticket that the winner will get in the auction:</p>
+        <p>Consider the following lottery ticket that the winner will get in the auction. There are two possible prizes, 0 and a value v.</p>
     </div>
 
     <div>
         <h4 class="text-center"><u>Lottery {{ lottery_id }}</u></h4>
         <p class="text-center">
-            “ With a probability of {{ p }}% you get a value  v between {{ alpha }} and {{ beta }}, otherwise you get 0.”
+            {% if treatment == 'cv' %}
+                With a probability of {{ p }}% you get a value v between {{ alpha }} and {{ beta }}, <br>otherwise you get 0.
+            {% else %}
+                With a probability of p between {{ alpha }}% and {{ beta }}%, you get a value of {{ value }}, <br>otherwise you get 0.
+            {% endif %}
         </p>
     </div>
 
     <div>
         <h4 class="text-center"><u>Your Signal</u></h4>
         <p class="text-center">
-            Your signal about v is: {{ signal }}.
+            {% if treatment == 'cv' %}
+                Your signal about v is: {{ signal }}.
+            {% else %}
+                Your signal about p is: {{ signal }}.
+            {% endif %}
         </p>
     </div>
 
     <div>
         <h5 class=""><u>Signal Interpretation</u></h5>
         <span>
-            Your signal about the high value v is at most {{ epsilon }} units away from the true v.
-            Given your signal, the high value must lie between {{ min_signal }} and {{ max_signal }}.
+            {% if treatment == 'cv' %}
+                Your signal about v is at most {{ epsilon }} units away from the Selected Value v. <br>
+                Given your signal, the Selected Value must lie between {{ min_signal }} and {{ max_signal }}.
+            {% else %}
+                Your signal about p is at most {{ epsilon }} units away from the Selected Probability p. <br>
+                Given your signal, the Selected Probability must lie between {{ min_signal }} and {{ max_signal }}.
+            {% endif %}
         </span>
     </div>
 
@@ -64,4 +77,4 @@
     </div>
 
     {% next_button %}
-{% endblock %}
+    {% endblock %}

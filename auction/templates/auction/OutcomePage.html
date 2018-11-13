@@ -30,21 +30,44 @@
     </div>
     <div class="text-center">
         <span>
-        {% if winner %}
-            You won the auction.
+        {% if tie %}
+            {% if winner %}
+                You and at least one other bidder submitted identical highest bids. The computer randomly selected
+                you as the winner.
+            {% else %}
+                You and at least one other bidder submitted identical highest bids. The computer randomly selected
+                one other bidder
+                as the winner.
+            {% endif %}
         {% else %}
-            You did not win the auction.
+            {% if winner %}
+                You won the auction.
+            {% else %}
+                You did not win the auction.
+            {% endif %}
         {% endif %}
         </span>
     </div>
     <div id="lottery-ticket-header" class="text-center">
         <h4>Actual Lottery with Selected Value</h4>
-        <p>The actual lottery ticket was:</p>
-        <p>"With a probability of {{ p }}% you get a high value of {{ value }} otherwise you get 0."</p>
+        <p>
+            {% if treatment == 'cv' %}
+                The Selected Value was {{ value }}. Therefore, the actual lottery ticket was:
+            {% else %}
+                The Selected Probability was {{ p }}%. Therefore, the actual lottery ticket was:
+            {% endif %}
+        </p>
     </div>
+    <div>
+        <p>
+            With a probability of {{ p }}% you get a value of {{ value }}, <br>otherwise you get 0.
+        </p>
+    </div>
+
     <div id="played-outcome" class="text-center">
         <p>The lottery was played and its outcome was {{ outcome }}.</p>
     </div>
+
     <div id="earnings-header" class="text-center">
         <h4>Your Earnings</h4>
         <p>Your earnings for this round is {{ payoff }} credits.</p>

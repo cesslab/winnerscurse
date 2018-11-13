@@ -21,8 +21,10 @@ class BidPage(Page):
             'epsilon': self.group.epsilon,
             'min_signal': self.player.signal - self.group.epsilon,
             'max_signal': self.player.signal + self.group.epsilon,
-            'p': int(self.group.p*100),
-            'comp_p': 1 - self.group.p,
+            'p': self.group.p,
+            'comp_p': 100 - self.group.p,
+            'treatment': self.group.treatment,
+            'value': self.group.value,
             'min_bid': 0,
             'max_bid': 100,
             'round_number': self.round_number,
@@ -43,12 +45,14 @@ class OutcomePage(Page):
             'signal': self.player.signal,
             'alpha': self.group.alpha,
             'beta': self.group.beta,
-            'p': int(self.group.p*100),
+            'p': self.group.p,
+            'comp_p': 100 - self.group.p,
+            'treatment': self.group.treatment,
             'value': self.group.value,
             'outcome': self.group.outcome,
-            'comp_p': 1 - self.group.p,
             'payoff': self.player.payoff,
             'round_number': self.round_number,
+            'tie': self.player.tie
         }
 
     def before_next_page(self):
@@ -60,10 +64,11 @@ class OutcomePage(Page):
             'signal': self.player.signal,
             'alpha': self.group.alpha,
             'beta': self.group.beta,
-            'p': int(self.group.p*100),
+            'p': self.group.p,
+            'comp_p': 100 - self.group.p,
+            'treatment': self.group.treatment,
             'value': self.group.value,
             'outcome': self.group.outcome,
-            'comp_p': 1 - self.group.p,
             'payoff': self.player.payoff,
             'round_number': self.round_number,
             }

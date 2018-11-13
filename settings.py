@@ -20,6 +20,9 @@ SESSION_CONFIGS = [
        'rounds_per_lottery': 4,
        'players_per_group': 4,
        'endowment': 10,
+        'treatment': 'cp',
+        'doc': """ There are two treatments cp, and cv. If nothing is entered as the treatment value cp will be used
+        as the default treatment. """
     },
 ]
 
