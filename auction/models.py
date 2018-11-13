@@ -65,7 +65,6 @@ class Group(BaseGroup):
 
     def get_treatment(self):
         treatment = self.session.config['treatment']
-        print(self.session.config['treatment'])
         if treatment != 'cp' and treatment != 'cv':
             treatment = 'cp'
         return treatment

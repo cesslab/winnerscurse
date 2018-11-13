@@ -10,7 +10,6 @@ class Questionnaire(Page):
 
     def vars_for_template(self):
         treatment = self.session.config['treatment']
-        print(self.session.config['treatment'])
         if treatment != 'cp' and treatment != 'cv':
             treatment = 'cp'
 
