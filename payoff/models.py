@@ -48,7 +48,6 @@ class Player(BasePlayer):
         self.participant.payoff = self.phase_one_payoff_dollars + self.phase_two_payoff_dollars
 
     def auction_payoff(self):
-        print(self.participant.vars['auction_data'])
         self.phase_one_payment_round = self.participant.vars['auction_data']['round_number']
         self.phase_one_payoff_credits = self.participant.vars['auction_data']['payoff']
 
