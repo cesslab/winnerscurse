@@ -1,0 +1,11 @@
+.lottery {
+    border: 2px solid #969696;
+    text-align: center;
+    margin: 20px 10px 20px 10px;
+}
+.lottery-header {
+    margin-top: 50px;
+}
+li {
+    margin-top: 20px;
+}
