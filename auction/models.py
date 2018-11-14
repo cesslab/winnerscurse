@@ -9,6 +9,9 @@ from otree.api import (
 
 from experiment.lottery import LotterySpecification
 
+doc = """
+Phase 1: Auction Phase
+"""
 
 class Constants(BaseConstants):
     name_in_url = 'auction'

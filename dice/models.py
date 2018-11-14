@@ -5,6 +5,9 @@ from otree.api import (
 
 from experiment.lottery import RedBlueLottery
 
+doc = """
+Phase 2: Dice Phase, for lack of a better description. 
+"""
 
 class Constants(BaseConstants):
     name_in_url = 'dice'

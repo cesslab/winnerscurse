@@ -7,6 +7,9 @@ from otree.api import (
 
 from experiment.lottery import RedBlueLottery
 
+doc = """
+Final Payment Phase
+"""
 
 class Constants(BaseConstants):
     name_in_url = 'payoff'
