@@ -1,3 +1,5 @@
+import math
+
 from otree.api import Currency as c, currency_range
 from ._builtin import Page, WaitPage
 from .models import Constants
@@ -14,7 +16,7 @@ class BidPage(Page):
 
     def vars_for_template(self):
         return {
-            'lottery_id': self.group.lottery_id,
+            'lottery_display_id': self.group.lottery_display_id,
             'signal': self.player.signal,
             'alpha': self.group.alpha,
             'beta': self.group.beta,

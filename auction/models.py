@@ -1,5 +1,6 @@
 import math
 import random
+from typing import List
 
 from otree.api import (
     models, widgets, BaseConstants, BaseSubsession, BaseGroup, BasePlayer,
@@ -12,35 +13,34 @@ from experiment.lottery import LotterySpecification
 class Constants(BaseConstants):
     name_in_url = 'auction'
     players_per_group = 4
-    num_rounds = 4
+    rounds_per_lottery = 4
+    num_rounds = 32
+    lotteries = [
+        LotterySpecification(60, 90, 75, 4),
+        LotterySpecification(10, 40, 25, 4),
+        LotterySpecification(60, 90, 25, 4),
+        LotterySpecification(10, 40, 75, 4),
+        LotterySpecification(60, 90, 75, 8),
+        LotterySpecification(10, 40, 25, 8),
+        LotterySpecification(60, 90, 25, 8),
+        LotterySpecification(10, 40, 75, 8),
+    ]
 
 
 class Subsession(BaseSubsession):
     def set_group_size(self):
         players = self.get_players()
-        players_per_group = self.session.config['players_per_group']
         group_matrix = []
-        for i in range(0, len(players), players_per_group):
-            group_matrix.append(players[i:i + players_per_group])
+        for i in range(0, len(players), Constants.players_per_group):
+            group_matrix.append(players[i:i + Constants.players_per_group])
         self.set_group_matrix(group_matrix)
 
     def creating_session(self):
         self.set_group_size()
         self.group_randomly()
 
-        specs = [
-            LotterySpecification(60, 90, 75, 4),
-            LotterySpecification(10, 40, 25, 4),
-            LotterySpecification(60, 90, 25, 4),
-            LotterySpecification(10, 40, 75, 4),
-            LotterySpecification(60, 90, 75, 8),
-            LotterySpecification(10, 40, 25, 8),
-            LotterySpecification(60, 90, 25, 8),
-            LotterySpecification(10, 40, 75, 8),
-        ]
-
-        for group in self.get_groups():
-            group.set_lottery(specs)
+        for group in self.get_groups():  # type: Group
+            group.set_round_lottery()
             for player in group.get_players():
                 player.signal = group.get_signal()
 
@@ -53,6 +53,7 @@ class Subsession(BaseSubsession):
 
 class Group(BaseGroup):
     lottery_id = models.IntegerField()
+    lottery_display_id = models.IntegerField()
     alpha = models.IntegerField()
     beta = models.IntegerField()
     p = models.IntegerField()
@@ -69,15 +70,18 @@ class Group(BaseGroup):
             treatment = 'cp'
         return treatment
 
-    def get_lottery_id(self):
-        rounds_per_lottery = self.session.config['rounds_per_lottery']
-        return math.floor((self.round_number - 1) / rounds_per_lottery) + 1
+    def set_round_lottery(self):
+        lottery_order = []
+        for i in range(1, 9):
+            lottery_order.append(int(self.session.config["lottery_{}".format(i)].strip()))
+        rounds_per_lottery = int(Constants.rounds_per_lottery)
+        lottery_index_this_round = math.floor((self.round_number - 1) / rounds_per_lottery)
+        self.lottery_id = lottery_order[lottery_index_this_round]
+        self.lottery_display_id = lottery_index_this_round + 1
 
-    def set_lottery(self, specs):
-        self.lottery_id = self.get_lottery_id()
         self.treatment = self.get_treatment()
 
-        lottery_spec: LotterySpecification = specs[self.lottery_id - 1]
+        lottery_spec: LotterySpecification = Constants.lotteries[self.lottery_id - 1]
 
         self.alpha = lottery_spec.alpha
         self.beta = lottery_spec.beta
