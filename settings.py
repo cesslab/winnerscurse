@@ -17,12 +17,26 @@ SESSION_CONFIGS = [
        'display_name': "Winners Curse",
        'num_demo_participants': 4,
        'app_sequence': ['auction', 'dice', 'payoff', 'questionnaire'],
-       'rounds_per_lottery': 4,
-       'players_per_group': 4,
        'endowment': 10,
         'treatment': 'cp',
-        'doc': """ There are two treatments cp, and cv. If nothing is entered as the treatment value cp will be used
-        as the default treatment. """
+        'lottery_1': '1',
+        'lottery_2': '2',
+        'lottery_3': '3',
+        'lottery_4': '4',
+        'lottery_5': '5',
+        'lottery_6': '6',
+        'lottery_7': '7',
+        'lottery_8': '8',
+        'doc': """
+        <h3>Treatments (treatment):</h3> 
+        <p>The treatment parameter will determine if either the cp treatment, or the cv treatment will be played this 
+        session. If neither is entered, the cp treatment will be played by default.</p> 
+        
+        <h3>Lottery Order (lottery_1 - lottery_8):</h3> 
+        <p>The parameters lottery_1 through lottery_8 will determine the order in which the lotteries are displayed. 
+        <b>You must take care not to enter duplicates, or invalid lottery IDs</b>. By default the lotteries will be 
+        played sequentially.</p>
+        """
     },
 ]
 
