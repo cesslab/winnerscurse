@@ -10,7 +10,7 @@ from selenium.webdriver.chrome.options import Options
 
 SCREEN_SHOT_PATH = environ.get('SCREEN_SHOT_PATH')
 EXPERIMENT_URL = environ.get('EXPERIMENT_URL')
-PHASE_ONE_ROUNDS = 4
+PHASE_ONE_ROUNDS = 32
 NUMBER_OF_TASKS = 6
 
 
