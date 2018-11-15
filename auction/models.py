@@ -111,7 +111,10 @@ class Group(BaseGroup):
                 self.outcome = 0
 
     def get_signal(self):
-        return random.randint(self.value - self.epsilon, self.value + self.epsilon)
+        if self.treatment == 'cv':
+            return random.randint(self.value - self.epsilon, self.value + self.epsilon)
+        else:
+            return random.randint(self.p - self.epsilon, self.p + self.epsilon)
 
     def set_winning_player(self):
         players = self.get_players()
