@@ -17,7 +17,6 @@ class Constants(BaseConstants):
     name_in_url = 'auction'
     players_per_group = 4
     rounds_per_lottery = 3
-    num_rounds = 80
     lotteries = [
         LotterySpecification(60, 90, 75, 4),
         LotterySpecification(10, 40, 25, 4),
@@ -28,6 +27,7 @@ class Constants(BaseConstants):
         LotterySpecification(60, 90, 25, 8),
         LotterySpecification(10, 40, 75, 8),
     ]
+    num_rounds = rounds_per_lottery*len(lotteries)
 
 
 class Subsession(BaseSubsession):
