@@ -126,8 +126,8 @@ class Group(BaseGroup):
 
         self.highest_bid = max_bid
 
-        winner_ids = []
-        for i, p in enumerate(players):
+        winners = []
+        for p in players:
             # set losers payoffs
             if p.bid < self.highest_bid:
                 p.winner = False
@@ -136,18 +136,18 @@ class Group(BaseGroup):
 
             # record tied players
             elif p.bid == self.highest_bid:
-                winner_ids.append(i)
+                winners.append(p)
 
-        winner_id = random.randint(0, len(winner_ids)-1)
-        for i in winner_ids:
+        winner_id = random.randint(0, len(winners)-1)
+        for i, p in enumerate(winners):
             if i == winner_id:
-                players[i].payoff = self.outcome - players[i].bid
-                players[i].winner = True
-                players[i].tie = True
+                p.payoff = self.outcome - p.bid
+                p.winner = True
+                p.tie = True
             else:
-                players[i].payoff = 0
-                players[i].winner = False
-                players[i].tie = True
+                p.payoff = 0
+                p.winner = False
+                p.tie = True
 
 
 class Player(BasePlayer):
