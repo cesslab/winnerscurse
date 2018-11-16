@@ -1,0 +1,74 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+   Questionnaire
+{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'questionnaire/style.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="lottery-header">
+        <label>Consider the following lottery ticket</label>
+    </div>
+    <div class="lottery">
+        <p>
+            {% if treatment == 'cp' %}
+                With a probability p between {{ q1_lottery.low }}% and {{ q1_lottery.high }}% you get a value of
+                {{ q1_lottery.value }},<br> otherwise you get 0.
+            {% else %}
+                With a probability of {{ q1_lottery.p }}% you get a value v between {{ q1_lottery.low }} and
+                {{ q1_lottery.high }}, otherwise you get 0.
+            {% endif %}
+        </p>
+    </div>
+    <div>
+        <ol type="1">
+            <li>
+                Signals are at most 4 units away from the Selected Probability. State your bid for the following signals and explain your strategy.
+                <ol type="a">
+                    <li>
+                        You receive a signal of {{ q1a.s }}, therefore the Selected
+                        {% if treatment == 'cp' %}Probability{% else %}Value{% endif %} is between
+                        {{ q1a.low }}{% if treatment == 'cp' %}%{% endif %} and
+                        {{ q1a.high }}{% if treatment == 'cp' %}%{% endif %}.
+                        {% formfield player.q1a label="You bid" %}
+                    </li>
+                    <li>
+                        You receive a signal of {{ q1b.s }}, therefore the Selected
+                        {% if treatment == 'cp' %}Probability{% else %}Value{% endif %} is between
+                        {{ q1b.low }}{% if treatment == 'cp' %}%{% endif %} and
+                        {{ q1b.high }}{% if treatment == 'cp' %}%{% endif %}.
+                        {% formfield player.q1b label="You bid" %}
+                    </li>
+                    <li>
+                        You receive a signal of {{ q1c.s }}, therefore the Selected
+                        {% if treatment == 'cp' %}Probability{% else %}Value{% endif %} is between
+                        {{ q1c.low }}{% if treatment == 'cp' %}%{% endif %} and
+                        {{ q1c.high }}{% if treatment == 'cp' %}%{% endif %}.
+                        {% formfield player.q1c label="You bid" %}
+                    </li>
+                    <li>
+                        You receive a signal of {{ q1d.s }}, therefore the Selected
+                        {% if treatment == 'cp' %}Probability{% else %}Value{% endif %} is between
+                        {{ q1d.low }}{% if treatment == 'cp' %}%{% endif %} and
+                        {{ q1d.high }}{% if treatment == 'cp' %}%{% endif %}.
+                        {% formfield player.q1d label="You bid" %}
+                    </li>
+                    <li>
+                        You receive a signal of {{ q1e.s }}, therefore the Selected
+                        {% if treatment == 'cp' %}Probability{% else %}Value{% endif %} is between
+                        {{ q1e.low }}{% if treatment == 'cp' %}%{% endif %} and
+                        {{ q1e.high }}{% if treatment == 'cp' %}%{% endif %}.
+                        {% formfield player.q1e label="You bid" %}
+                        {% formfield player.q1exp label="Explain why you chose these bids." %}
+                    </li>
+                </ol>
+            </li>
+        </ol>
+    </div>
+    {% next_button %}
+
+{% endblock %}

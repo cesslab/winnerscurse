@@ -39,6 +39,9 @@ class Player(BasePlayer):
     q4 = models.LongStringField()
     q5 = models.IntegerField(choices=[[1, 'I prefer lottery A.'], [2, 'I prefer lottery B.'], [3, 'I don\'t care.']], widget=widgets.RadioSelect)
     q5exp = models.LongStringField()
-    q6 = models.IntegerField()
+    q6 = models.IntegerField(choices=[[1, 'I prefer lottery A.'], [2, 'I prefer lottery B.'], [3, 'I don\'t care.']], widget=widgets.RadioSelect)
     q6exp = models.LongStringField()
+    q7 = models.IntegerField()
+    q8 = models.IntegerField()
+    q9 = models.IntegerField()
 

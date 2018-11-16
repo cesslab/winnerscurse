@@ -1,0 +1,23 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+   Questionnaire
+{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'questionnaire/style.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div>
+        {% formfield player.gender label="Gender" %}
+    </div>
+    <div>
+        {% formfield player.age label="age" %}
+    </div>
+    <div>
+        {% formfield player.major label="major" %}
+    </div>
+    {% next_button %}
+{% endblock %}

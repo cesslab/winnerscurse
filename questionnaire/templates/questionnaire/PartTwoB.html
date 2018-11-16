@@ -1,0 +1,37 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+   Questionnaire
+{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'questionnaire/style.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div>
+        <ol start="2">
+            <li>
+                Suppose you get a signal of {{ q2.s }}, therefore the Selected
+                {% if treatment == 'cp' %}Probability{% else %}Value{% endif %} is between
+                {{ q2.low }}{% if treatment == 'cp' %}%{% endif %} and
+                {{ q2.high }}{% if treatment == 'cp' %}%{% endif %}.
+                {% formfield player.q2 label="What is your best guess about the value?" %}
+            </li>
+            <li>
+                Suppose you get a signal of {{ q3.s }}, therefore the Selected
+                {% if treatment == 'cp' %}Probability{% else %}Value{% endif %} is between
+                {{ q3.low }}{% if treatment == 'cp' %}%{% endif %} and
+                {{ q3.high }}{% if treatment == 'cp' %}%{% endif %}.
+                {% formfield player.q3 label="What would you advise this participant to bid?" %}
+                {% formfield player.q3exp label="Why?" %}
+            </li>
+            <li>
+                {% formfield player.q4 label="What general bidding rule given a signal do you think other people followed in the experiment?" %}
+            </li>
+        </ol>
+    </div>
+    {% next_button %}
+
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+   Questionnaire
+{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'questionnaire/style.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div>
+        <div class="lottery-header text-center">
+            <label>Lottery A</label>
+        </div>
+        <div class="lottery">
+            <p>
+                {% if treatment == 'cp' %}
+                    With a probability p between {{ q5a_lottery.low }}% and {{ q5a_lottery.high }}% you get a value of
+                    {{ q5a_lottery.value }}, <br>otherwise you get 0.
+                {% else %}
+                    With a probability of {{ q5a_lottery.p }}% you get a value v between {{ q5a_lottery.low }} and
+                    {{ q5a_lottery.high }}, <br>otherwise you get 0.
+                {% endif %}
+            </p>
+        </div>
+        <div class="lottery-header text-center">
+            <label>Lottery B</label>
+        </div>
+        <div class="lottery">
+            <p>
+                {% if treatment == 'cp' %}
+                    With a probability of {{ q5b_lottery.p }}% you get a value v between {{ q5b_lottery.low }} and
+                    {{ q5b_lottery.high }}, <br>otherwise you get 0.
+                {% else %}
+                    With a probability p between {{ q5b_lottery.low }}% and {{ q5b_lottery.high }}% you get a value of
+                    {{ q5b_lottery.value }}, <br>otherwise you get 0.
+                {% endif %}
+            </p>
+        </div>
+        <div>
+            <p>5. Suppose that you could choose to play one of the two lottery tickets displayed above. Which one would you prefer?</p>
+            <p>
+                {% formfield player.q5 label="" %}
+                {% formfield player.q5exp label="Explain your choice." %}
+            </p>
+        </div>
+    </div>
+    <div>
+        <p>6. Suppose that you could choose to <em>bid</em> in an auction for one of the two lottery tickets displayed above. Which one would you prefer?</p>
+        <p>
+            {% formfield player.q6 label="" %}
+            {% formfield player.q6exp label="Explain your choice." %}
+        </p>
+    </div>
+    {% next_button %}
+
+{% endblock %}
