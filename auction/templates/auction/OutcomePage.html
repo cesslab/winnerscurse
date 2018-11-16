@@ -50,7 +50,11 @@
     </div>
 
     <div class="text-center lottery-header">
+        {% if treatment == 'cv' %}
         <h4>Actual Lottery with Selected Value</h4>
+        {% else %}
+            <h4>Actual Lottery with Selected Probability</h4>
+        {% endif %}
     </div>
     <div id="lottery-ticket-header" class="text-center">
         <p>
@@ -71,11 +75,11 @@
         <p>The lottery was played and its outcome was {{ outcome }}.</p>
     </div>
 
-    <div class="lottery-header">
+    <div class="lottery-header text-center">
         <h4>Your Earnings</h4>
     </div>
     <div id="earnings-header" class="text-center">
-        <p>Your earnings for this round is {{ payoff }} credits.</p>
+        <p>Your earnings for this round are {{ payoff }}.</p>
     </div>
 
     {% next_button %}

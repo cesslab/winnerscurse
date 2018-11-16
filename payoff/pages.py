@@ -39,7 +39,8 @@ class MethodThreeResultsPage(Page):
             'num_red': self.player.num_red_chips,
             'num_blue': self.player.total_chips - self.player.num_red_chips,
             'realized_value': self.player.realized_value,
-            'earnings': self.player.phase_two_payoff_credits
+            'earnings': self.player.phase_two_payoff_credits,
+            'payment_round': self.player.phase_one_payment_round,
         }
 
         return context

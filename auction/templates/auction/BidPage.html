@@ -22,7 +22,7 @@
             {% if treatment == 'cv' %}
                 With a probability of {{ p }}% you get a value v between {{ alpha }} and {{ beta }}, <br>otherwise you get 0.
             {% else %}
-                With a probability of p between {{ alpha }}% and {{ beta }}%, you get a value of {{ value }}, <br>otherwise you get 0.
+                With a probability p between {{ alpha }}% and {{ beta }}%, you get a value of {{ value }}, <br>otherwise you get 0.
             {% endif %}
         </p>
     </div>
@@ -33,7 +33,7 @@
             {% if treatment == 'cv' %}
                 Your signal about v is: {{ signal }}.
             {% else %}
-                Your signal about p is: {{ signal }}.
+                Your signal about p is: {{ signal }}%.
             {% endif %}
         </p>
     </div>
@@ -45,8 +45,8 @@
                 Your signal about v is at most {{ epsilon }} units away from the Selected Value v. <br>
                 Given your signal, the Selected Value must lie between {{ min_signal }} and {{ max_signal }}.
             {% else %}
-                Your signal about p is at most {{ epsilon }} units away from the Selected Probability p. <br>
-                Given your signal, the Selected Probability must lie between {{ min_signal }} and {{ max_signal }}.
+                Your signal about p is at most {{ epsilon }} percentage points away from the Selected Probability p. <br>
+                Given your signal, the Selected Probability must lie between {{ min_signal }}% and {{ max_signal }}%.
             {% endif %}
         </span>
     </div>
