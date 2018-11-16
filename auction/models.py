@@ -122,6 +122,7 @@ class Group(BaseGroup):
         for p in players[1:]:
             if player.bid == p.bid:
                 player.tie = True
+                p.tie = True
                 # Break ties randomly
                 if random.random() < 0.5:
                     player.payoff = 0
