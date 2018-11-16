@@ -10,6 +10,15 @@ class InstructionPage(Page):
         return self.round_number == 1
 
 
+class NewLotteryReminder(Page):
+    def is_displayed(self):
+        return self.round_number != 1 and self.round_number % Constants.rounds_per_lottery == 0
+
+    def vars_for_template(self):
+        return {
+            'rounds_per_lottery': Constants.rounds_per_lottery
+        }
+
 class BidPage(Page):
     form_model = 'player'
     form_fields = ['bid']
@@ -78,5 +87,5 @@ class OutcomePage(Page):
 
 
 page_sequence = [
-    InstructionPage, BidPage, DetermineGroupWinnerWaitPage, OutcomePage
+    InstructionPage, NewLotteryReminder, BidPage, DetermineGroupWinnerWaitPage, OutcomePage
 ]
