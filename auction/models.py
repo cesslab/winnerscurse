@@ -118,23 +118,36 @@ class Group(BaseGroup):
 
     def set_winning_player(self):
         players = self.get_players()
-        player = players[0]
-        for p in players[1:]:
-            if player.bid == p.bid:
-                player.tie = True
-                p.tie = True
-                # Break ties randomly
-                if random.random() < 0.5:
-                    player.payoff = 0
-                    player.winner = False
-                    player = p
-            elif player.bid < p.bid:
-                player.payoff = 0
-                player.winner = False
-                player = p
-        player.winner = True
-        player.payoff = self.outcome - player.bid
-        self.highest_bid = player.bid
+        max_bid = -1
+        # find the max bid
+        for p in players:
+            if p.bid > max_bid:
+                max_bid = p.bid
+
+        self.highest_bid = max_bid
+
+        winner_ids = []
+        for i, p in enumerate(players):
+            # set losers payoffs
+            if p.bid < self.highest_bid:
+                p.winner = False
+                p.tie = False
+                p.payoff = 0
+
+            # record tied players
+            elif p.bid == self.highest_bid:
+                winner_ids.append(i)
+
+        winner_id = random.randint(0, len(winner_ids)-1)
+        for i in winner_ids:
+            if i == winner_id:
+                players[i].payoff = self.outcome - players[i].bid
+                players[i].winner = True
+                players[i].tie = True
+            else:
+                players[i].payoff = 0
+                players[i].winner = False
+                players[i].tie = True
 
 
 class Player(BasePlayer):
