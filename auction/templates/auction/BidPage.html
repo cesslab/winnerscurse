@@ -67,9 +67,6 @@
                     value="{{ form.bid.value|default_if_none:"" }}"
                     placeholder="Enter Your Bid" required>
 
-            <small id="bidhelp" class="form-text text-muted">Your bid must be between {{ min_bid }}
-                and {{ max_bid }}.
-            </small>
             {% if form.bid.errors %}
                 <div class="alert alert-danger">
                     {{ form.bid.errors }}
