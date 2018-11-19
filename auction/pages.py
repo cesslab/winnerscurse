@@ -12,7 +12,7 @@ class InstructionPage(Page):
 
 class NewLotteryReminder(Page):
     def is_displayed(self):
-        return self.round_number != 1 and self.round_number % Constants.rounds_per_lottery == 0
+        return self.round_number != 1 and self.round_number % Constants.rounds_per_lottery == 1
 
     def vars_for_template(self):
         return {
