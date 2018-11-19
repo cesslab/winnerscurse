@@ -54,7 +54,7 @@ class PartTwoB(Page):
             }
         else:
             template_vars = {
-                'q2_lottery': {'p': 25, 'low': 10, 'value': 40},
+                'q2_lottery': {'p': 25, 'low': 10, 'high': 40},
             }
 
         template_vars.update({

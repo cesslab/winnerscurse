@@ -10,6 +10,20 @@
 {% endblock %}
 
 {% block content %}
+    <div class="lottery-header">
+        <label>Consider again the following lottery ticket</label>
+    </div>
+    <div class="lottery">
+        <p>
+            {% if treatment == 'cp' %}
+                With a probability p between {{ q2_lottery.low }}% and {{ q2_lottery.high }}% you get a value of
+                {{ q2_lottery.value }},<br> otherwise you get 0.
+            {% else %}
+                With a probability of {{ q2_lottery.p }}% you get a value v between {{ q2_lottery.low }} and
+                {{ q2_lottery.high }}, otherwise you get 0.
+            {% endif %}
+        </p>
+    </div>
     <div>
         <ol start="2">
             <li>
