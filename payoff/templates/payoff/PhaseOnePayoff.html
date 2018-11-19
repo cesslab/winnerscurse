@@ -2,7 +2,6 @@
 {% load otree static %}
 
 {% block title %}
-    Payoff in Part 1
 {% endblock %}
 
 {% block styles %}
@@ -19,7 +18,7 @@
         </span>
     </div>
 
-    <div class="outcome-header">
+    <div class="outcome-header lottery-header">
         <h4 class="text-center">Outcome in Round {{ payment_round }}</h4>
     </div>
 
@@ -79,7 +78,7 @@
 
     <div id="earnings-header" class="text-center">
         <h4>Your Earnings</h4>
-        <p>Your earnings for this round {{ payoff }}.</p>
+        <p>Your earnings for this round where {{ payoff }}.</p>
     </div>
     {% next_button %}
 {% endblock %}
