@@ -1,0 +1,21 @@
+<table class="table borderless">
+  <thead class="table-top">
+  <tr class="text-center">
+    <th class="header-blank"></th>
+    <th class="table-primary table-header" scope="col">Red</th>
+    <th class="table-primary table-header" scope="col">Blue</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr class="text-center">
+    <th class="table-primary table-header"   scope="row">Value</th>
+    <td class="auction-cell">{% block top_left %}{% endblock %}</td>
+    <td class="auction-cell">{% block top_right %}{% endblock %}</td>
+  </tr>
+  <tr class="text-center">
+    <th class="table-primary table-header" scope="row">Number of Chips</th>
+    <td class="auction-cell">{% block bottom_left %}{% endblock %}</td>
+    <td class="auction-cell">{% block bottom_right %}{% endblock %}</td>
+  </tr>
+  </tbody>
+</table>
