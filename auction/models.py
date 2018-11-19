@@ -127,24 +127,33 @@ class Group(BaseGroup):
         self.highest_bid = max_bid
 
         winners = []
-        for p in players:
+        for p in players:  # type: Player
             # set losers payoffs
             if p.bid < self.highest_bid:
                 p.winner = False
                 p.tie = False
                 p.payoff = 0
-
+                print('Player {} bid the highest ({}'.format(p.id_in_group, self.highest_bid))
             # record tied players
             elif p.bid == self.highest_bid:
                 winners.append(p)
 
         winner_id = random.randint(0, len(winners)-1)
         for i, p in enumerate(winners):
-            if i == winner_id:
+            # Only one player with highest bid
+            if len(winners) == 1 and i == 0:
+                p.payoff = self.outcome - p.bid
+                p.winner = True
+                p.tie = False
+            # Multiple players have the highest bid, and this one was randomly chosen to win.
+            elif i == winner_id:
+                print('Player {} at index {} bid the {}, and was selected as the winner'.format(p.id_in_group, i, p.bid))
                 p.payoff = self.outcome - p.bid
                 p.winner = True
                 p.tie = True
+            # Multiple players have the highest bid, and this one was **not** randomly chosen to win.
             else:
+                print('Player {} at index {} bid the {}, and was not selected as the winner'.format(p.id_in_group, i, p.bid))
                 p.payoff = 0
                 p.winner = False
                 p.tie = True
