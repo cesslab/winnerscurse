@@ -10,7 +10,9 @@ from selenium.webdriver.chrome.options import Options
 
 SCREEN_SHOT_PATH = environ.get('SCREEN_SHOT_PATH')
 EXPERIMENT_URL = environ.get('EXPERIMENT_URL')
-PHASE_ONE_ROUNDS = 32
+NUMBER_OF_LOTTERIES = 8
+LOTTERIES_PER_ROUND = 3
+PHASE_ONE_ROUNDS =  NUMBER_OF_LOTTERIES*LOTTERIES_PER_ROUND
 NUMBER_OF_TASKS = 6
 
 
@@ -116,16 +118,21 @@ if __name__ == "__main__":
 
     # Phase 1
     for round_id in range(1, PHASE_ONE_ROUNDS + 1):
+
         for player in range(1, len(player_links) + 1):
             # switch to new tab
             driver.switch_to.window(driver.window_handles[player])
             if round_id == 1:
+                instructions(driver, round_id)
+            # new lottery screen
+            elif round_id % LOTTERIES_PER_ROUND == 1:
                 instructions(driver, round_id)
             auction_bid(driver, round_id)
 
         for player in range(1, len(player_links) + 1):
             driver.switch_to.window(driver.window_handles[player])
             auction_outcome(driver, round_id)
+
 
     # Phase 2
     for player in range(1, len(player_links) + 1):
