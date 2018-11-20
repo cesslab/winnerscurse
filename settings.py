@@ -50,7 +50,13 @@ REAL_WORLD_CURRENCY_CODE = 'USD'
 USE_POINTS = True
 POINTS_CUSTOM_NAME = 'Credits'
 
-ROOMS = []
+ROOMS = [
+    {
+        'name': 'cess_lab',
+        'display_name': 'CESS Lab',
+    },
+]
+
 
 
 # AUTH_LEVEL:
