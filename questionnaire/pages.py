@@ -84,7 +84,7 @@ class PartTwoC(Page):
         else:
             template_vars = {
                 'treatment': treatment,
-                'q5a_lottery': {'p': 75, 'low': 60, 'value': 90},
+                'q5a_lottery': {'p': 75, 'low': 60, 'high': 90},
                 'q5b_lottery': {'low': 60, 'high': 90, 'value': 75},
             }
 
