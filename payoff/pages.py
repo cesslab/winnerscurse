@@ -56,11 +56,11 @@ class TotalPayoff(Page):
         return {
             'phase_one_payoff_credits': self.player.phase_one_payoff_credits,
             'phase_two_payoff_credits': self.player.phase_two_payoff_credits,
-            'phase_one_payoff_dollars': self.player.phase_one_payoff_dollars.to_real_world_currency(self.session),
-            'phase_two_payoff_dollars': self.player.phase_two_payoff_dollars.to_real_world_currency(self.session),
+            'phase_one_payoff_dollars': self.player.phase_one_payoff_dollars,
+            'phase_two_payoff_dollars': self.player.phase_two_payoff_dollars,
             'endowment': c(self.session.config['endowment']).to_real_world_currency(self.session),
             'show_up_fee': c(self.session.config['participation_fee']).to_real_world_currency(self.session),
-            'final_payoff': self.player.total_payoff_dollars.to_real_world_currency(self.session)
+            'final_payoff': self.player.total_payoff_dollars
         }
 
 

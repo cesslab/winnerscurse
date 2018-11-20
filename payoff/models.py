@@ -38,17 +38,17 @@ class Player(BasePlayer):
     phase_one_payment_round = models.IntegerField()
     phase_one_payoff_credits = models.CurrencyField()
     phase_two_payoff_credits = models.CurrencyField()
-    phase_one_payoff_dollars = models.CurrencyField()
-    phase_two_payoff_dollars = models.CurrencyField()
-    total_payoff_dollars = models.CurrencyField()
+    phase_one_payoff_dollars = models.FloatField()
+    phase_two_payoff_dollars = models.FloatField()
+    total_payoff_dollars = models.FloatField()
 
     def final_payoff(self):
-        self.phase_one_payoff_dollars = c(float(self.phase_one_payoff_credits) * (3/4)*(1/6))
-        self.phase_two_payoff_dollars = c(float(self.phase_two_payoff_credits) * (1/4)*(1/6))
-        endowment = c(self.session.config['endowment'])
-        showup = c(self.session.config['participation_fee'])
+        self.phase_one_payoff_dollars = float(self.phase_one_payoff_credits) * (3/4)*(1/6)
+        self.phase_two_payoff_dollars = float(self.phase_two_payoff_credits) * (1/4)*(1/6)
+        endowment = float(self.session.config['endowment'])
+        showup = float(self.session.config['participation_fee'])
         self.total_payoff_dollars = self.phase_one_payoff_dollars + self.phase_two_payoff_dollars + endowment + showup
-        self.participant.payoff = self.phase_one_payoff_dollars + self.phase_two_payoff_dollars + endowment
+        self.participant.payoff = c(self.phase_one_payoff_dollars + self.phase_two_payoff_dollars + endowment)
 
     def auction_payoff(self):
         self.phase_one_payment_round = self.participant.vars['auction_data']['round_number']
