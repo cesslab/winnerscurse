@@ -34,7 +34,8 @@
                 {% formfield player.q2 label="What is your best guess about the value?" %}
             </li>
             <li>
-                Suppose you get a signal of {{ q3.s }}, therefore the Selected
+                Suppose, in a future experiment, one participant would receive a signal of {{ q3.s }} for the above lottery ticket.
+                Given a signal of {{ q3.s }}, the Selected
                 {% if treatment == 'cp' %}Probability{% else %}Value{% endif %} is between
                 {{ q3.low }}{% if treatment == 'cp' %}%{% endif %} and
                 {{ q3.high }}{% if treatment == 'cp' %}%{% endif %}.
