@@ -18,14 +18,14 @@ class Constants(BaseConstants):
     players_per_group = 4
     rounds_per_lottery = 3
     lotteries = [
-        LotterySpecification(60, 90, 75, 4),
-        LotterySpecification(10, 40, 25, 4),
-        LotterySpecification(60, 90, 25, 4),
-        LotterySpecification(10, 40, 75, 4),
-        LotterySpecification(60, 90, 75, 8),
-        LotterySpecification(10, 40, 25, 8),
-        LotterySpecification(60, 90, 25, 8),
-        LotterySpecification(10, 40, 75, 8),
+        LotterySpecification(30, 90, 60, 4),
+        LotterySpecification(10, 70, 40, 4),
+        LotterySpecification(30, 90, 40, 4),
+        LotterySpecification(10, 70, 60, 4),
+        LotterySpecification(30, 90, 60, 8),
+        LotterySpecification(10, 70, 40, 8),
+        LotterySpecification(30, 90, 40, 8),
+        LotterySpecification(10, 70, 60, 8),
     ]
     num_rounds = rounds_per_lottery*len(lotteries)
 
