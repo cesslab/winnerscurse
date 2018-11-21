@@ -1,0 +1,15 @@
+<div>
+    <label>
+        {{ number }}. {{ question }}
+    </label>
+    <ul>
+        {%  for label in labels %}
+            <li>
+                <label for="id_q{{ number }}_{{ forloop.counter0 }}">
+                    <input type="checkbox" name="q{{ number }}" value="{{ forloop.counter }}" maxlength="10000" id="id_q{{ number }}_{{ forloop.counter0 }}" class="form-check-input" />
+                    {{ label }}
+                </label>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
