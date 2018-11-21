@@ -114,15 +114,17 @@ class QuizPartTwo(Page):
 
         if treatment == 'cv':
             q6_labels = ['0', '21 (= 30 x 70% + 0 x 30%)', '30']
+            q5_type = 'units'
         else:
             q6_labels = ['0', '21 (= 30% x 70 + 70% x 0)', '70']
+            q5_type = 'percentage points'
 
         template_vars = {
             'treatment': treatment,
             'lottery': '',
             'questions': {
                 'q5': {
-                    'question': 'Suppose that you receive a signal 30 that is at most 8 percentage points away from the Selected {}. What could be the Selected {}? Select all that apply.'.format(ttype, ttype),
+                    'question': 'Suppose that you receive a signal 30 that is at most 8 {} away from the Selected {}. What could be the Selected {}? Select all that apply.'.format(q5_type, ttype, ttype),
                     'labels': [
                         '20'.format(nf), '25'.format(nf), '30'.format(nf), '35'.format(nf), '40'.format(nf)]},
                 'q6': {
