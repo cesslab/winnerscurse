@@ -6,19 +6,141 @@
 {% endblock %}
 
 {% block content %}
-    {% if form.errors %}
+    <div>
+        <label>
+            1. {{ questions.q1.question }}
+        </label>
+        <ul>
+            {%  for label in questions.q1.labels %}
+                <li>
+                    <label for="id_q1_{{ forloop.counter0 }}">
+                        <input
+                                type="checkbox"
+                                name="q1"
+                                value="{{ forloop.counter }}"
+                                id="id_q1_{{ forloop.counter0 }}"
+                                class="form-check-input"
+                                {% if form.q1.value != None and forloop.counter|stringformat:"i" in form.q1.value %}
+                                    checked
+                                {% endif %}
+                        />
+                        {{ label }}
+                    </label>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% if form.q1.errors %}
         <div class="alert alert-danger">
             <ul>
-                {% for field,error in form.errors.items %}
-                    <li>{{field}} - {{ error|striptags }}</li>
+                {% for error in form.q1.errors %}
+                    <li>{{ error|striptags }}</li>
                 {% endfor %}
             </ul>
         </div>
     {% endif %}
 
-    {% for n, q in questions.items %}
-        {% include 'quiz/question.html' with number=n labels=q.labels question=q.question %}
-    {% endfor %}
+    <div>
+        <label>
+            2. {{ questions.q2.question }}
+        </label>
+        <ul>
+            {%  for label in questions.q2.labels %}
+                <li>
+                    <label for="id_q2_{{ forloop.counter0 }}">
+                        <input
+                                type="checkbox"
+                                name="q2"
+                                value="{{ forloop.counter }}"
+                                id="id_q2_{{ forloop.counter0 }}"
+                                class="form-check-input"
+                                {% if form.q2.value != None and forloop.counter|stringformat:"i" in form.q2.value %}
+                                checked
+                                {% endif %}
+                        />
+                        {{ label }}
+                    </label>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% if form.q2.errors %}
+        <div class="alert alert-danger">
+            <ul>
+                {% for error in form.q2.errors %}
+                    <li>{{ error|striptags }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    <div>
+        <label>
+            3. {{ questions.q3.question }}
+        </label>
+        <ul>
+            {%  for label in questions.q3.labels %}
+                <li>
+                    <label for="id_q3_{{ forloop.counter0 }}">
+                        <input
+                                type="checkbox"
+                                name="q3"
+                                value="{{ forloop.counter }}"
+                                id="id_q3_{{ forloop.counter0 }}"
+                                class="form-check-input"
+                                {% if form.q3.value != None and forloop.counter|stringformat:"i" in form.q3.value %}
+                                checked
+                                {% endif %}
+                        />
+                        {{ label }}
+                    </label>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% if form.q3.errors %}
+        <div class="alert alert-danger">
+            <ul>
+                {% for error in form.q3.errors %}
+                    <li>{{ error|striptags }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    <div>
+        <label>
+            4. {{ questions.q4.question }}
+        </label>
+        <ul>
+            {%  for label in questions.q4.labels %}
+                <li>
+                    <label for="id_q4_{{ forloop.counter0 }}">
+                        <input
+                                type="checkbox"
+                                name="q4"
+                                value="{{ forloop.counter }}"
+                                id="id_q4_{{ forloop.counter0 }}"
+                                class="form-check-input"
+                                {% if form.q4.value != None and forloop.counter|stringformat:"i" in form.q4.value %}
+                                checked
+                                {% endif %}
+                        />
+                        {{ label }}
+                    </label>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% if form.q4.errors %}
+        <div class="alert alert-danger">
+            <ul>
+                {% for error in form.q4.errors %}
+                    <li>{{ error|striptags }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
 
     {% next_button %}
 

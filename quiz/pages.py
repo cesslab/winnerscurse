@@ -28,17 +28,17 @@ class QuizPartOne(Page):
 
         template_vars = {
             'questions': {
-                '1': {
+                'q1': {
                     'question': 'Suppose that you are not the highest bidder in an auction. How much do you have to pay?',
                     'labels': ['Your bid', 'The highest bid', 'Nothing']},
-                '2': {
+                'q2': {
                     'question': 'Which of the following alternatives is correct?',
                     'labels': [
                         'All four bidders bid for the same lottery ticket with the same Selected {}.'.format(ttype),
                         'All four bidders bid for lottery tickets with different Selected {}.'.format(ttype),
                         'All four bidders bid for lottery tickets with possibly different Selected {}.'.format(ttype)]
                 },
-                '3': {
+                'q3': {
                     'question': 'Which of the following alternatives is correct?',
                     'labels': [
                         'All four bidders receive the same signal about the same Selected {}.'.format(ttype),
@@ -46,7 +46,7 @@ class QuizPartOne(Page):
                         'All four bidders receive different signals because Selected {} differ for each of them.'.format(ttype)
                     ]
                 },
-                '4': {
+                'q4': {
                     'question': 'Suppose you win the lottery ticket in a given auction. What are your earnings from this auction?',
                     'labels': q4_labels
                 },
@@ -121,11 +121,11 @@ class QuizPartTwo(Page):
             'treatment': treatment,
             'lottery': '',
             'questions': {
-                '5': {
+                'q5': {
                     'question': 'Suppose that you receive a signal 30 that is at most 8 percentage points away from the Selected {}. What could be the Selected {}? Select all that apply.'.format(ttype, ttype),
                     'labels': [
                         '20'.format(nf), '25'.format(nf), '30'.format(nf), '35'.format(nf), '40'.format(nf)]},
-                '6': {
+                'q6': {
                     'question': 'Suppose the Selected {} is 30{}, what could be the outcome of the lottery? Select all that apply.'.format(ttype, nf),
                     'labels': q6_labels
                 },
