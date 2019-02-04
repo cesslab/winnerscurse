@@ -15,8 +15,8 @@ Phase 1: Auction Phase: Set to 80 rounds, 10 for each lottery.
 
 class Constants(BaseConstants):
     name_in_url = 'auction'
-    players_per_group = 4
-    rounds_per_lottery = 10
+    players_per_group = None
+    rounds_per_lottery = 10  # 10
     lotteries = [
         LotterySpecification(30, 90, 60, 4),
         LotterySpecification(10, 70, 40, 4),
@@ -31,21 +31,11 @@ class Constants(BaseConstants):
 
 
 class Subsession(BaseSubsession):
-    def set_group_size(self):
-        players = self.get_players()
-        group_matrix = []
-        for i in range(0, len(players), Constants.players_per_group):
-            group_matrix.append(players[i:i + Constants.players_per_group])
-        self.set_group_matrix(group_matrix)
-
     def creating_session(self):
-        self.set_group_size()
-        self.group_randomly()
-
-        for group in self.get_groups():  # type: Group
-            group.set_round_lottery()
-            for player in group.get_players():
-                player.signal = group.get_signal()
+        for player in self.get_players():  # type: Group
+            player.set_round_lottery()
+            player.signal = player.get_signal()
+            player.set_computer_bid()
 
         # Set the payoff relevant round
         if self.round_number == 1:
@@ -55,6 +45,18 @@ class Subsession(BaseSubsession):
 
 
 class Group(BaseGroup):
+    pass
+
+
+class Player(BasePlayer):
+    bid = models.IntegerField()
+    computer_bid = models.IntegerField()
+    signal = models.IntegerField()
+    tie = models.BooleanField(default=False)
+    winner = models.BooleanField()
+    payoff = models.IntegerField()
+    payment_round = models.IntegerField()
+
     lottery_id = models.IntegerField()
     lottery_display_id = models.IntegerField()
     alpha = models.IntegerField()
@@ -67,6 +69,9 @@ class Group(BaseGroup):
     highest_bid = models.IntegerField()
     treatment = models.StringField(choices=['cp', 'cv'])
 
+    def set_computer_bid(self):
+        self.computer_bid = random.randint(0, 100)
+
     def get_treatment(self):
         treatment = self.session.config['treatment']
         if treatment != 'cp' and treatment != 'cv':
@@ -75,7 +80,8 @@ class Group(BaseGroup):
 
     def set_round_lottery(self):
         lottery_order = []
-        for i in range(1, 9):
+        num_lotteries = len(Constants.lotteries)
+        for i in range(1, num_lotteries + 1):
             lottery_order.append(int(self.session.config["lottery_{}".format(i)].strip()))
         rounds_per_lottery = int(Constants.rounds_per_lottery)
         lottery_index_this_round = math.floor((self.round_number - 1) / rounds_per_lottery)
@@ -117,50 +123,31 @@ class Group(BaseGroup):
             return random.randint(self.p - self.epsilon, self.p + self.epsilon)
 
     def set_winning_player(self):
-        players = self.get_players()
-        max_bid = -1
-        # find the max bid
-        for p in players:
-            if p.bid > max_bid:
-                max_bid = p.bid
-
-        self.highest_bid = max_bid
-
-        winners = []
-        for p in players:  # type: Player
-            # set losers payoffs
-            if p.bid < self.highest_bid:
-                p.winner = False
-                p.tie = False
-                p.payoff = 0
-            # record tied players
-            elif p.bid == self.highest_bid:
-                winners.append(p)
-
-        winner_id = random.randint(0, len(winners)-1)
-        for i, p in enumerate(winners):
-            # Only one player with highest bid
-            if len(winners) == 1 and i == 0:
-                p.payoff = self.outcome - p.bid
-                p.winner = True
-                p.tie = False
-            # Multiple players have the highest bid, and this one was randomly chosen to win.
-            elif i == winner_id:
-                p.payoff = self.outcome - p.bid
-                p.winner = True
-                p.tie = True
-            # Multiple players have the highest bid, and this one was **not** randomly chosen to win.
+        print(self.computer_bid)
+        # tie
+        if self.bid == self.computer_bid:
+            # Break tie
+            winner = random.randint(1, 2)
+            # player wins
+            if winner == 1:
+                self.payoff = self.outcome - self.bid
+                self.winner = True
+                self.tie = True
+                self.highest_bid = self.bid
             else:
-                p.payoff = 0
-                p.winner = False
-                p.tie = True
-
-
-class Player(BasePlayer):
-    bid = models.IntegerField()
-    signal = models.IntegerField()
-    tie = models.BooleanField(default=False)
-    winner = models.BooleanField()
-    payoff = models.IntegerField()
-    payment_round = models.IntegerField()
-
+                self.highest_bid = self.bid
+                self.payoff = 0
+                self.winner = False
+                self.tie = True
+        # win
+        if self.bid > self.computer_bid:
+            self.highest_bid = self.bid
+            self.payoff = self.outcome - self.bid
+            self.winner = True
+            self.tie = False
+        # lose
+        else:
+            self.highest_bid = self.computer_bid
+            self.payoff = 0
+            self.winner = False
+            self.tie = False

@@ -25,42 +25,39 @@ class BidPage(Page):
 
     def vars_for_template(self):
         return {
-            'lottery_display_id': self.group.lottery_display_id,
+            'lottery_display_id': self.player.lottery_display_id,
             'signal': self.player.signal,
-            'alpha': self.group.alpha,
-            'beta': self.group.beta,
-            'epsilon': self.group.epsilon,
-            'min_signal': self.player.signal - self.group.epsilon,
-            'max_signal': self.player.signal + self.group.epsilon,
-            'p': self.group.p,
-            'comp_p': 100 - self.group.p,
-            'treatment': self.group.treatment,
-            'value': self.group.value,
+            'alpha': self.player.alpha,
+            'beta': self.player.beta,
+            'epsilon': self.player.epsilon,
+            'min_signal': self.player.signal - self.player.epsilon,
+            'max_signal': self.player.signal + self.player.epsilon,
+            'p': self.player.p,
+            'comp_p': 100 - self.player.p,
+            'treatment': self.player.treatment,
+            'value': self.player.value,
             'min_bid': 0,
             'max_bid': 100,
             'round_number': self.round_number,
         }
 
-
-class DetermineGroupWinnerWaitPage(WaitPage):
-    def after_all_players_arrive(self):
-        self.group.set_winning_player()
-
+    def before_next_page(self):
+        self.player.set_winning_player()
 
 class OutcomePage(Page):
     def vars_for_template(self):
         return {
             'winner': self.player.winner,
             'bid': self.player.bid,
-            'highest_bid': self.group.highest_bid,
+            'highest_bid': self.player.highest_bid,
             'signal': self.player.signal,
-            'alpha': self.group.alpha,
-            'beta': self.group.beta,
-            'p': self.group.p,
-            'comp_p': 100 - self.group.p,
-            'treatment': self.group.treatment,
-            'value': self.group.value,
-            'outcome': self.group.outcome,
+            'alpha': self.player.alpha,
+            'beta': self.player.beta,
+            'p': self.player.p,
+            'comp_p': 100 - self.player.p,
+            'treatment': self.player.treatment,
+            'value': self.player.value,
+            'outcome': self.player.outcome,
             'payoff': self.player.payoff,
             'round_number': self.round_number,
             'tie': self.player.tie
@@ -71,15 +68,15 @@ class OutcomePage(Page):
             self.player.participant.vars['auction_data'] = {
             'winner': self.player.winner,
             'bid': self.player.bid,
-            'highest_bid': self.group.highest_bid,
+            'highest_bid': self.player.highest_bid,
             'signal': self.player.signal,
-            'alpha': self.group.alpha,
-            'beta': self.group.beta,
-            'p': self.group.p,
-            'comp_p': 100 - self.group.p,
-            'treatment': self.group.treatment,
-            'value': self.group.value,
-            'outcome': self.group.outcome,
+            'alpha': self.player.alpha,
+            'beta': self.player.beta,
+            'p': self.player.p,
+            'comp_p': 100 - self.player.p,
+            'treatment': self.player.treatment,
+            'value': self.player.value,
+            'outcome': self.player.outcome,
             'payoff': self.player.payoff,
             'round_number': self.round_number,
             'tie': self.player.tie
@@ -87,5 +84,5 @@ class OutcomePage(Page):
 
 
 page_sequence = [
-    InstructionPage, NewLotteryReminder, BidPage, DetermineGroupWinnerWaitPage, OutcomePage
+    InstructionPage, NewLotteryReminder, BidPage, OutcomePage
 ]

@@ -15,7 +15,7 @@ SESSION_CONFIGS = [
     {
        'name': 'winners_curse',
        'display_name': "Winners Curse",
-       'num_demo_participants': 4,
+       'num_demo_participants': 1,
        'app_sequence': ['quiz', 'auction', 'dice', 'payoff', 'questionnaire'],
        'endowment': 10,
         'treatment': 'cp',
