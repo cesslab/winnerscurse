@@ -50,7 +50,7 @@ class Group(BaseGroup):
 
 class Player(BasePlayer):
     bid = models.IntegerField()
-    computer_bid = models.IntegerField()
+    computer_random_val = models.IntegerField()
     signal = models.IntegerField()
     tie = models.BooleanField(default=False)
     winner = models.BooleanField()
@@ -66,11 +66,10 @@ class Player(BasePlayer):
     value = models.IntegerField()
     random_value = models.IntegerField()
     outcome = models.IntegerField()
-    highest_bid = models.IntegerField()
     treatment = models.StringField(choices=['cp', 'cv'])
 
     def set_computer_bid(self):
-        self.computer_bid = random.randint(0, 100)
+        self.computer_random_val = random.randint(0, 100)
 
     def get_treatment(self):
         treatment = self.session.config['treatment']
@@ -123,31 +122,26 @@ class Player(BasePlayer):
             return random.randint(self.p - self.epsilon, self.p + self.epsilon)
 
     def set_winning_player(self):
-        print(self.computer_bid)
-        # tie
-        if self.bid == self.computer_bid:
+        print(self.computer_random_val)
+        if self.bid == self.computer_random_val:
             # Break tie
             winner = random.randint(1, 2)
             # player wins
             if winner == 1:
-                self.payoff = self.outcome - self.bid
+                self.payoff = self.outcome
                 self.winner = True
                 self.tie = True
-                self.highest_bid = self.bid
             else:
-                self.highest_bid = self.bid
                 self.payoff = 0
                 self.winner = False
                 self.tie = True
-        # win
-        if self.bid > self.computer_bid:
-            self.highest_bid = self.bid
-            self.payoff = self.outcome - self.bid
+        # win the lottery ticket
+        if self.bid > self.computer_random_val:
+            self.payoff = self.outcome
             self.winner = True
             self.tie = False
         # lose
         else:
-            self.highest_bid = self.computer_bid
-            self.payoff = 0
+            self.payoff = self.computer_random_val
             self.winner = False
             self.tie = False

@@ -49,7 +49,7 @@ class OutcomePage(Page):
         return {
             'winner': self.player.winner,
             'bid': self.player.bid,
-            'highest_bid': self.player.highest_bid,
+            'computer_random_val': self.player.computer_random_val,
             'signal': self.player.signal,
             'alpha': self.player.alpha,
             'beta': self.player.beta,
@@ -68,7 +68,7 @@ class OutcomePage(Page):
             self.player.participant.vars['auction_data'] = {
             'winner': self.player.winner,
             'bid': self.player.bid,
-            'highest_bid': self.player.highest_bid,
+            'computer_random_val': self.player.computer_random_val,
             'signal': self.player.signal,
             'alpha': self.player.alpha,
             'beta': self.player.beta,
