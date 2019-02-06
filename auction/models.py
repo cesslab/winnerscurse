@@ -128,7 +128,7 @@ class Player(BasePlayer):
             winner = random.randint(1, 2)
             # player wins
             if winner == 1:
-                self.payoff = self.outcome
+                self.payoff = self.outcome - self.computer_random_val
                 self.winner = True
                 self.tie = True
             else:
@@ -137,11 +137,11 @@ class Player(BasePlayer):
                 self.tie = True
         # win the lottery ticket
         if self.bid > self.computer_random_val:
-            self.payoff = self.outcome
+            self.payoff = self.outcome - self.computer_random_val
             self.winner = True
             self.tie = False
         # lose
         else:
-            self.payoff = self.computer_random_val
+            self.payoff = self.computer_random_val - self.computer_random_val
             self.winner = False
             self.tie = False
