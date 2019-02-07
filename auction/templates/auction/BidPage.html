@@ -11,7 +11,8 @@
 
 {% block content %}
     <div>
-        <p>Consider the following lottery ticket that the winner will get in the auction. There are two possible prizes, 0 and a value v.</p>
+        <p>Consider the following lottery ticket with two possible prizes,
+            0 and a value v.</p>
     </div>
 
     <div class="lottery-header">
@@ -20,9 +21,11 @@
     <div class="lottery">
         <p class="text-center">
             {% if treatment == 'cv' %}
-                With a probability of {{ p }}% you get a value v between {{ alpha }} and {{ beta }}, <br>otherwise you get 0.
+                With a probability of {{ p }}% you get a value v between {{ alpha }} and {{ beta }}, <br>otherwise you
+                get 0.
             {% else %}
-                With a probability p between {{ alpha }}% and {{ beta }}%, you get a value of {{ value }}, <br>otherwise you get 0.
+                With a probability p between {{ alpha }}% and {{ beta }}%, you get a value of {{ value }}, <br>otherwise
+                you get 0.
             {% endif %}
         </p>
     </div>
@@ -45,7 +48,8 @@
                 Your signal about v is at most {{ epsilon }} units away from the Selected Value v. <br>
                 Given your signal, the Selected Value must lie between {{ min_signal }} and {{ max_signal }}.
             {% else %}
-                Your signal about p is at most {{ epsilon }} percentage points away from the Selected Probability p. <br>
+                Your signal about p is at most {{ epsilon }} percentage points away from the Selected Probability p.
+                <br>
                 Given your signal, the Selected Probability must lie between {{ min_signal }}% and {{ max_signal }}%.
             {% endif %}
         </span>
@@ -53,7 +57,7 @@
 
     <div class="grid-bid-container">
         <div class="text-center lottery-header">
-            <h4><u>Your Bid</u></h4>
+            <h4><u>Your Valuation</u></h4>
         </div>
         <div>
             <input
@@ -76,4 +80,4 @@
     </div>
 
     {% next_button %}
-    {% endblock %}
+{% endblock %}

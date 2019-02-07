@@ -24,11 +24,11 @@
 
     <div class="two-column-container">
         <div class="item text-center">
-            <h5>Your Bid</h5>
+            <h5>Your Valuation</h5>
             <p>{{ bid }}</p>
         </div>
         <div class="item text-center">
-            <h5>Random Value</h5>
+            <h5>Random Prize</h5>
             <span>{{ computer_random_val }}</span>
         </div>
     </div>
@@ -45,9 +45,9 @@
             {% endif %}
         {% else %}
             {% if winner %}
-                You won the auction.
+                You bought the lottery.
             {% else %}
-                You did not win the auction.
+                You did not buy the lottery.
             {% endif %}
         {% endif %}
         </span>
