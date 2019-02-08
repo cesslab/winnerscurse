@@ -3,7 +3,6 @@ from otree.api import (
     Currency as c, currency_range
 )
 
-
 doc = """
 Final Questionnaire
 """
@@ -33,15 +32,15 @@ class Player(BasePlayer):
     q1d = models.IntegerField()
     q1e = models.IntegerField()
     q1exp = models.LongStringField()
-    q2 = models.IntegerField()
+    q2 = models.IntegerField(choices=[
+        [1, 'I would bid less than my valuation.'],
+        [2, 'I would bid my valuation.'],
+        [3, 'I would bid more than my valuation']], widget=widgets.RadioSelect)
+    q2exp = models.LongStringField()
     q3 = models.IntegerField()
-    q3exp = models.LongStringField()
-    q4 = models.LongStringField()
-    q5 = models.IntegerField(choices=[[1, 'I prefer lottery A.'], [2, 'I prefer lottery B.'], [3, 'I don\'t care.']], widget=widgets.RadioSelect)
-    q5exp = models.LongStringField()
-    q6 = models.IntegerField(choices=[[1, 'I prefer lottery A.'], [2, 'I prefer lottery B.'], [3, 'I don\'t care.']], widget=widgets.RadioSelect)
-    q6exp = models.LongStringField()
+    q4 = models.IntegerField(choices=[
+        [1, 'I prefer lottery A.'], [2, 'I prefer lottery B.'], [3, 'I don\'t care.']], widget=widgets.RadioSelect)
+    q4exp = models.LongStringField()
+    q5 = models.IntegerField()
+    q6 = models.IntegerField()
     q7 = models.IntegerField()
-    q8 = models.IntegerField()
-    q9 = models.IntegerField()
-

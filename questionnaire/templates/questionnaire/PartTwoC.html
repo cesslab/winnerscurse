@@ -40,19 +40,12 @@
             </p>
         </div>
         <div>
-            <p>5. Suppose that you could choose to play one of the two lottery tickets displayed above. Which one would you prefer?</p>
+            <p>4. Suppose that you could choose to play one of the two lottery tickets displayed above. Which one would you prefer?</p>
             <p>
-                {% formfield player.q5 label="" %}
-                {% formfield player.q5exp label="Explain your choice." %}
+                {% formfield player.q4 label="" %}
+                {% formfield player.q4exp label="Explain your choice." %}
             </p>
         </div>
-    </div>
-    <div>
-        <p>6. Suppose that you could choose to <em>bid</em> in an auction for one of the two lottery tickets displayed above. Which one would you prefer?</p>
-        <p>
-            {% formfield player.q6 label="" %}
-            {% formfield player.q6exp label="Explain your choice." %}
-        </p>
     </div>
     {% next_button %}
 

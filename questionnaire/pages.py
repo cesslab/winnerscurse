@@ -10,7 +10,7 @@ class PartOne(Page):
 
 class PartTwoA(Page):
     form_model = 'player'
-    form_fields = ['q1a', 'q1b', 'q1c', 'q1d', 'q1e', 'q1exp']
+    form_fields = ['q1a', 'q1b', 'q1c', 'q1d', 'q1e', 'q1exp', 'q1_2', 'q1_2exp']
 
     def vars_for_template(self):
         treatment = self.session.config['treatment']
@@ -40,7 +40,7 @@ class PartTwoA(Page):
 
 class PartTwoB(Page):
     form_model = 'player'
-    form_fields = ['q2', 'q3', 'q3exp', 'q4']
+    form_fields = ['q3']
 
     def vars_for_template(self):
         treatment = self.session.config['treatment']
@@ -59,15 +59,14 @@ class PartTwoB(Page):
 
         template_vars.update({
             'treatment': treatment,
-            'q2': {'s': 28, 'low': 24, 'high': 32},
-            'q3': {'s': 30, 'low': 26, 'high': 34},
+            'q3': {'s': 28, 'low': 24, 'high': 32},
         })
         return template_vars
 
 
 class PartTwoC(Page):
     form_model = 'player'
-    form_fields = ['q5', 'q5exp', 'q6', 'q6exp']
+    form_fields = ['q4', 'q4exp']
 
     def vars_for_template(self):
         treatment = self.session.config['treatment']
@@ -93,7 +92,7 @@ class PartTwoC(Page):
 
 class PartThree(Page):
     form_model = 'player'
-    form_fields = ['q7', 'q8', 'q9']
+    form_fields = ['q5', 'q6', 'q7']
 
 
 page_sequence = [
