@@ -29,8 +29,8 @@
             <li>
                 Suppose you get a signal of {{ q3.s }}, therefore the Selected
                 {% if treatment == 'cp' %}Probability{% else %}Value{% endif %} is between
-                {{ q2.low }}{% if treatment == 'cp' %}%{% endif %} and
-                {{ q2.high }}{% if treatment == 'cp' %}%{% endif %}.
+                {{ q3.low }}{% if treatment == 'cp' %}%{% endif %} and
+                {{ q3.high }}{% if treatment == 'cp' %}%{% endif %}.
                 {% formfield player.q3 label="What is your best guess about the value?" %}
             </li>
         </ol>

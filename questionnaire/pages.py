@@ -10,7 +10,7 @@ class PartOne(Page):
 
 class PartTwoA(Page):
     form_model = 'player'
-    form_fields = ['q1a', 'q1b', 'q1c', 'q1d', 'q1e', 'q1exp', 'q1_2', 'q1_2exp']
+    form_fields = ['q1a', 'q1b', 'q1c', 'q1d', 'q1e', 'q1exp', 'q2', 'q2exp']
 
     def vars_for_template(self):
         treatment = self.session.config['treatment']
