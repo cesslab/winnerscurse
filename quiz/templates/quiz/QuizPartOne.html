@@ -74,6 +74,19 @@
         </div>
     {% endif %}
 
+    <div class="lottery-header">
+        <label>Following questions are based on the lottery ticket below:</label>
+    </div>
+    <div class="lottery">
+        <p>
+            {% if treatment == 'cp' %}
+                With a probability between 20% and 40% you get a value of 70,<br> otherwise you get 0.
+            {% else %}
+                With a probability of 70% you get a value between 20 and 40, otherwise nothing.
+            {% endif %}
+        </p>
+    </div>
+
     <div>
         <label>
             3. {{ questions.q3.question }}
@@ -107,6 +120,7 @@
             </ul>
         </div>
     {% endif %}
+
 
     <div>
         <label>
