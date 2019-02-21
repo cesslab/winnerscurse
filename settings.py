@@ -13,11 +13,11 @@ SESSION_CONFIG_DEFAULTS = {
 
 SESSION_CONFIGS = [
     {
-       'name': 'winners_curse',
-       'display_name': "Winners Curse",
-       'num_demo_participants': 1,
-       'app_sequence': ['quiz', 'auction', 'dice', 'payoff', 'questionnaire'],
-       'endowment': 10,
+        'name': 'winners_curse',
+        'display_name': "Winners Curse",
+        'num_demo_participants': 1,
+        'app_sequence': ['quiz', 'auction', 'dice', 'payoff', 'questionnaire'],
+        'endowment': 10,
         'treatment': 'cp',
         'lottery_1': '1',
         'lottery_2': '2',
