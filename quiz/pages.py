@@ -37,7 +37,7 @@ class QuizPartOne(Page):
                         'The outcome of the lottery minus the random price.'],
                 },
                 'q3': {
-                    'question': 'Suppose that you receive a signal 30 that is at most 8 {} away from the Selected {}. What could be the Selected {}? Select all that apply.'.format(
+                    'question': 'Suppose that you receive a signal of 30 that is at most 8 {} away from the Selected {}. What could be the Selected {}? Select all that apply.'.format(
                         q3_type, ttype, ttype),
                     'labels': ['20'.format(nf), '25'.format(nf), '30'.format(nf), '35'.format(nf), '40'.format(nf)]
                 },
