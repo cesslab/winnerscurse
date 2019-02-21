@@ -31,7 +31,7 @@
                 {% if treatment == 'cp' %}Probability{% else %}Value{% endif %} is between
                 {{ q3.low }}{% if treatment == 'cp' %}%{% endif %} and
                 {{ q3.high }}{% if treatment == 'cp' %}%{% endif %}.
-                {% formfield player.q3 label="What is your best guess about the value?" %}
+                {% formfield player.q3 label=q3_label %}
             </li>
         </ol>
     </div>

@@ -50,11 +50,12 @@ class PartTwoB(Page):
         if treatment == 'cp':
             template_vars = {
                 'q2_lottery': {'low': 10, 'high': 40, 'value': 25},
-
+                'q3_label': 'What is your best guess about the probability?'
             }
         else:
             template_vars = {
                 'q2_lottery': {'p': 25, 'low': 10, 'high': 40},
+                'q3_label': 'What is your best guess about the value?'
             }
 
         template_vars.update({
