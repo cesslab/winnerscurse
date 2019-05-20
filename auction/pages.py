@@ -29,6 +29,7 @@ class NewSignalReminder(Page):
             'rounds_per_lottery': Constants.rounds_per_lottery
         }
 
+
 class ValuationPage(Page):
     form_model = 'player'
     form_fields = ['first_valuation']
