@@ -1,0 +1,16 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    Lottery Update
+{% endblock %}
+
+{% block styles %}
+{% endblock %}
+
+{% block content %}
+    <p>
+        In the next {{ rounds_per_lottery }} rounds we will show you {{ rounds_per_lottery }} different signals along with the same lottery type you just entered a valuation for.
+    </p>
+    {% next_button %}
+{% endblock %}
