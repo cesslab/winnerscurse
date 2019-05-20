@@ -49,6 +49,7 @@ class Group(BaseGroup):
 
 
 class Player(BasePlayer):
+    first_valuation = models.IntegerField()
     bid = models.IntegerField()
     computer_random_val = models.IntegerField()
     signal = models.IntegerField()
@@ -120,6 +121,32 @@ class Player(BasePlayer):
             return random.randint(self.value - self.epsilon, self.value + self.epsilon)
         else:
             return random.randint(self.p - self.epsilon, self.p + self.epsilon)
+
+    def set_first_valuation_outcome(self):
+        pass
+        # print(self.computer_random_val)
+        # if self.bid == self.computer_random_val:
+        #     # Break tie
+        #     winner = random.randint(1, 2)
+        #     # player wins
+        #     if winner == 1:
+        #         self.payoff = self.outcome - self.computer_random_val
+        #         self.winner = True
+        #         self.tie = True
+        #     else:
+        #         self.payoff = 0
+        #         self.winner = False
+        #         self.tie = True
+        # # win the lottery ticket
+        # if self.bid > self.computer_random_val:
+        #     self.payoff = self.outcome - self.computer_random_val
+        #     self.winner = True
+        #     self.tie = False
+        # # lose
+        # else:
+        #     self.payoff = self.computer_random_val - self.computer_random_val
+        #     self.winner = False
+        #     self.tie = False
 
     def set_winning_player(self):
         print(self.computer_random_val)
