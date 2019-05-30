@@ -1,6 +1,5 @@
 import math
 import random
-from typing import List
 
 from otree.api import (
     models, widgets, BaseConstants, BaseSubsession, BaseGroup, BasePlayer,
@@ -9,12 +8,15 @@ from otree.api import (
 
 from experiment.lottery import LotterySpecification
 
+author = 'Anwar A. Ruff'
+
 doc = """
-Phase 1: Auction Phase: Set to 80 rounds, 10 for each lottery.
+Expected Value
 """
 
+
 class Constants(BaseConstants):
-    name_in_url = 'auction'
+    name_in_url = 'expected'
     players_per_group = None
     rounds_per_lottery = 10  # 10
     lotteries = [
@@ -27,11 +29,21 @@ class Constants(BaseConstants):
         LotterySpecification(30, 90, 40, 8),
         LotterySpecification(10, 70, 60, 8),
     ]
-    num_rounds = rounds_per_lottery*len(lotteries)
+    num_rounds = len(lotteries)
 
 
 class Subsession(BaseSubsession):
-    pass
+    def creating_session(self):
+        for player in self.get_players():  # type: Group
+            player.set_round_lottery()
+            player.signal = player.get_signal()
+            player.set_computer_bid()
+
+        # Set the payoff relevant round
+        if self.round_number == 1:
+            for player in self.get_players():
+                player.payment_round = random.randint(1, Constants.num_rounds)
+                player.participant.vars["payment_round"] = player.payment_round
 
 
 class Group(BaseGroup):
@@ -39,6 +51,7 @@ class Group(BaseGroup):
 
 
 class Player(BasePlayer):
+    expected_value = models.FloatField(blank=False)
     first_valuation = models.IntegerField()
     bid = models.IntegerField()
     computer_random_val = models.IntegerField()
