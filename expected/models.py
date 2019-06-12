@@ -6,7 +6,7 @@ from otree.api import (
     Currency as c, currency_range
 )
 
-from experiment.lottery import LotterySpecification
+from experiment.lottery import LotterySpecification, Lottery
 
 author = 'Anwar A. Ruff'
 
@@ -18,8 +18,10 @@ Expected Value
 class Constants(BaseConstants):
     name_in_url = 'expected'
     players_per_group = None
-    rounds_per_lottery = 10  # 10
-    lotteries = [
+    num_lottery_types = 8
+    rounds_per_lottery = 10
+    num_rounds = num_lottery_types
+    lottery_types = [
         LotterySpecification(30, 90, 60, 4),
         LotterySpecification(10, 70, 40, 4),
         LotterySpecification(30, 90, 40, 4),
@@ -29,21 +31,26 @@ class Constants(BaseConstants):
         LotterySpecification(30, 90, 40, 8),
         LotterySpecification(10, 70, 60, 8),
     ]
-    num_rounds = len(lotteries)
 
 
 class Subsession(BaseSubsession):
     def creating_session(self):
-        for player in self.get_players():  # type: Group
-            player.set_round_lottery()
-            player.signal = player.get_signal()
-            player.set_computer_bid()
-
-        # Set the payoff relevant round
         if self.round_number == 1:
             for player in self.get_players():
+                # Get and save the order in which the lottery types should be viewed
+                player.participant.vars["lottery_type_order"] = []
+                for l in range(1, Constants.num_lottery_types + 1):
+                    player.participant.vars["lottery_type_order"].append(int(self.session.config["lottery_{}".format(i)].strip()))
+
                 player.payment_round = random.randint(1, Constants.num_rounds)
                 player.participant.vars["payment_round"] = player.payment_round
+                lotteries = []
+                for l in range(Constants.num_lottery_types):
+                    lotteries.append([])
+                    for r in range(Constants.rounds_per_lottery):
+                        lotteries[l].append(Lottery(Constants.lottery_types[l], self.session.config['treatment']))
+                # set the player's lotteries
+                player.participant.vars["lotteries"] = lotteries
 
 
 class Group(BaseGroup):
@@ -52,126 +59,3 @@ class Group(BaseGroup):
 
 class Player(BasePlayer):
     expected_value = models.FloatField(blank=False)
-    first_valuation = models.IntegerField()
-    bid = models.IntegerField()
-    computer_random_val = models.IntegerField()
-    signal = models.IntegerField()
-    tie = models.BooleanField(default=False)
-    winner = models.BooleanField()
-    payoff = models.IntegerField()
-    payment_round = models.IntegerField()
-
-    lottery_id = models.IntegerField()
-    lottery_display_id = models.IntegerField()
-    alpha = models.IntegerField()
-    beta = models.IntegerField()
-    p = models.IntegerField()
-    epsilon = models.IntegerField()
-    value = models.IntegerField()
-    random_value = models.IntegerField()
-    outcome = models.IntegerField()
-    treatment = models.StringField(choices=['cp', 'cv'])
-
-    def set_computer_bid(self):
-        self.computer_random_val = random.randint(0, 100)
-
-    def get_treatment(self):
-        treatment = self.session.config['treatment']
-        if treatment != 'cp' and treatment != 'cv':
-            treatment = 'cp'
-        return treatment
-
-    def set_round_lottery(self):
-        lottery_order = []
-        num_lotteries = len(Constants.lotteries)
-        for i in range(1, num_lotteries + 1):
-            lottery_order.append(int(self.session.config["lottery_{}".format(i)].strip()))
-        rounds_per_lottery = int(Constants.rounds_per_lottery)
-        lottery_index_this_round = math.floor((self.round_number - 1) / rounds_per_lottery)
-        self.lottery_id = lottery_order[lottery_index_this_round]
-        self.lottery_display_id = lottery_index_this_round + 1
-
-        self.treatment = self.get_treatment()
-
-        lottery_spec: LotterySpecification = Constants.lotteries[self.lottery_id - 1]
-
-        self.alpha = lottery_spec.alpha
-        self.beta = lottery_spec.beta
-        # epsilon is used to determine the player's signal
-        self.epsilon = lottery_spec.epsilon
-
-        if self.treatment == 'cv':
-            self.p = lottery_spec.c
-            self.value = random.randint(self.alpha, self.beta)
-
-            self.random_value = random.randint(0, 100)
-            if self.random_value <= self.p:
-                self.outcome = self.value
-            else:
-                self.outcome = 0
-        else:
-            self.p = random.randint(self.alpha, self.beta)
-            self.value = lottery_spec.c
-
-            self.random_value = random.randint(0, 100)
-            if self.random_value <= self.p:
-                self.outcome = self.value
-            else:
-                self.outcome = 0
-
-    def get_signal(self):
-        if self.treatment == 'cv':
-            return random.randint(self.value - self.epsilon, self.value + self.epsilon)
-        else:
-            return random.randint(self.p - self.epsilon, self.p + self.epsilon)
-
-    def set_first_valuation_outcome(self):
-        pass
-        # print(self.computer_random_val)
-        # if self.bid == self.computer_random_val:
-        #     # Break tie
-        #     winner = random.randint(1, 2)
-        #     # player wins
-        #     if winner == 1:
-        #         self.payoff = self.outcome - self.computer_random_val
-        #         self.winner = True
-        #         self.tie = True
-        #     else:
-        #         self.payoff = 0
-        #         self.winner = False
-        #         self.tie = True
-        # # win the lottery ticket
-        # if self.bid > self.computer_random_val:
-        #     self.payoff = self.outcome - self.computer_random_val
-        #     self.winner = True
-        #     self.tie = False
-        # # lose
-        # else:
-        #     self.payoff = self.computer_random_val - self.computer_random_val
-        #     self.winner = False
-        #     self.tie = False
-
-    def set_winning_player(self):
-        print(self.computer_random_val)
-        if self.bid == self.computer_random_val:
-            # Break tie
-            winner = random.randint(1, 2)
-            # player wins
-            if winner == 1:
-                self.payoff = self.outcome - self.computer_random_val
-                self.winner = True
-                self.tie = True
-            else:
-                self.payoff = 0
-                self.winner = False
-                self.tie = True
-        # win the lottery ticket
-        if self.bid > self.computer_random_val:
-            self.payoff = self.outcome - self.computer_random_val
-            self.winner = True
-            self.tie = False
-        # lose
-        else:
-            self.payoff = self.computer_random_val - self.computer_random_val
-            self.winner = False
-            self.tie = False

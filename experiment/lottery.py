@@ -1,4 +1,5 @@
 from typing import List
+import random
 
 
 class LotterySpecification:
@@ -6,8 +7,39 @@ class LotterySpecification:
         assert(epsilon <= beta)
         self.alpha = alpha
         self.beta = beta
-        self.c = c
         self.epsilon = epsilon
+        self.c = c
+
+
+class Lottery:
+    def __init__(self, lottery_specification: LotterySpecification, treatment: str):
+        self.alpha = lottery_specification.alpha
+        self.beta = lottery_specification.beta
+        self.epsilon = lottery_specification.epsilon
+        self.c = lottery_specification.c
+
+        self.random_value = random.randint(0, 100)
+        if treatment == "cv":
+            self.p = self.c
+            self.value = random.randint(self.alpha, self.beta)
+
+            self.signal = random.randint(self.value - self.epsilon, self.value + self.epsilon)
+
+            if self.random_value <= self.c:
+                self.outcome = self.value
+            else:
+                self.outcome = 0
+        else:
+            self.p = random.randint(self.alpha, self.beta)
+            self.value = self.c
+
+            self.signal = random.randint(self.p - self.epsilon, self.p + self.epsilon)
+
+            if self.random_value <= self.p:
+                self.outcome = self.c
+            else:
+                self.outcome = 0
+
 
 
 class RedBlueLottery:
