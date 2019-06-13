@@ -14,7 +14,7 @@ output {
 
 .grid-container {
     display: grid;
-    grid-gap: 1em;
+    grid-gap: 2em;
     grid-template-rows: 20% 80%;
 }
 
