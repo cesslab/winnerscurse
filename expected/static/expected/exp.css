@@ -14,8 +14,13 @@ output {
 
 .grid-container {
     display: grid;
-    grid-gap: 5em;
-    grid-template-columns: auto auto;
+    grid-gap: 1em;
+    grid-template-rows: 20% 80%;
+}
+
+.pie {
+    width: 500px;
+    height: 500px;
 }
 
 .header-item {

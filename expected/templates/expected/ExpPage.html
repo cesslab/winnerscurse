@@ -7,32 +7,45 @@
 
 {% block styles %}
     <link rel="stylesheet" href="{% static 'expected/exp.css' %}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.0.3/chroma.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/emn178/chartjs-plugin-labels/src/chartjs-plugin-labels.js"></script>
 {% endblock %}
 
 {% block content %}
-    <div>
-        <p>Consider the following lottery ticket with two possible prizes,
-            0 and a value v.</p>
+    <div class="grid-container">
+        <div class="item item-1">
+            <div>
+                <p>Consider the following lottery ticket with two possible prizes,
+                    0 and a value v.</p>
+            </div>
+
+            <div class="lottery-header">
+                <h4 class="text-center"><u>Lottery of type {{ lottery_display_id }}</u></h4>
+            </div>
+            <div class="lottery">
+                <p class="text-center">
+                    {% if treatment == 'cv' %}
+                        With a probability of {{ p }}% you get a value v between {{ alpha }} and {{ beta }}, <br>otherwise you
+                        get 0.
+                    {% else %}
+                        With a probability p between {{ alpha }}% and {{ beta }}%, you get a value of {{ value }}, <br>otherwise
+                        you get 0.
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+        <div class="item item-2">
+{#            <div id="chartContainer"><img class="pie" src="{% static 'expected/lottery.jpg' %}" alt="chart"></div>#}
+            <canvas id="pie-chart" width="950" height="600"></canvas>
+        </div>
     </div>
 
-    <div class="lottery-header">
-        <h4 class="text-center"><u>Lottery of type {{ lottery_display_id }}</u></h4>
-    </div>
-    <div class="lottery">
-        <p class="text-center">
-            {% if treatment == 'cv' %}
-                With a probability of {{ p }}% you get a value v between {{ alpha }} and {{ beta }}, <br>otherwise you
-                get 0.
-            {% else %}
-                With a probability p between {{ alpha }}% and {{ beta }}%, you get a value of {{ value }}, <br>otherwise
-                you get 0.
-            {% endif %}
-        </p>
-    </div>
+
 
     <div class="grid-bid-container">
         <div class="text-center lottery-header">
-            <h4><u>Your Expected Value</u></h4>
+            <h4><u>Your Valuation</u></h4>
         </div>
         <div>
             <input
@@ -56,3 +69,61 @@
 
     {% next_button %}
 {% endblock %}
+
+{% block scripts %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            let labels = [0];
+            for (let i = 10; i <= 70; ++i) {
+                labels.push(i)
+            }
+
+            let data_values = [40];
+            for (let i = 10; i <= 70; ++i) {
+                data_values.push(0.9836)
+            }
+
+            let colors = ['#ffffff'].concat(chroma.scale(['#00ff00', '#0000ff']).mode('lch').colors(61));
+            console.log(colors);
+
+            let pie_ctx = document.getElementById('pie-chart').getContext('2d');
+            var purple_orange_gradient = pie_ctx.createLinearGradient(0, 0, 0, 600);
+            purple_orange_gradient.addColorStop(0, 'orange');
+            purple_orange_gradient.addColorStop(1, 'purple');
+
+            new Chart(pie_ctx, {
+                type: 'pie',
+                data: {
+                  labels: labels,
+                  datasets: [{
+                    borderColor: 'black',
+                    borderWidth: 1,
+                    {#label: "Population (millions)",#}
+                    backgroundColor: colors,
+                    data: data_values
+                  }]
+                },
+                options: {
+                    segmentShowStroke: false,
+                    plugins: {
+                        labels: {
+                            render: 'label',
+                            position: 'outside',
+                            textMargin: 4,
+                            outsidePadding: 2,
+                            arc: true
+                        },
+                    },
+                    legend: {
+                        display: false
+                    },
+                  title: {
+                    display: false,
+                    text: 'Predicted world population (millions) in 2050'
+                  }
+                }
+            });
+        });
+    </script>
+{% endblock %}
+
