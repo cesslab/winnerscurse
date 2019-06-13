@@ -8,15 +8,15 @@ class ExpPage(Page):
     form_fields = ['expected_value']
 
     def vars_for_template(self):
-        lotteries = Constants.lottery_types
+        lottery = Constants.lottery_types[self.round_number-1]
+        treatment = self.session.config['treatment']
         return {
             'lottery_display_id': self.round_number,
-            'alpha': lotteries[self.round_number-1].alpha,
-            'beta': lotteries[self.round_number-1].beta,
-            'p': self.player.p,
-            'comp_p': 100 - self.player.p,
-            'treatment': self.player.treatment,
-            'value': self.player.value,
+            'alpha': lottery.alpha,
+            'beta': lottery.beta,
+            'p': '' if treatment == 'cp' else lottery.c,
+            'treatment': treatment,
+            'value': '' if treatment == 'cv' else lottery.c,
             'min_bid': 0,
             'max_bid': 100,
             'round_number': self.round_number,
