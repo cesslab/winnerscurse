@@ -52,7 +52,8 @@ class ValuationPage(Page):
         }
 
     def before_next_page(self):
-        self.player.set_first_valuation_outcome()
+        # self.player.set_first_valuation_outcome()
+        pass
 
 
 class BidPage(Page):

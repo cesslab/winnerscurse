@@ -7,6 +7,7 @@ from otree.api import (
     Currency as c, currency_range
 )
 
+from experiment.lottery import LotterySpecification, Lottery
 
 doc = """
 Phase 1: Auction Phase: Set to 80 rounds, 10 for each lottery.
@@ -19,13 +20,37 @@ class Constants(BaseConstants):
     rounds_per_lottery = 10  # 10
     num_lottery_types = 8
     num_rounds = rounds_per_lottery * num_lottery_types
+    lottery_types = [
+        LotterySpecification(30, 90, 60, 4),
+        LotterySpecification(10, 70, 40, 4),
+        LotterySpecification(30, 90, 40, 4),
+        LotterySpecification(10, 70, 60, 4),
+        LotterySpecification(30, 90, 60, 8),
+        LotterySpecification(10, 70, 40, 8),
+        LotterySpecification(30, 90, 40, 8),
+        LotterySpecification(10, 70, 60, 8),
+    ]
 
 
 class Subsession(BaseSubsession):
     def creating_session(self):
         for player in self.get_players():  # type: Group
-            player.set_round_lottery()
+            if self.round_number == 1:
+                # Get and save the order in which the lottery types should be viewed
+                player.participant.vars["lottery_type_order"] = []
+                for l in range(1, Constants.num_lottery_types + 1):
+                    player.participant.vars["lottery_type_order"].append(int(self.session.config["lottery_{}".format(l)].strip()))
 
+                player.payment_round = random.randint(1, Constants.num_rounds)
+                player.participant.vars["payment_round"] = player.payment_round
+                lotteries = [[] for i in range(Constants.num_lottery_types)]
+                for l in range(Constants.num_lottery_types):
+                    for r in range(Constants.rounds_per_lottery):
+                        lotteries[l].append(Lottery(Constants.lottery_types[l], self.session.config['treatment']))
+                # set the player's lotteries
+                player.participant.vars["lotteries"] = lotteries
+
+            player.set_round_lottery()
 
 class Group(BaseGroup):
     pass
@@ -59,7 +84,8 @@ class Player(BasePlayer):
         self.lottery_display_id = stage_number + 1
         self.treatment = self.session.config['treatment']
 
-        lottery = self.participant.vars["lotteries"][stage_number][self.round_number-1]
+        round_number = (self.round_number-1) % Constants.rounds_per_lottery
+        lottery = self.participant.vars["lotteries"][stage_number][round_number]
 
         self.alpha = lottery.alpha
         self.beta = lottery.beta
