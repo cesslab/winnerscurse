@@ -57,7 +57,7 @@ class Group(BaseGroup):
 
 
 class Player(BasePlayer):
-    first_valuation = models.IntegerField()
+    valuation = models.IntegerField()
     bid = models.IntegerField()
     computer_random_val = models.IntegerField()
     signal = models.IntegerField()
@@ -96,9 +96,9 @@ class Player(BasePlayer):
         self.outcome = lottery.outcome
         self.signal = lottery.signal
 
-    def set_winning_player(self):
+    def set_winning_player(self, bid):
         self.computer_random_val = random.randint(0, 100)
-        if self.bid == self.computer_random_val:
+        if bid == self.computer_random_val:
             # Break tie
             winner = random.randint(1, 2)
             # player wins
@@ -111,7 +111,7 @@ class Player(BasePlayer):
                 self.winner = False
                 self.tie = True
         # win the lottery ticket
-        if self.bid > self.computer_random_val:
+        if bid > self.computer_random_val:
             self.payoff = self.outcome - self.computer_random_val
             self.winner = True
             self.tie = False

@@ -32,7 +32,7 @@ class NewSignalReminder(Page):
 
 class ValuationPage(Page):
     form_model = 'player'
-    form_fields = ['first_valuation']
+    form_fields = ['valuation']
 
     def is_displayed(self):
         return self.round_number % Constants.rounds_per_lottery == 1
@@ -52,7 +52,7 @@ class ValuationPage(Page):
         }
 
     def before_next_page(self):
-        # self.player.set_first_valuation_outcome()
+        \elf.player.set_winning_player(self.player.bid)
         pass
 
 
@@ -79,7 +79,7 @@ class BidPage(Page):
         }
 
     def before_next_page(self):
-        self.player.set_winning_player()
+        self.player.set_winning_player(self.player.bid)
 
 class OutcomePage(Page):
     def vars_for_template(self):
