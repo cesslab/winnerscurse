@@ -20,6 +20,7 @@ class ExpPage(Page):
             'max_bid': 100,
             'round_number': self.round_number,
             'img': "expected/{}{}.png".format(self.player.treatment, self.player.lottery_id),
+            'legend': "expected/{}l{}.png".format(self.player.treatment, self.player.lottery_id),
         }
 
     def before_next_page(self):

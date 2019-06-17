@@ -18,9 +18,18 @@ output {
     grid-template-rows: 50% 50%;
 }
 
-.pie {
-    width: 500px;
-    height: 500px;
+img#pie {
+    width: 400px;
+    margin: 0 auto;
+}
+
+img#legend {
+    width: 400px;
+}
+
+.pie-container {
+    display: grid;
+    grid-template-columns: 60% 40%;
 }
 
 .header-item {
