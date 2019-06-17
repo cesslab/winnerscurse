@@ -15,7 +15,7 @@ output {
 .grid-container {
     display: grid;
     grid-gap: 2em;
-    grid-template-columns: 50% 50%;
+    grid-template-rows: 50% 50%;
 }
 
 .pie {

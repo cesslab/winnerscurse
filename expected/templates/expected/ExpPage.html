@@ -16,24 +16,23 @@
     <div class="grid-container">
         <div class="item item-1">
             <div>
-                <p>Consider the following lottery ticket with two possible prizes,
-                    0 and a value v.</p>
+                <p>Consider the following lottery wheel. How much are you willing to pay to play this lottery?</p>
             </div>
 
-            <div class="lottery-header">
-                <h4 class="text-center"><u>Lottery of type {{ lottery_display_id }}</u></h4>
-            </div>
-            <div class="lottery">
-                <p class="text-center">
-                    {% if treatment == 'cv' %}
-                        With a probability of {{ p }}% you get a value v between {{ alpha }} and {{ beta }}, <br>otherwise you
-                        get 0.
-                    {% else %}
-                        With a probability p between {{ alpha }}% and {{ beta }}%, you get a value of {{ value }}, <br>otherwise
-                        you get 0.
-                    {% endif %}
-                </p>
-            </div>
+{#            <div class="lottery-header">#}
+{#                <h4 class="text-center"><u>Lottery of type {{ lottery_display_id }}</u></h4>#}
+{#            </div>#}
+{#            <div class="lottery">#}
+{#                <p class="text-center">#}
+{#                    {% if treatment == 'cv' %}#}
+{#                        With a probability of {{ p }}% you get a value v between {{ alpha }} and {{ beta }}, <br>otherwise you#}
+{#                        get 0.#}
+{#                    {% else %}#}
+{#                        With a probability p between {{ alpha }}% and {{ beta }}%, you get a value of {{ value }}, <br>otherwise#}
+{#                        you get 0.#}
+{#                    {% endif %}#}
+{#                </p>#}
+{#            </div>#}
         </div>
         <div class="item item-2">
             <div id="chartContainer"><img class="pie" src="{% static img|safe %}" alt="chart"></div>
