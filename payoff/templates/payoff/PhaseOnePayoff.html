@@ -13,19 +13,21 @@
         <h3 class="text-center">Payoff in Part 1 and 2</h3>
     </div>
     <div class="text-center">
+        <span>Part {{ phase }} was randomly selected for payment.</span>
+
         <span>
-            {% if phase == 1 %}
-                The computer selected lottery {{ round_number }} (without a signal) in part {{ phase }} for Payoff.
-            {% elif phase == 2 and stage == 1 %}
-                The computer selected lottery {{ lottery_display_id }} (without a signal) in part {{ phase }} for Payoff.
-            {% elif phase == 2 and stage == 2 %}
-                The computer selected round {{ round_number }} for lottery {{ lottery_display_id }} in part {{ phase }} for Payoff.
-            {% endif %}
+        {% if phase == 1 %}
+            In part 1, lottery {{ round_number }} (without a signal) was selected.
+        {% elif phase == 2 and stage == 1 %}
+            In part 2, lottery {{ lottery_display_id }} (without a signal) in round {{ round_number }} was selected.
+        {% elif phase == 2 and stage == 2 %}
+            In part 2, lottery {{ lottery_display_id }} (with a signal) in round {{ round_number }} was selected.
+        {% endif %}
         </span>
     </div>
 
     <div class="outcome-header lottery-header">
-        <h4 class="text-center">Outcome in Round {{ round_number }}</h4>
+        <h4 class="text-center">Outcome in Round Selected</h4>
     </div>
 
     <div class="two-column-container">
