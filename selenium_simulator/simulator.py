@@ -9,11 +9,6 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.options import Options
 
 SCREEN_SHOT_PATH = environ.get('SCREEN_SHOT_PATH')
-EXPERIMENT_URL = environ.get('EXPERIMENT_URL')
-NUMBER_OF_LOTTERIES = 8
-LOTTERIES_PER_ROUND = 3
-PHASE_ONE_ROUNDS =  NUMBER_OF_LOTTERIES*LOTTERIES_PER_ROUND
-NUMBER_OF_TASKS = 6
 
 
 def instructions(browser, phase):
@@ -54,6 +49,19 @@ def auction_bid(browser, round_number):
     input_field.send_keys(str(random_bid))
     browser.find_element(By.XPATH, '//button').click()
 
+
+def lottery_valuation(browser, round_number):
+    if round_number == 1:
+        browser.save_screenshot('{}/stage_one_valuation_screen.png'.format(SCREEN_SHOT_PATH))
+
+    min_value = int(browser.find_element_by_id("id_expected_value").get_attribute('min'))
+    max_value = int(browser.find_element_by_id("id_expected_value").get_attribute('max'))
+    input_field = browser.find_element(By.XPATH, "//input[@id='id_expected_value']")
+    input_field.clear()
+    random_bid = random.randint(min_value, max_value)
+    print("Phase 1: Entered Valuation {}".format(random_bid))
+    input_field.send_keys(str(random_bid))
+    browser.find_element(By.XPATH, '//button').click()
 
 def enter_password(browser):
     browser.save_screenshot('{}/phase_two_password_screen.png'.format(SCREEN_SHOT_PATH))
@@ -99,6 +107,13 @@ def delete_old_screen_shots():
 
 # Run with python -m browser_tests.browser_test
 if __name__ == "__main__":
+    EXPERIMENT_URL = environ.get('EXPERIMENT_URL')
+    NUMBER_OF_LOTTERIES = 8
+    LOTTERIES_PER_ROUND = 3
+    PHASE_ONE_ROUNDS = 4
+    PHASE_TWO_ROUNDS = NUMBER_OF_LOTTERIES * LOTTERIES_PER_ROUND
+    NUMBER_OF_TASKS = 6
+
     delete_old_screen_shots()
 
     chrome_options = Options()
@@ -118,6 +133,14 @@ if __name__ == "__main__":
 
     # Phase 1
     for round_id in range(1, PHASE_ONE_ROUNDS + 1):
+
+        for player in range(1, len(player_links) + 1):
+            # switch to new tab
+            driver.switch_to.window(driver.window_handles[player])
+            lottery_valuation(driver, round_id)
+
+    # Phase 2
+    for round_id in range(1, PHASE_TWO_ROUNDS + 1):
 
         for player in range(1, len(player_links) + 1):
             # switch to new tab
