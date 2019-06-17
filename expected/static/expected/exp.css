@@ -14,8 +14,8 @@ output {
 
 .grid-container {
     display: grid;
-    grid-gap: 2em;
-    grid-template-rows: 50% 50%;
+    grid-gap: 1em;
+    grid-template-rows: 10% 80%;
 }
 
 img#pie {
@@ -24,7 +24,7 @@ img#pie {
 }
 
 img#legend {
-    width: 400px;
+    width: 300px;
 }
 
 .pie-container {
@@ -51,6 +51,7 @@ img#legend {
 }
 
 .grid-bid-container {
+    margin-top: 20px;
     display: grid;
     grid-row-gap: 2em;
     grid-template-columns: auto;
