@@ -10,7 +10,9 @@
 
 {% block content %}
     <p>
-        In the next {{ rounds_per_lottery }} rounds we will show you {{ rounds_per_lottery }} different signals along with the same lottery type you just entered a valuation for.
+        In the next {{ rounds_per_lottery }} rounds we will show you {{ rounds_per_lottery }}
+        different signals for {{ rounds_per_lottery }} different lottery tickets
+        of the same type.
     </p>
     {% next_button %}
 {% endblock %}
