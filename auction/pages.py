@@ -1,6 +1,5 @@
-import math
+import ast
 
-from otree.api import Currency as c, currency_range
 from ._builtin import Page, WaitPage
 from .models import Constants
 
@@ -104,6 +103,68 @@ class OutcomePage(Page):
         self.player.set_payoffs()
 
 
+class QuizPartTwo(Page):
+    form_model = 'player'
+    form_fields = ['q3', 'q4']
+
+    def is_displayed(self):
+        return self.round_number == 1
+
+    def vars_for_template(self):
+        treatment = self.session.config['treatment']
+        if treatment != 'cp' and treatment != 'cv':
+            treatment = 'cp'
+
+        ttype = "Value" if treatment == 'cv' else "Probability"
+        cterm = "Selected Value" if treatment == 'cv' else "non-zero value"
+        nf = '%' if treatment == 'cp' else ''
+        if treatment == 'cv':
+            q4_labels = ['0', '21 (= 30 x 70% + 0 x 30%)', '30']
+            q3_type = 'units'
+        else:
+            q4_labels = ['0', '21 (= 30% x 70 + 70% x 0)', '70']
+            q3_type = 'percentage points'
+
+        template_vars = {
+            'treatment': treatment,
+            'questions': {
+                'q3': {
+                    'question': 'Suppose that you receive a signal of 30 that is at most 8 {} away from the Selected {}. What could be the Selected {}? Select all that apply.'.format(
+                        q3_type, ttype, ttype),
+                    'labels': ['20'.format(nf), '25'.format(nf), '30'.format(nf), '35'.format(nf), '40'.format(nf)]
+                },
+                'q4': {
+                    'question': 'Suppose the Selected {} is 30{}, what could be the outcome of the lottery? Select all that apply.'.format(
+                        ttype, nf),
+                    'labels': q4_labels
+                }
+            },
+        }
+
+        return template_vars
+
+    def q3_error_message(self, value):
+        values = ast.literal_eval(value)
+        if len(values) == 0:
+            return "An error was found in question 5."
+
+        if len(values) == 3 and '2' in values and '3' in values and '4' in values:
+            return
+        else:
+            print(values)
+            return "Your selection for question 3 was incorrect."
+
+    def q4_error_message(self, value):
+        values = ast.literal_eval(value)
+        if len(values) == 0:
+            return "An error was found in question 6."
+
+        if len(values) == 2 and '1' in values and '3' in values:
+            return
+        else:
+            print(values)
+            return "Your selection for question 4 was incorrect."
+
 page_sequence = [
-    InstructionPage, NewLotteryReminder, ValuationPage, NewSignalReminder, BidPage, OutcomePage
+    QuizPartTwo, InstructionPage, NewLotteryReminder, ValuationPage, NewSignalReminder, BidPage, OutcomePage
 ]

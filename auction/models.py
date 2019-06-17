@@ -7,6 +7,7 @@ from otree.api import (
     Currency as c, currency_range
 )
 
+from django import forms
 from experiment.lottery import LotterySpecification, Lottery
 
 doc = """
@@ -79,6 +80,10 @@ class Player(BasePlayer):
     value = models.IntegerField()
     random_value = models.IntegerField()
     outcome = models.IntegerField()
+
+    # Quiz 2
+    q3 = models.StringField(widget=forms.CheckboxSelectMultiple(choices=(("1", "1"), ("2", "2"), ("3", "3"), ("4", "4"), ("5", "5"))), )
+    q4 = models.StringField(widget=forms.CheckboxSelectMultiple(choices=(("1", "1"), ("2", "2"), ("3", "3"))), )
 
     def set_round_lottery(self):
         stage_number = math.floor((self.round_number - 1) / int(Constants.rounds_per_lottery))

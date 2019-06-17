@@ -1,0 +1,93 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    Quiz for Part Two
+{% endblock %}
+
+{% block content %}
+    <div class="lottery-header">
+        <label>Following questions are based on the lottery ticket below:</label>
+    </div>
+    <div class="lottery">
+        <p>
+            {% if treatment == 'cp' %}
+                With a probability between 20% and 40% you get a value of 70,<br> otherwise you get 0.
+            {% else %}
+                With a probability of 70% you get a value between 20 and 40, otherwise nothing.
+            {% endif %}
+        </p>
+    </div>
+
+    <div>
+        <label>
+            3. {{ questions.q3.question }}
+        </label>
+        <ul>
+            {%  for label in questions.q3.labels %}
+                <li>
+                    <label for="id_q3_{{ forloop.counter0 }}">
+                        <input
+                                type="checkbox"
+                                name="q3"
+                                value="{{ forloop.counter }}"
+                                id="id_q3_{{ forloop.counter0 }}"
+                                class="form-check-input"
+                                {% if form.q3.value != None and forloop.counter|stringformat:"i" in form.q3.value %}
+                                checked
+                                {% endif %}
+                        />
+                        {{ label }}
+                    </label>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% if form.q3.errors %}
+        <div class="alert alert-danger">
+            <ul>
+                {% for error in form.q3.errors %}
+                    <li>{{ error|striptags }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+
+    <div>
+        <label>
+            4. {{ questions.q4.question }}
+        </label>
+        <ul>
+            {%  for label in questions.q4.labels %}
+                <li>
+                    <label for="id_q4_{{ forloop.counter0 }}">
+                        <input
+                                type="checkbox"
+                                name="q4"
+                                value="{{ forloop.counter }}"
+                                id="id_q4_{{ forloop.counter0 }}"
+                                class="form-check-input"
+                                {% if form.q4.value != None and forloop.counter|stringformat:"i" in form.q4.value %}
+                                checked
+                                {% endif %}
+                        />
+                        {{ label }}
+                    </label>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% if form.q4.errors %}
+        <div class="alert alert-danger">
+            <ul>
+                {% for error in form.q4.errors %}
+                    <li>{{ error|striptags }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    {% next_button %}
+
+{% endblock %}

@@ -8,6 +8,7 @@ from otree.api import (
 
 from experiment.lottery import LotterySpecification, Lottery
 from auction.models import Constants as AuctionConstants
+from django import forms
 
 author = 'Anwar A. Ruff'
 
@@ -108,6 +109,10 @@ class Player(BasePlayer):
     tie = models.BooleanField()
     winner = models.BooleanField()
     payoff = models.IntegerField()
+
+    # Quiz
+    q1 = models.StringField(widget=forms.CheckboxSelectMultiple(choices=(("1", "1"), ("2", "2"))), )
+    q2 = models.StringField(widget=forms.CheckboxSelectMultiple(choices=(("1", "1"), ("2", "2"))), )
 
     def set_round_lottery(self):
         self.treatment = self.session.config['treatment']
