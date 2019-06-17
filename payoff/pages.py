@@ -47,7 +47,7 @@ class MethodThreeResultsPage(Page):
 
 class PhaseOnePayoff(Page):
     def vars_for_template(self):
-        self.player.participant.vars['auction_data'].update({'payment_round': self.player.phase_one_payment_round})
+        # self.player.participant.vars['auction_data'].update({'payment_round': self.player.phase_one_payment_round})
         return self.player.participant.vars['auction_data']
 
 

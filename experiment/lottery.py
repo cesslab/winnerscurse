@@ -12,7 +12,7 @@ class LotterySpecification:
 
 
 class Lottery:
-    def __init__(self, lottery_specification: LotterySpecification, treatment: str):
+    def __init__(self, lottery_specification: LotterySpecification, treatment: str, with_signal=True):
         self.alpha = lottery_specification.alpha
         self.beta = lottery_specification.beta
         self.epsilon = lottery_specification.epsilon
@@ -29,8 +29,12 @@ class Lottery:
                 self.outcome = self.value
             else:
                 self.outcome = 0
+        # cp
         else:
-            self.p = random.randint(self.alpha, self.beta)
+            if with_signal:
+                self.p = random.randint(self.alpha, self.beta)
+            else:
+                self.p = int((self.alpha + self.beta)/2)
             self.value = self.c
 
             self.signal = random.randint(self.p - self.epsilon, self.p + self.epsilon)

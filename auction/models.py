@@ -59,23 +59,28 @@ class Group(BaseGroup):
 class Player(BasePlayer):
     valuation = models.IntegerField()
     bid = models.IntegerField()
+
+    treatment = models.StringField(choices=['cp', 'cv'])
+    payment_round = models.IntegerField()
+
+    # BDM
     computer_random_val = models.IntegerField()
-    signal = models.IntegerField()
     tie = models.BooleanField(default=False)
     winner = models.BooleanField()
     payoff = models.IntegerField()
-    payment_round = models.IntegerField()
 
+    # Lottery values
     lottery_id = models.IntegerField()
     lottery_display_id = models.IntegerField()
     alpha = models.IntegerField()
     beta = models.IntegerField()
+    c = models.IntegerField()
     p = models.IntegerField()
     epsilon = models.IntegerField()
+    signal = models.IntegerField()
     value = models.IntegerField()
     random_value = models.IntegerField()
     outcome = models.IntegerField()
-    treatment = models.StringField(choices=['cp', 'cv'])
 
     def set_round_lottery(self):
         stage_number = math.floor((self.round_number - 1) / int(Constants.rounds_per_lottery))
@@ -91,14 +96,15 @@ class Player(BasePlayer):
         self.beta = lottery.beta
         self.epsilon = lottery.epsilon
         self.p = lottery.p
+        self.c = lottery.c
         self.value = lottery.value
         self.random_value = lottery.random_value
         self.outcome = lottery.outcome
         self.signal = lottery.signal
 
-    def set_winning_player(self, bid):
+    def becker_degroot_marschak_payment_method(self, valuation):
         self.computer_random_val = random.randint(0, 100)
-        if bid == self.computer_random_val:
+        if valuation == self.computer_random_val:
             # Break tie
             winner = random.randint(1, 2)
             # player wins
@@ -111,7 +117,7 @@ class Player(BasePlayer):
                 self.winner = False
                 self.tie = True
         # win the lottery ticket
-        if bid > self.computer_random_val:
+        if valuation > self.computer_random_val:
             self.payoff = self.outcome - self.computer_random_val
             self.winner = True
             self.tie = False
@@ -120,3 +126,48 @@ class Player(BasePlayer):
             self.payoff = self.computer_random_val - self.computer_random_val
             self.winner = False
             self.tie = False
+
+    def set_payoffs(self):
+        payment_phase = self.participant.vars["payment_phase"]
+        payment_stage = self.participant.vars["payment_stage"]
+        payment_round = self.participant.vars["payment_round"]
+        if payment_phase == 2:
+            if payment_stage == 1 and payment_round == self.round_number:
+                self.participant.vars['auction_data'] = {
+                    'phase': 2,
+                    'stage': 1,
+                    'winner': self.winner,
+                    'bid': self.valuation, # different
+                    'computer_random_val': self.computer_random_val,
+                    'signal': self.signal,
+                    'alpha': self.alpha,
+                    'beta': self.beta,
+                    'p': self.p,
+                    'comp_p': 100 - self.p,
+                    'treatment': self.treatment,
+                    'value': self.value,
+                    'outcome': self.outcome,
+                    'payoff': self.payoff,
+                    'round_number': self.round_number,
+                    'tie': self.tie
+                }
+            elif payment_stage == 2 and payment_round == self.round_number:
+                self.participant.vars['auction_data'] = {
+                    'phase': 2,
+                    'stage': 2,
+                    'winner': self.winner,
+                    'bid': self.bid,
+                    'computer_random_val': self.computer_random_val,
+                    'signal': self.signal,
+                    'alpha': self.alpha,
+                    'beta': self.beta,
+                    'p': self.p,
+                    'comp_p': 100 - self.p,
+                    'treatment': self.treatment,
+                    'value': self.value,
+                    'outcome': self.outcome,
+                    'payoff': self.payoff,
+                    'round_number': self.round_number,
+                    'tie': self.tie
+                }
+

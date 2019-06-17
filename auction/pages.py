@@ -52,8 +52,7 @@ class ValuationPage(Page):
         }
 
     def before_next_page(self):
-        \elf.player.set_winning_player(self.player.bid)
-        pass
+        self.player.becker_degroot_marschak_payment_method(self.player.valuation)
 
 
 class BidPage(Page):
@@ -79,7 +78,8 @@ class BidPage(Page):
         }
 
     def before_next_page(self):
-        self.player.set_winning_player(self.player.bid)
+        self.player.becker_degroot_marschak_payment_method(self.player.bid)
+        self.player.set_payoffs()
 
 class OutcomePage(Page):
     def vars_for_template(self):
@@ -101,23 +101,7 @@ class OutcomePage(Page):
         }
 
     def before_next_page(self):
-        if self.player.participant.vars['payment_round'] == self.round_number:
-            self.player.participant.vars['auction_data'] = {
-            'winner': self.player.winner,
-            'bid': self.player.bid,
-            'computer_random_val': self.player.computer_random_val,
-            'signal': self.player.signal,
-            'alpha': self.player.alpha,
-            'beta': self.player.beta,
-            'p': self.player.p,
-            'comp_p': 100 - self.player.p,
-            'treatment': self.player.treatment,
-            'value': self.player.value,
-            'outcome': self.player.outcome,
-            'payoff': self.player.payoff,
-            'round_number': self.round_number,
-            'tie': self.player.tie
-            }
+        self.player.set_payoffs()
 
 
 page_sequence = [
