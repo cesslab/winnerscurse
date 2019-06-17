@@ -41,8 +41,6 @@ class Subsession(BaseSubsession):
                 for l in range(1, Constants.num_lottery_types + 1):
                     player.participant.vars["lottery_type_order"].append(int(self.session.config["lottery_{}".format(l)].strip()))
 
-                player.payment_round = random.randint(1, Constants.num_rounds)
-                player.participant.vars["payment_round"] = player.payment_round
                 lotteries = [[] for i in range(Constants.num_lottery_types)]
                 for l in range(Constants.num_lottery_types):
                     for r in range(Constants.rounds_per_lottery):
@@ -132,7 +130,9 @@ class Player(BasePlayer):
         payment_stage = self.participant.vars["payment_stage"]
         payment_round = self.participant.vars["payment_round"]
         if payment_phase == 2:
+            print("Phase 2 Stage 1 and 2 Test: payment round {} == current round {}".format(payment_round, self.round_number))
             if payment_stage == 1 and payment_round == self.round_number:
+                print("Saving payment: for phase 2, stage 1, round {}".format(payment_round))
                 self.participant.vars['auction_data'] = {
                     'phase': 2,
                     'stage': 1,
@@ -148,10 +148,12 @@ class Player(BasePlayer):
                     'value': self.value,
                     'outcome': self.outcome,
                     'payoff': self.payoff,
+                    'lottery_display_id': self.lottery_display_id,
                     'round_number': self.round_number,
                     'tie': self.tie
                 }
             elif payment_stage == 2 and payment_round == self.round_number:
+                print("Saving payment: for phase 2, stage 2, round {}".format(payment_round))
                 self.participant.vars['auction_data'] = {
                     'phase': 2,
                     'stage': 2,
@@ -167,6 +169,7 @@ class Player(BasePlayer):
                     'value': self.value,
                     'outcome': self.outcome,
                     'payoff': self.payoff,
+                    'lottery_display_id': self.lottery_display_id,
                     'round_number': self.round_number,
                     'tie': self.tie
                 }

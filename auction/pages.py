@@ -79,7 +79,7 @@ class BidPage(Page):
 
     def before_next_page(self):
         self.player.becker_degroot_marschak_payment_method(self.player.bid)
-        self.player.set_payoffs()
+
 
 class OutcomePage(Page):
     def vars_for_template(self):

@@ -15,9 +15,11 @@
     <div class="text-center">
         <span>
             {% if phase == 1 %}
-                The computer selected round {{ round_number }} in part {{ phase }} for Payoff.
-            {% elif phase == 2 and stage == 1 %}
                 The computer selected lottery {{ round_number }} (without a signal) in part {{ phase }} for Payoff.
+            {% elif phase == 2 and stage == 1 %}
+                The computer selected lottery {{ lottery_display_id }} (without a signal) in part {{ phase }} for Payoff.
+            {% elif phase == 2 and stage == 2 %}
+                The computer selected round {{ round_number }} for lottery {{ lottery_display_id }} in part {{ phase }} for Payoff.
             {% endif %}
         </span>
     </div>
