@@ -36,6 +36,25 @@ def phase_two_outcome(browser, player):
     browser.find_element(By.XPATH, '//button').click()
 
 
+def quiz_part_one(browser):
+    browser.save_screenshot('{}/quiz_part_one.png'.format(SCREEN_SHOT_PATH))
+
+    browser.find_element(By.XPATH, "//input[@id='id_q1_1']").click()
+    browser.find_element(By.XPATH, "//input[@id='id_q2_1']").click()
+    browser.find_element(By.XPATH, '//button').click()
+
+
+def quiz_part_two(browser):
+    browser.save_screenshot('{}/quiz_part_two.png'.format(SCREEN_SHOT_PATH))
+
+    browser.find_element(By.XPATH, "//input[@id='id_q3_1']").click()
+    browser.find_element(By.XPATH, "//input[@id='id_q3_2']").click()
+    browser.find_element(By.XPATH, "//input[@id='id_q3_3']").click()
+    browser.find_element(By.XPATH, "//input[@id='id_q4_0']").click()
+    browser.find_element(By.XPATH, "//input[@id='id_q4_2']").click()
+    browser.find_element(By.XPATH, '//button').click()
+
+
 def auction_bid(browser, round_number):
     if round_number == 1:
         browser.save_screenshot('{}/phase_one_bid_screen.png'.format(SCREEN_SHOT_PATH))
@@ -131,13 +150,22 @@ if __name__ == "__main__":
         # create a new tab
         player_links[player-1].send_keys(Keys.COMMAND + Keys.ENTER)
 
+    # Quiz for part one
+    for player in range(1, len(player_links) + 1):
+        driver.switch_to.window(driver.window_handles[player])
+        quiz_part_one(driver)
+
     # Phase 1
     for round_id in range(1, PHASE_ONE_ROUNDS + 1):
-
         for player in range(1, len(player_links) + 1):
             # switch to new tab
             driver.switch_to.window(driver.window_handles[player])
             lottery_valuation(driver, round_id)
+
+    # Quiz for part one
+    for player in range(1, len(player_links) + 1):
+        driver.switch_to.window(driver.window_handles[player])
+        quiz_part_two(driver)
 
     # Phase 2
     for round_id in range(1, PHASE_TWO_ROUNDS + 1):
@@ -166,7 +194,8 @@ if __name__ == "__main__":
             lottery_bet(driver, task_number)
 
     # Outcome and Payoffs
-    for player in range(1, len(player_links) + 1):
-        phase_one_outcome(driver, player)
-        phase_two_outcome(driver, player)
-        final_payoffs(driver, player)
+    # for player in range(1, len(player_links) + 1):
+    #     phase_one_outcome(driver, player)
+    #     phase_two_outcome(driver, player)
+    #     final_payoffs(driver, player)
+
