@@ -38,7 +38,7 @@ class Subsession(BaseSubsession):
         for player in self.get_players():  # type: Group
             if self.round_number == 1:
                 # Get and save the order in which the lottery types should be viewed
-                player.participant.vars["lottery_display_id"] = 5
+                player.participant.vars["display_round_number"] = 5
                 player.participant.vars["lottery_display_type"] = 1
                 player.participant.vars["lottery_type_order"] = []
                 for l in range(1, Constants.num_lottery_types + 1):
@@ -63,7 +63,7 @@ class Player(BasePlayer):
     bid = models.IntegerField()
 
     treatment = models.StringField(choices=['cp', 'cv'])
-    payment_round = models.IntegerField()
+    part_1_2_payment_round = models.IntegerField()
 
     # BDM
     computer_random_val = models.IntegerField()
@@ -83,6 +83,7 @@ class Player(BasePlayer):
     value = models.IntegerField()
     random_value = models.IntegerField()
     outcome = models.IntegerField()
+    pass_code = models.IntegerField(blank=True)
 
     # Quiz 2
     q3 = models.StringField(widget=forms.CheckboxSelectMultiple(choices=(("1", "1"), ("2", "2"), ("3", "3"), ("4", "4"), ("5", "5"))), )
@@ -136,52 +137,30 @@ class Player(BasePlayer):
             self.winner = False
             self.tie = False
 
-    def set_payoffs(self):
-        payment_phase = self.participant.vars["payment_phase"]
-        payment_stage = self.participant.vars["payment_stage"]
-        payment_round = self.participant.vars["payment_round"]
-        if payment_phase == 2:
-            print("Phase 2 Stage 1 and 2 Test: payment round {} == current round {}".format(payment_round, self.round_number))
-            if payment_stage == 1 and payment_round == self.round_number:
-                print("Saving payment: for phase 2, stage 1, round {}".format(payment_round))
-                self.participant.vars['auction_data'] = {
-                    'phase': 2,
-                    'stage': 1,
-                    'winner': self.winner,
-                    'bid': self.valuation, # different
-                    'computer_random_val': self.computer_random_val,
-                    'signal': self.signal,
-                    'alpha': self.alpha,
-                    'beta': self.beta,
-                    'p': self.p,
-                    'comp_p': 100 - self.p,
-                    'treatment': self.treatment,
-                    'value': self.value,
-                    'outcome': self.outcome,
-                    'payoff': self.payoff,
-                    'lottery_display_id': self.participant.vars["lottery_display_id"] - 1,
-                    'round_number': self.round_number,
-                    'tie': self.tie
-                }
-            elif payment_stage == 2 and payment_round == self.round_number:
-                print("Saving payment: for phase 2, stage 2, round {}".format(payment_round))
-                self.participant.vars['auction_data'] = {
-                    'phase': 2,
-                    'stage': 2,
-                    'winner': self.winner,
-                    'bid': self.bid,
-                    'computer_random_val': self.computer_random_val,
-                    'signal': self.signal,
-                    'alpha': self.alpha,
-                    'beta': self.beta,
-                    'p': self.p,
-                    'comp_p': 100 - self.p,
-                    'treatment': self.treatment,
-                    'value': self.value,
-                    'outcome': self.outcome,
-                    'payoff': self.payoff,
-                    'lottery_display_id': self.participant.vars["lottery_display_id"] - 1,
-                    'round_number': self.round_number,
-                    'tie': self.tie
-                }
+    def set_payoffs(self, phase, stage, bid):
+        part_1_2_payment_round = self.participant.vars["part_1_2_payment_round"]
+        display_round_number = self.participant.vars["display_round_number"]
 
+        print("Phase {} Stage {} Test: current round: {}, payment round: {}".format(phase, stage, display_round_number, part_1_2_payment_round))
+        if display_round_number == part_1_2_payment_round:
+            print("Saving payment: for phase 2, stage 1, round {}".format(display_round_number))
+            self.participant.vars['auction_data'] = {
+                'phase': phase,
+                'stage': stage,
+                'winner': self.winner,
+                'bid': bid, # different
+                'computer_random_val': self.computer_random_val,
+                'signal': self.signal,
+                'alpha': self.alpha,
+                'beta': self.beta,
+                'p': self.p,
+                'comp_p': 100 - self.p,
+                'treatment': self.treatment,
+                'value': self.value,
+                'outcome': self.outcome,
+                'payoff': self.payoff,
+                'part_1_2_payment_round': part_1_2_payment_round,
+                'lottery_display_type': self.lottery_display_type,
+                'round_number': part_1_2_payment_round,
+                'tie': self.tie
+            }

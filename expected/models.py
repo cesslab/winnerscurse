@@ -54,24 +54,9 @@ class Subsession(BaseSubsession):
                 num_phase_two_stage_one_valuations = AuctionConstants.num_lottery_types
                 num_phase_two_stage_two_valuations = AuctionConstants.num_rounds
                 total_valuations = num_phase_one_valuations + num_phase_two_stage_one_valuations + num_phase_two_stage_two_valuations
-                rround = random.randint(1, total_valuations)
-                if rround <= num_phase_one_valuations:
-                    player.participant.vars["payment_phase"] = 1
-                    player.participant.vars["payment_stage"] = None
-                    player.participant.vars["payment_round"] = rround
-                    print("Payment: Phase={}, Stage={}, Round={}".format(1, None, rround))
-                elif num_phase_one_valuations < rround <= (num_phase_one_valuations + num_phase_two_stage_one_valuations):
-                    player.participant.vars["payment_phase"] = 2
-                    player.participant.vars["payment_stage"] = 1
-                    r = (rround - num_phase_one_valuations - 1)*AuctionConstants.rounds_per_lottery + 1
-                    player.participant.vars["payment_round"] = r
-                    print("Payment: Phase={}, Stage={}, Round={}".format(2, 1, r))
-                else:
-                    player.participant.vars["payment_phase"] = 2
-                    player.participant.vars["payment_stage"] = 2
-                    r = (rround - num_phase_one_valuations - num_phase_two_stage_one_valuations - 1) % AuctionConstants.rounds_per_lottery + 1
-                    player.participant.vars["payment_round"] = r
-                    print("Payment: Phase={}, Stage={}, Round={}".format(2, 2, r))
+                rround = 4
+                player.participant.vars["part_1_2_payment_round"] = rround
+                print("Payment: payment round = {}".format(rround))
 
                 player.participant.vars["phase_one_lottery_order"] = []
                 player.participant.vars["phase_one_lotteries"] = []
@@ -156,11 +141,10 @@ class Player(BasePlayer):
             self.tie = False
 
     def set_payoffs(self):
-        payment_phase = self.participant.vars["payment_phase"]
-        payment_round = self.participant.vars["payment_round"]
-        print("Phase 1 Test: payment round {} == current round {}".format(payment_round, self.round_number))
-        if payment_phase == 1 and payment_round == self.round_number:
-            print("Saving payment for phase 1 round {}".format(payment_round))
+        part_1_2_payment_round = self.participant.vars["part_1_2_payment_round"]
+        print("Phase 1 Test: payment round {} == current round {}".format(part_1_2_payment_round, self.round_number))
+        if part_1_2_payment_round == self.round_number:
+            print("Saving payment for phase 1 round {}".format(part_1_2_payment_round))
             self.participant.vars['auction_data'] = {
                 'phase': 1,
                 'winner': None,
@@ -174,8 +158,9 @@ class Player(BasePlayer):
                 'value': self.value,
                 'outcome': self.outcome,
                 'payoff': self.payoff,
+                'part_1_2_payment_round': self.round_number,
                 'round_number': self.round_number,
-                'lottery_display_id': self.round_number,
+                'display_round_number': self.round_number,
                 'tie': self.tie
             }
 

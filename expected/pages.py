@@ -10,7 +10,7 @@ class ExpPage(Page):
 
     def vars_for_template(self):
         return {
-            'lottery_display_id': self.round_number,
+            'display_round_number': self.round_number,
             'alpha': self.player.alpha,
             'beta': self.player.beta,
             'p': '' if self.player.treatment == 'cp' else self.player.c,

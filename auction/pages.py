@@ -38,7 +38,7 @@ class ValuationPage(Page):
 
     def vars_for_template(self):
         return {
-            'lottery_display_id': self.player.participant.vars["lottery_display_id"],
+            'display_round_number': self.player.participant.vars["display_round_number"],
             'lottery_display_type': self.player.lottery_display_type,
             'alpha': self.player.alpha,
             'beta': self.player.beta,
@@ -48,12 +48,12 @@ class ValuationPage(Page):
             'value': self.player.value,
             'min_bid': 0,
             'max_bid': 100,
-            'round_number': self.round_number,
         }
 
     def before_next_page(self):
         self.player.becker_degroot_marschak_payment_method(self.player.valuation)
-        self.player.participant.vars["lottery_display_id"] += 1
+        self.player.set_payoffs(2, 1, self.player.valuation)
+        self.player.participant.vars["display_round_number"] += 1
 
 
 class BidPage(Page):
@@ -62,7 +62,7 @@ class BidPage(Page):
 
     def vars_for_template(self):
         return {
-            'lottery_display_id': self.player.participant.vars["lottery_display_id"],
+            'display_round_number': self.player.participant.vars["display_round_number"],
             'signal': self.player.signal,
             'alpha': self.player.alpha,
             'beta': self.player.beta,
@@ -81,6 +81,7 @@ class BidPage(Page):
 
     def before_next_page(self):
         self.player.becker_degroot_marschak_payment_method(self.player.bid)
+        self.player.set_payoffs(2, 2, self.player.bid)
 
 
 class OutcomePage(Page):
@@ -101,13 +102,24 @@ class OutcomePage(Page):
             'round_number': self.round_number,
             'tie': self.player.tie,
             'lottery_display_type': self.player.lottery_display_type,
-            'lottery_display_id': self.player.participant.vars["lottery_display_id"],
+            'display_round_number': self.player.participant.vars["display_round_number"],
         }
 
     def before_next_page(self):
-        self.player.set_payoffs()
-        self.player.participant.vars["lottery_display_id"] += 1
+        self.player.participant.vars["display_round_number"] += 1
 
+class PasswordWaitPage(Page):
+    form_model = 'player'
+    form_fields = ['pass_code']
+
+    def is_displayed(self):
+        return self.round_number == 1
+
+    def error_message(self, values):
+        if 'pass_code' not in values:
+            return ' You must wait for the researcher to provide you with the correct password'
+        elif not (values['pass_code'] == 42):
+            return ' You must wait for the researcher to provide you with the correct password'
 
 class QuizPartTwo(Page):
     form_model = 'player'
@@ -172,5 +184,5 @@ class QuizPartTwo(Page):
             return "Your selection for question 4 was incorrect."
 
 page_sequence = [
-    QuizPartTwo, InstructionPage, NewLotteryReminder, ValuationPage, NewSignalReminder, BidPage, OutcomePage
+   PasswordWaitPage, QuizPartTwo, InstructionPage, NewLotteryReminder, ValuationPage, NewSignalReminder, BidPage, OutcomePage
 ]
