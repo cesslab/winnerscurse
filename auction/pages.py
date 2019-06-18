@@ -39,6 +39,7 @@ class ValuationPage(Page):
     def vars_for_template(self):
         return {
             'lottery_display_id': self.player.participant.vars["lottery_display_id"],
+            'lottery_display_type': self.player.lottery_display_type,
             'alpha': self.player.alpha,
             'beta': self.player.beta,
             'p': self.player.p,
@@ -75,6 +76,7 @@ class BidPage(Page):
             'min_bid': 0,
             'max_bid': 100,
             'round_number': self.round_number,
+            'lottery_display_type': self.player.lottery_display_type
         }
 
     def before_next_page(self):
@@ -98,6 +100,7 @@ class OutcomePage(Page):
             'payoff': self.player.payoff,
             'round_number': self.round_number,
             'tie': self.player.tie,
+            'lottery_display_type': self.player.lottery_display_type,
             'lottery_display_id': self.player.participant.vars["lottery_display_id"],
         }
 

@@ -39,6 +39,7 @@ class Subsession(BaseSubsession):
             if self.round_number == 1:
                 # Get and save the order in which the lottery types should be viewed
                 player.participant.vars["lottery_display_id"] = 5
+                player.participant.vars["lottery_display_type"] = 1
                 player.participant.vars["lottery_type_order"] = []
                 for l in range(1, Constants.num_lottery_types + 1):
                     player.participant.vars["lottery_type_order"].append(int(self.session.config["lottery_{}".format(l)].strip()))
@@ -72,6 +73,7 @@ class Player(BasePlayer):
 
     # Lottery values
     lottery_id = models.IntegerField()
+    lottery_display_type = models.IntegerField()
     alpha = models.IntegerField()
     beta = models.IntegerField()
     c = models.IntegerField()
@@ -95,6 +97,10 @@ class Player(BasePlayer):
         round_number = (self.round_number-1) % Constants.rounds_per_lottery
         lottery = self.participant.vars["lotteries"][stage_number][round_number]
 
+        if self.round_number != 1 and (self.round_number-1) % Constants.rounds_per_lottery == 0:
+            self.participant.vars["lottery_display_type"] += 1
+
+        self.lottery_display_type = self.participant.vars["lottery_display_type"]
         self.alpha = lottery.alpha
         self.beta = lottery.beta
         self.epsilon = lottery.epsilon
