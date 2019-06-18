@@ -38,14 +38,16 @@ class Subsession(BaseSubsession):
         for player in self.get_players():  # type: Group
             if self.round_number == 1:
                 # Get and save the order in which the lottery types should be viewed
+                player.participant.vars["lottery_display_id"] = 5
                 player.participant.vars["lottery_type_order"] = []
                 for l in range(1, Constants.num_lottery_types + 1):
                     player.participant.vars["lottery_type_order"].append(int(self.session.config["lottery_{}".format(l)].strip()))
 
                 lotteries = [[] for i in range(Constants.num_lottery_types)]
                 for l in range(Constants.num_lottery_types):
+                    lottery_id = player.participant.vars["lottery_type_order"][l] - 1
                     for r in range(Constants.rounds_per_lottery):
-                        lotteries[l].append(Lottery(Constants.lottery_types[l], self.session.config['treatment']))
+                        lotteries[l].append(Lottery(Constants.lottery_types[lottery_id], self.session.config['treatment']))
                 # set the player's lotteries
                 player.participant.vars["lotteries"] = lotteries
 
@@ -70,7 +72,6 @@ class Player(BasePlayer):
 
     # Lottery values
     lottery_id = models.IntegerField()
-    lottery_display_id = models.IntegerField()
     alpha = models.IntegerField()
     beta = models.IntegerField()
     c = models.IntegerField()
@@ -89,7 +90,6 @@ class Player(BasePlayer):
         stage_number = math.floor((self.round_number - 1) / int(Constants.rounds_per_lottery))
 
         self.lottery_id = self.participant.vars["lottery_type_order"][stage_number]
-        self.lottery_display_id = stage_number + 1
         self.treatment = self.session.config['treatment']
 
         round_number = (self.round_number-1) % Constants.rounds_per_lottery
@@ -153,7 +153,7 @@ class Player(BasePlayer):
                     'value': self.value,
                     'outcome': self.outcome,
                     'payoff': self.payoff,
-                    'lottery_display_id': self.lottery_display_id,
+                    'lottery_display_id': self.participant.vars["lottery_display_id"] - 1,
                     'round_number': self.round_number,
                     'tie': self.tie
                 }
@@ -174,7 +174,7 @@ class Player(BasePlayer):
                     'value': self.value,
                     'outcome': self.outcome,
                     'payoff': self.payoff,
-                    'lottery_display_id': self.lottery_display_id,
+                    'lottery_display_id': self.participant.vars["lottery_display_id"] - 1,
                     'round_number': self.round_number,
                     'tie': self.tie
                 }

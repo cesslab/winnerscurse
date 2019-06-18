@@ -15,7 +15,7 @@ class NewLotteryReminder(Page):
 
     def vars_for_template(self):
         return {
-            'rounds_per_lottery': Constants.rounds_per_lottery
+            'rounds_per_lottery': Constants.rounds_per_lottery + 1
         }
 
 
@@ -38,7 +38,7 @@ class ValuationPage(Page):
 
     def vars_for_template(self):
         return {
-            'lottery_display_id': self.player.lottery_display_id,
+            'lottery_display_id': self.player.participant.vars["lottery_display_id"],
             'alpha': self.player.alpha,
             'beta': self.player.beta,
             'p': self.player.p,
@@ -52,6 +52,7 @@ class ValuationPage(Page):
 
     def before_next_page(self):
         self.player.becker_degroot_marschak_payment_method(self.player.valuation)
+        self.player.participant.vars["lottery_display_id"] += 1
 
 
 class BidPage(Page):
@@ -60,7 +61,7 @@ class BidPage(Page):
 
     def vars_for_template(self):
         return {
-            'lottery_display_id': self.player.lottery_display_id,
+            'lottery_display_id': self.player.participant.vars["lottery_display_id"],
             'signal': self.player.signal,
             'alpha': self.player.alpha,
             'beta': self.player.beta,
@@ -96,11 +97,13 @@ class OutcomePage(Page):
             'outcome': self.player.outcome,
             'payoff': self.player.payoff,
             'round_number': self.round_number,
-            'tie': self.player.tie
+            'tie': self.player.tie,
+            'lottery_display_id': self.player.participant.vars["lottery_display_id"],
         }
 
     def before_next_page(self):
         self.player.set_payoffs()
+        self.player.participant.vars["lottery_display_id"] += 1
 
 
 class QuizPartTwo(Page):
