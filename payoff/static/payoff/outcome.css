@@ -34,8 +34,21 @@
   grid-column : 1 / span 2;
 }
 
+.sp1 {
+  margin-bottom: 10px;
+}
+
+.lottery-header {
+  margin-top: 30px;
+  margin-bottom: 20px;
+}
+
+.sp2 {
+  margin-top: 20px;
+}
+
 #outcome-header {
-  margin-bottom: 50px;
+  margin-bottom: 30px;
 }
 
 #lottery-ticket-header {
