@@ -2,6 +2,7 @@ import ast
 
 from ._builtin import Page, WaitPage
 from .models import Constants
+from expected.models import Constants as ExpectedConstants
 
 
 class InstructionPage(Page):
@@ -11,7 +12,7 @@ class InstructionPage(Page):
 
 class NewLotteryReminder(Page):
     def is_displayed(self):
-        return self.round_number != 1 and self.round_number % Constants.rounds_per_lottery == 1
+        return self.round_number != 1 and ((self.round_number-1) % (Constants.rounds_per_lottery + 1)) == 0
 
     def vars_for_template(self):
         return {
@@ -21,7 +22,7 @@ class NewLotteryReminder(Page):
 
 class NewSignalReminder(Page):
     def is_displayed(self):
-        return self.round_number % Constants.rounds_per_lottery == 1
+        return ((self.round_number-1) % (Constants.rounds_per_lottery + 1)) == 1
 
     def vars_for_template(self):
         return {
@@ -31,14 +32,14 @@ class NewSignalReminder(Page):
 
 class ValuationPage(Page):
     form_model = 'player'
-    form_fields = ['valuation']
+    form_fields = ['bid']
 
     def is_displayed(self):
-        return self.round_number % Constants.rounds_per_lottery == 1
+        return ((self.round_number-1) % (Constants.rounds_per_lottery + 1)) == 0
 
     def vars_for_template(self):
         return {
-            'display_round_number': self.player.participant.vars["display_round_number"],
+            'display_round_number': self.round_number + ExpectedConstants.num_rounds,
             'lottery_display_type': self.player.lottery_display_type,
             'alpha': self.player.alpha,
             'beta': self.player.beta,
@@ -51,18 +52,20 @@ class ValuationPage(Page):
         }
 
     def before_next_page(self):
-        self.player.becker_degroot_marschak_payment_method(self.player.valuation)
-        self.player.set_payoffs(2, 1, self.player.valuation)
-        self.player.participant.vars["display_round_number"] += 1
+        self.player.becker_degroot_marschak_payment_method()
+        self.player.set_payoffs(2, 1)
 
 
 class BidPage(Page):
     form_model = 'player'
     form_fields = ['bid']
 
+    def is_displayed(self):
+        return ((self.round_number-1) % (Constants.rounds_per_lottery + 1)) != 0
+
     def vars_for_template(self):
         return {
-            'display_round_number': self.player.participant.vars["display_round_number"],
+            'display_round_number': self.round_number + ExpectedConstants.num_rounds,
             'signal': self.player.signal,
             'alpha': self.player.alpha,
             'beta': self.player.beta,
@@ -80,11 +83,15 @@ class BidPage(Page):
         }
 
     def before_next_page(self):
-        self.player.becker_degroot_marschak_payment_method(self.player.bid)
-        self.player.set_payoffs(2, 2, self.player.bid)
+        self.player.becker_degroot_marschak_payment_method()
+        self.player.set_payoffs(2, 2)
 
 
 class OutcomePage(Page):
+
+    def is_displayed(self):
+        return ((self.round_number-1) % (Constants.rounds_per_lottery + 1)) != 0
+
     def vars_for_template(self):
         return {
             'winner': self.player.winner,
@@ -102,11 +109,9 @@ class OutcomePage(Page):
             'round_number': self.round_number,
             'tie': self.player.tie,
             'lottery_display_type': self.player.lottery_display_type,
-            'display_round_number': self.player.participant.vars["display_round_number"],
+            'display_round_number': self.round_number + ExpectedConstants.num_rounds,
         }
 
-    def before_next_page(self):
-        self.player.participant.vars["display_round_number"] += 1
 
 class PasswordWaitPage(Page):
     form_model = 'player'
@@ -120,6 +125,7 @@ class PasswordWaitPage(Page):
             return ' You must wait for the researcher to provide you with the correct password'
         elif not (values['pass_code'] == 42):
             return ' You must wait for the researcher to provide you with the correct password'
+
 
 class QuizPartTwo(Page):
     form_model = 'player'

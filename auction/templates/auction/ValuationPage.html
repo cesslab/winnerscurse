@@ -38,17 +38,17 @@
             <input
                     type="number"
                     id="id_bid"
-                    name="valuation"
+                    name="bid"
                     min="{{ min_bid }}"
                     max="{{ max_bid }}"
                     step="1"
                     class="center-input form-control"
-                    value="{{ form.valuation.value|default_if_none:"" }}"
+                    value="{{ form.bid.value|default_if_none:"" }}"
                     placeholder="Enter Your Valuation" required>
 
-            {% if form.valuation.errors %}
+            {% if form.bid.errors %}
                 <div class="alert alert-danger">
-                    {{ form.valuation.errors }}
+                    {{ form.bid.errors }}
                 </div>
             {% endif %}
         </div>
