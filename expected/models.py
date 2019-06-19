@@ -50,13 +50,11 @@ class Subsession(BaseSubsession):
                 # --------------------------------------------------
                 #  Random payoff determination for phase one and two
                 # --------------------------------------------------
-                num_phase_one_valuations = Constants.num_lottery_types
-                num_phase_two_stage_one_valuations = AuctionConstants.num_lottery_types
-                num_phase_two_stage_two_valuations = AuctionConstants.num_rounds
-                total_rounds = num_phase_one_valuations + num_phase_two_stage_one_valuations + num_phase_two_stage_two_valuations
+                total_rounds = Constants.num_lottery_types + AuctionConstants.num_rounds
                 rround = random.randint(1, total_rounds)
                 player.participant.vars["part_1_2_payment_round"] = rround
                 print("*******************************************")
+                print("Selecting a random round between 1 and {}".format(total_rounds))
                 print("Payment Round: {}".format(rround))
                 print("*******************************************")
 
