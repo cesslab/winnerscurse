@@ -91,6 +91,16 @@ def enter_password(browser):
     input_field.send_keys("2600")
     browser.find_element(By.XPATH, '//button').click()
 
+def enter_phase_one_password(browser):
+    browser.save_screenshot('{}/phase_one_password_screen.png'.format(SCREEN_SHOT_PATH))
+
+    input_field = browser.find_element(By.XPATH, "//input[@id='pass_code']")
+    input_field.clear()
+    print("Phase 2: Entered Password")
+    input_field.send_keys("42")
+    browser.find_element(By.XPATH, '//button').click()
+
+
 
 def lottery_bet(browser, task_number):
     browser.save_screenshot('{}/phase_choose_color_bet_task_{}.png'.format(task_number, SCREEN_SHOT_PATH))
@@ -161,6 +171,12 @@ if __name__ == "__main__":
             # switch to new tab
             driver.switch_to.window(driver.window_handles[player])
             lottery_valuation(driver, round_id)
+
+    # Phase 1 Password
+    for player in range(1, len(player_links) + 1):
+        # switch to new tab
+        driver.switch_to.window(driver.window_handles[player])
+        enter_phase_one_password(driver)
 
     # Quiz for part one
     for player in range(1, len(player_links) + 1):
