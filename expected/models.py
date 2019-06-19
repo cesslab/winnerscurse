@@ -54,8 +54,7 @@ class Subsession(BaseSubsession):
                 num_phase_two_stage_one_valuations = AuctionConstants.num_lottery_types
                 num_phase_two_stage_two_valuations = AuctionConstants.num_rounds
                 total_rounds = num_phase_one_valuations + num_phase_two_stage_one_valuations + num_phase_two_stage_two_valuations
-                # rround = random.randint(1, total_rounds)
-                rround = 9
+                rround = random.randint(1, total_rounds)
                 player.participant.vars["part_1_2_payment_round"] = rround
                 print("*******************************************")
                 print("Payment Round: {}".format(rround))
