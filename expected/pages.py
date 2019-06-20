@@ -16,6 +16,7 @@ class ExpPage(Page):
             'p': '' if self.player.treatment == 'cp' else self.player.c,
             'treatment': self.player.treatment,
             'value': '' if self.player.treatment == 'cv' else self.player.c,
+            'max_outcome': self.player.c if self.player.treatment == 'cp' else self.player.beta,
             'min_bid': 0,
             'max_bid': 100,
             'round_number': self.round_number,

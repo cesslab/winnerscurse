@@ -8,6 +8,10 @@ output {
     text-align: center;
 }
 
+.modal-btn {
+    margin-top: 1em;
+}
+
 .pull-left {
     display: inline-block;
 }

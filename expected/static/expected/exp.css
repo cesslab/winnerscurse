@@ -136,6 +136,10 @@ input[type=number].form-control {
   cursor: pointer;
 }
 
+.modal-btn {
+    margin-top: 1em;
+}
+
 #container {
   width: 600px;
   background-color: #fff;

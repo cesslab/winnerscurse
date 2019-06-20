@@ -55,4 +55,43 @@
     </div>
 
     {% next_button %}
+
+    <div class="modal" id="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Notification</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Your valuation is larger than the highest possible outcome of the lottery.</p>
+                    <p>Would you like to proceed with this value?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary otree-btn-next ">Yes</button>
+                    <button type="button" class="modal-btn btn btn-secondary" data-dismiss="modal">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var max = {{ max_outcome|json }};
+
+            function entryMonitor(event) {
+                let source = event.target;
+                if (source.value > max) {
+                    $('#modal').modal('show');
+                }
+                console.log(source.value);
+            }
+
+            document.getElementById('id_bid').addEventListener('keyup', entryMonitor);
+        });
+    </script>
 {% endblock %}

@@ -41,6 +41,7 @@ class ValuationPage(Page):
         return {
             'display_round_number': self.round_number + ExpectedConstants.num_rounds,
             'lottery_display_type': self.player.lottery_display_type,
+            'max_outcome': self.player.c if self.player.treatment == 'cp' else self.player.beta,
             'alpha': self.player.alpha,
             'beta': self.player.beta,
             'p': self.player.p,
@@ -66,6 +67,7 @@ class BidPage(Page):
     def vars_for_template(self):
         return {
             'display_round_number': self.round_number + ExpectedConstants.num_rounds,
+            'max_outcome': self.player.c if self.player.treatment == 'cp' else self.player.beta,
             'signal': self.player.signal,
             'alpha': self.player.alpha,
             'beta': self.player.beta,

@@ -74,62 +74,45 @@
     </div>
 
     {% next_button %}
+
+    <div class="modal" id="modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Notification</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>Your valuation is larger than the highest possible outcome of the lottery.</p>
+            <p>Would you like to proceed with this value?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary otree-btn-next ">Yes</button>
+            <button type="button" class="modal-btn btn btn-secondary" data-dismiss="modal">No</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
 {% endblock %}
 
 {% block scripts %}
-{#    <script>#}
-{#        document.addEventListener('DOMContentLoaded', function() {#}
-{#            let labels = [0];#}
-{#            for (let i = 10; i <= 70; ++i) {#}
-{#                labels.push(i)#}
-{#            }#}
-{##}
-{#            let data_values = [40];#}
-{#            for (let i = 10; i <= 70; ++i) {#}
-{#                data_values.push(0.9836)#}
-{#            }#}
-{##}
-{#            let colors = ['#ffffff'].concat(chroma.scale(['#00ff00', '#0000ff']).mode('lch').colors(61));#}
-{#            console.log(colors);#}
-{##}
-{#            let pie_ctx = document.getElementById('pie-chart').getContext('2d');#}
-{#            var purple_orange_gradient = pie_ctx.createLinearGradient(0, 0, 0, 600);#}
-{#            purple_orange_gradient.addColorStop(0, 'orange');#}
-{#            purple_orange_gradient.addColorStop(1, 'purple');#}
-{##}
-{#            new Chart(pie_ctx, {#}
-{#                type: 'pie',#}
-{#                data: {#}
-{#                  labels: labels,#}
-{#                  datasets: [{#}
-{#                    borderColor: 'black',#}
-{#                    borderWidth: 1,#}
-                    {#label: "Population (millions)",#}
-{#                    backgroundColor: colors,#}
-{#                    data: data_values#}
-{#                  }]#}
-{#                },#}
-{#                options: {#}
-{#                    segmentShowStroke: false,#}
-{#                    plugins: {#}
-{#                        labels: {#}
-{#                            render: 'label',#}
-{#                            position: 'outside',#}
-{#                            textMargin: 4,#}
-{#                            outsidePadding: 2,#}
-{#                            arc: true#}
-{#                        },#}
-{#                    },#}
-{#                    legend: {#}
-{#                        display: false#}
-{#                    },#}
-{#                  title: {#}
-{#                    display: false,#}
-{#                    text: 'Predicted world population (millions) in 2050'#}
-{#                  }#}
-{#                }#}
-{#            });#}
-{#        });#}
-{#    </script>#}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var max = {{ max_outcome|json }};
+
+            function entryMonitor(event) {
+                let source = event.target;
+                if (source.value > max) {
+                    $('#modal').modal('show');
+                }
+                console.log(source.value);
+            }
+
+            document.getElementById('id_expected_value').addEventListener('keyup', entryMonitor);
+        });
+    </script>
 {% endblock %}
 
