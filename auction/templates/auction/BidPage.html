@@ -45,10 +45,10 @@
         <h5 class=""><u>Signal Interpretation</u></h5>
         <span>
             {% if treatment == 'cv' %}
-                Your signal about v is at most {{ epsilon }} units away from the Selected Value v. <br>
+                The Selected Value v is at most {{ epsilon }} units away from your signal about v.
                 Given your signal, the Selected Value must lie between {{ min_signal }} and {{ max_signal }}.
             {% else %}
-                Your signal about p is at most {{ epsilon }} percentage points away from the Selected Probability p.
+                The Selected Probability p is at most {{ epsilon }} percentage points away from your signal about p.
                 <br>
                 Given your signal, the Selected Probability must lie between {{ min_signal }}% and {{ max_signal }}%.
             {% endif %}
