@@ -4,11 +4,16 @@ from ._builtin import Page, WaitPage
 from .models import Constants
 from expected.models import Constants as ExpectedConstants
 
+from otree.api import (Currency as c)
 
 class InstructionPage(Page):
     def is_displayed(self):
         return self.round_number == 1
 
+    def vars_for_template(self):
+        return {
+            'treatment': self.player.treatment
+        }
 
 class NewLotteryReminder(Page):
     def is_displayed(self):
@@ -26,6 +31,7 @@ class NewSignalReminder(Page):
 
     def vars_for_template(self):
         return {
+            'treatment': self.player.treatment,
             'rounds_per_lottery': Constants.rounds_per_lottery
         }
 
@@ -39,6 +45,7 @@ class ValuationPage(Page):
 
     def vars_for_template(self):
         return {
+            'endowment': c(self.session.config['endowment_tokens']),
             'display_round_number': self.round_number + ExpectedConstants.num_rounds,
             'lottery_display_type': self.player.lottery_display_type,
             'max_outcome': self.player.c if self.player.treatment == 'cp' else self.player.beta,
@@ -49,7 +56,7 @@ class ValuationPage(Page):
             'treatment': self.player.treatment,
             'value': self.player.value,
             'min_bid': 0,
-            'max_bid': 100,
+            'max_bid': self.player.c if self.player.treatment == 'cp' else self.player.beta,
         }
 
     def before_next_page(self):
@@ -66,6 +73,7 @@ class BidPage(Page):
 
     def vars_for_template(self):
         return {
+            'endowment': c(self.session.config['endowment_tokens']),
             'display_round_number': self.round_number + ExpectedConstants.num_rounds,
             'max_outcome': self.player.c if self.player.treatment == 'cp' else self.player.beta,
             'signal': self.player.signal,
@@ -96,6 +104,8 @@ class OutcomePage(Page):
 
     def vars_for_template(self):
         return {
+            'endowment': c(self.session.config['endowment_tokens']),
+            'total_payoff': self.player.payoff + c(self.session.config['endowment_tokens']),
             'winner': self.player.winner,
             'bid': self.player.bid,
             'computer_random_val': self.player.computer_random_val,
@@ -170,6 +180,7 @@ class QuizPartTwo(Page):
         return template_vars
 
     def q3_error_message(self, value):
+        """ Question 3 - Correct Answers 2, 3, 4"""
         values = ast.literal_eval(value)
         if len(values) == 0:
             return "An error was found in question 5."
@@ -181,6 +192,7 @@ class QuizPartTwo(Page):
             return "Your selection for question 3 was incorrect."
 
     def q4_error_message(self, value):
+        """ Question 4 - Correct Answers 1, 3"""
         values = ast.literal_eval(value)
         if len(values) == 0:
             return "An error was found in question 6."

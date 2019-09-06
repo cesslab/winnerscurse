@@ -1,6 +1,7 @@
 from otree.api import Currency as c, currency_range
 from ._builtin import Page, WaitPage
 from .models import Constants
+from otree.api import (Currency as c)
 
 import ast
 
@@ -10,6 +11,7 @@ class ExpPage(Page):
 
     def vars_for_template(self):
         return {
+            'endowment': c(self.session.config['endowment_tokens']),
             'display_round_number': self.round_number,
             'alpha': self.player.alpha,
             'beta': self.player.beta,
@@ -18,7 +20,6 @@ class ExpPage(Page):
             'value': '' if self.player.treatment == 'cv' else self.player.c,
             'max_outcome': self.player.c if self.player.treatment == 'cp' else self.player.beta,
             'min_bid': 0,
-            'max_bid': 100,
             'round_number': self.round_number,
             'img': "expected/{}{}.png".format(self.player.treatment, self.player.lottery_id),
             'legend': "expected/{}l{}.png".format(self.player.treatment, self.player.lottery_id),
@@ -48,15 +49,15 @@ class QuizPartOne(Page):
             'treatment': treatment,
             'questions': {
                 'q1': {
-                    'question': 'What happens if the random price falls above your valuation in a given round?',
+                    'question': 'What happens if the lottery price lies above your valuation in a given round?',
                     'labels': ['You play the lottery.', 'You do not play the lottery.']
                 },
                 'q2': {
                     'question': 'Suppose you play the lottery in a given round. What are your earnings in that round?',
                     'labels': [
-                        'Zero.',
-                        'The outcome of the lottery minus the random price.',
-                        'The outcome of the lottery.'
+                        '100 Credits.',
+                        '100 Credits + the outcome of the lottery - the lottery price.',
+                        '100 Credits + the outcome of the lottery.'
                     ],
                 },
             },

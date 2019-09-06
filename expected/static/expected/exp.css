@@ -32,6 +32,16 @@ img#legend {
     grid-template-columns: 60% 40%;
 }
 
+.row-container {
+    display: grid;
+    grid-template-rows: 90% 10%;
+}
+
+.prompt-container {
+    display: grid;
+    grid-template-rows: auto auto auto;
+}
+
 .header-item {
     grid-column: 1 / span 2;
 }

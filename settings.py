@@ -17,7 +17,6 @@ SESSION_CONFIGS = [
         'display_name': "Winners Curse",
         'num_demo_participants': 1,
         'app_sequence': ['expected', 'auction', 'dice', 'payoff', 'questionnaire'],
-        'endowment': 10,
         'treatment': 'cp',
         'lottery_1': '1',
         'lottery_2': '2',
@@ -27,6 +26,7 @@ SESSION_CONFIGS = [
         'lottery_6': '6',
         'lottery_7': '7',
         'lottery_8': '8',
+        'endowment_tokens': '100',
         'doc': """
         <h3>Treatments (treatment):</h3> 
         <p>The treatment parameter will determine if either the cp treatment, or the cv treatment will be played this 

@@ -16,7 +16,7 @@
     <div class="grid-container">
         <div class="item item-1">
             <div>
-                <p>Consider the following lottery wheel. How much are you willing to pay to play this lottery?</p>
+                <h5>Consider the following lottery wheel. </h5>
             </div>
 
 {#            <div class="lottery-header">#}
@@ -35,12 +35,52 @@
 {#            </div>#}
         </div>
         <div class="item item-2">
+
             <div class="pie-container">
-                <div class="item">
-                    <img id="pie" src="{% static img|safe %}" alt="chart">
+                <div class="row-container">
+                    <div class="item">
+                        <img id="pie" src="{% static img|safe %}" alt="chart">
+                    </div>
+                    <div class="item">
+                        <img id="legend" src="{% static legend|safe %}" alt="legend">
+                    </div>
                 </div>
-                <div class="item">
-                    <img id="legend" src="{% static legend|safe %}" alt="legend">
+                <div class="prompt-container">
+                    <div class="item">
+                        <h5>Your Starting Balance: {{ endowment }}</h5>
+                        <br>
+                        <h5>How much are you willing to pay for this lottery?</h5>
+                    </div>
+                    <div class="item">
+                    </div>
+                    <div class="item">
+                        <div class="grid-bid-container">
+                            <div class="text-center lottery-header">
+                                <h4><u>Your Valuation</u></h4>
+                            </div>
+                            <div>
+                                <input
+                                        type="number"
+                                        id="id_expected_value"
+                                        name="expected_value"
+                                        min="{{ min_bid }}"
+                                        max="{{ max_outcome }}"
+                                        step="1"
+                                        class="center-input form-control"
+                                        value="{{ form.expected_value.value|default_if_none:"" }}"
+                                        placeholder="Enter Your Expected Value" required>
+
+                                {% if form.expected_value.errors %}
+                                    <div class="alert alert-danger">
+                                        {{ form.expected_value.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div>
+                                {% next_button %}
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 {#            <canvas id="pie-chart" width="950" height="600"></canvas>#}
@@ -49,31 +89,7 @@
 
 
 
-    <div class="grid-bid-container">
-        <div class="text-center lottery-header">
-            <h4><u>Your Valuation</u></h4>
-        </div>
-        <div>
-            <input
-                    type="number"
-                    id="id_expected_value"
-                    name="expected_value"
-                    min="{{ min_bid }}"
-                    max="{{ max_bid }}"
-                    step="1"
-                    class="center-input form-control"
-                    value="{{ form.expected_value.value|default_if_none:"" }}"
-                    placeholder="Enter Your Expected Value" required>
 
-            {% if form.expected_value.errors %}
-                <div class="alert alert-danger">
-                    {{ form.expected_value.errors }}
-                </div>
-            {% endif %}
-        </div>
-    </div>
-
-    {% next_button %}
 
     <div class="modal" id="modal" tabindex="-1" role="dialog">
       <div class="modal-dialog" role="document">
@@ -86,11 +102,10 @@
           </div>
           <div class="modal-body">
             <p>Your valuation is larger than the highest possible outcome of the lottery.</p>
-            <p>Would you like to proceed with this value?</p>
+            <p>Please submit a reasonable valuation that does not exceed the highest possible outcome of the lottery.</p>
           </div>
           <div class="modal-footer">
-            <button type="submit" class="btn btn-primary otree-btn-next ">Yes</button>
-            <button type="button" class="modal-btn btn btn-secondary" data-dismiss="modal">No</button>
+            <button type="button" class="modal-btn btn btn-secondary" data-dismiss="modal">Back</button>
           </div>
         </div>
       </div>

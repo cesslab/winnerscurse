@@ -8,6 +8,11 @@
     grid-column : 1 / span 2;
 }
 
+.showup {
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+
 .plain-title-item {
   text-align: center;
   grid-column : 1 / span 2;

@@ -160,5 +160,7 @@ class Player(BasePlayer):
                 'part_1_2_payment_round': part_1_2_payment_round,
                 'lottery_display_type': self.lottery_display_type,
                 'round_number': part_1_2_payment_round,
-                'tie': self.tie
+                'tie': self.tie,
+                'total_payoff': self.payoff + c(self.session.config['endowment_tokens']),
+                'endowment': c(self.session.config['endowment_tokens'])
             }

@@ -45,14 +45,13 @@ class Player(BasePlayer):
     def final_payoff(self):
         self.phase_one_payoff_dollars = float(self.phase_one_payoff_credits) * (3/4)*(1/6)
         self.phase_two_payoff_dollars = float(self.phase_two_payoff_credits) * (1/4)*(1/6)
-        endowment = float(self.session.config['endowment'])
         showup = float(self.session.config['participation_fee'])
-        self.total_payoff_dollars = self.phase_one_payoff_dollars + self.phase_two_payoff_dollars + endowment + showup
-        self.participant.payoff = c(self.phase_one_payoff_dollars + self.phase_two_payoff_dollars + endowment)
+        self.total_payoff_dollars = self.phase_one_payoff_dollars + self.phase_two_payoff_dollars + showup
+        self.participant.payoff = c(self.phase_one_payoff_dollars + self.phase_two_payoff_dollars)
 
     def auction_payoff(self):
         self.phase_one_payment_round = self.participant.vars['auction_data']['round_number']
-        self.phase_one_payoff_credits = self.participant.vars['auction_data']['payoff']
+        self.phase_one_payoff_credits = self.participant.vars['auction_data']['total_payoff']
 
     def dice_phase_payoffs(self):
         lottery: RedBlueLottery = self.participant.vars['red_blue_lottery']

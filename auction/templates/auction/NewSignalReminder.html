@@ -10,9 +10,14 @@
 
 {% block content %}
     <p>
-        In the next {{ rounds_per_lottery }} rounds we will show you {{ rounds_per_lottery }}
-        different signals for {{ rounds_per_lottery }} different lottery tickets
-        of the same type.
-    </p>
+        In the next {{ rounds_per_lottery }} rounds you will see a lottery with the same initial information.
+        {% if treatment == 'cp' %}
+            That means, the value v and the range for the probability p will be the same.</p>
+            <p>The Selected Probability (and the signal), however, may change from round to round.</p>
+        {% else %}
+            That means, the probability p and the range for the value v will be the same.</p>
+            <p>The Selected Value (and the signal), however, may change from round to round.</p>
+        {% endif %}
+
     {% next_button %}
 {% endblock %}

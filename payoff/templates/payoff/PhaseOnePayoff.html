@@ -35,7 +35,7 @@
             <p>{{ bid }}</p>
         </div>
         <div class="item text-center">
-            <h5>Random Price</h5>
+            <h5>Lottery Price</h5>
             <span>{{ computer_random_val }}</span>
         </div>
     </div>
@@ -81,17 +81,17 @@
     </div>
     <div class="text-center">
         <p>
-            With a probability of {{ p }}% you get a value of {{ value }}, <br>otherwise you get 0.
+            With a probability p of {{ p }}% you get a value v of {{ value }} Credits, <br>otherwise you get 0 Credits.
         </p>
     </div>
 
     <div id="played-outcome" class="text-center">
-        <p>The lottery was played and its outcome was {{ outcome }}.</p>
+        <p>The lottery was played and its outcome was {{ outcome }} Credits.</p>
     </div>
 
     <div id="earnings-header" class="text-center">
         <h4>Your Earnings</h4>
-        <p>Your earnings for this round were {{ payoff }}.</p>
+        <p>Your earnings for this round are {{ total_payoff }}.</p>
     </div>
     {% next_button %}
 {% endblock %}

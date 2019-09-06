@@ -11,6 +11,9 @@
 
 {% block content %}
     <div>
+        <p>In this round your starting balance is {{ endowment }}.</p>
+    </div>
+    <div>
         <p>Consider the following lottery ticket with two possible prizes,
             0 and a value v.</p>
     </div>
@@ -21,11 +24,11 @@
     <div class="lottery">
         <p class="text-center">
             {% if treatment == 'cv' %}
-                With a probability of {{ p }}% you get a value v between {{ alpha }} and {{ beta }}, <br>otherwise you
-                get 0.
+                With a probability of {{ p }}% you get a value v between {{ alpha }} and {{ beta }} Credits,
+                <br>otherwise you get 0 Credits.
             {% else %}
-                With a probability p between {{ alpha }}% and {{ beta }}%, you get a value of {{ value }}, <br>otherwise
-                you get 0.
+                With a probability p between {{ alpha }}% and {{ beta }}%, you get a value v = {{ value }}, <br>otherwise
+                you get 0 Credits.
             {% endif %}
         </p>
     </div>
@@ -34,10 +37,10 @@
         <h4 class="text-center lottery-header"><u>Your Signal</u></h4>
         <p class="text-center">
             {% if treatment == 'cv' %}
-                Your signal about v is: {{ signal }}.
+                Your signal about v is: {{ signal }}
             {% else %}
-                Your signal about p is: {{ signal }}%.
-            {% endif %}
+                Your signal about p is: {{ signal }}%
+            {% endif %} (with x = {{ epsilon }}).
         </p>
     </div>
 
@@ -65,11 +68,11 @@
                     id="id_bid"
                     name="bid"
                     min="{{ min_bid }}"
-                    max="{{ max_bid }}"
+                    max="{{ max_outcome }}"
                     step="1"
                     class="center-input form-control"
                     value="{{ form.bid.value|default_if_none:"" }}"
-                    placeholder="Enter Your Valuation" required>
+                    placeholder="Enter how much you are willing to pay for this lottery" required>
 
             {% if form.bid.errors %}
                 <div class="alert alert-danger">
@@ -92,11 +95,10 @@
                 </div>
                 <div class="modal-body">
                     <p>Your valuation is larger than the highest possible outcome of the lottery.</p>
-                    <p>Would you like to proceed with this value?</p>
+                    <p>Please submit a reasonable valuation that does not exceed the highest possible outcome of the lottery.</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary otree-btn-next ">Yes</button>
-                    <button type="button" class="modal-btn btn btn-secondary" data-dismiss="modal">No</button>
+                    <button type="button" class="modal-btn btn btn-secondary" data-dismiss="modal">Back</button>
                 </div>
             </div>
         </div>
