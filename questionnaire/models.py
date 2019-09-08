@@ -33,9 +33,9 @@ class Player(BasePlayer):
     q1e = models.IntegerField()
     q1exp = models.LongStringField()
     q2 = models.IntegerField(choices=[
-        [1, 'I would bid less than my valuation.'],
-        [2, 'I would bid my valuation.'],
-        [3, 'I would bid more than my valuation']], widget=widgets.RadioSelect)
+        [1, 'I would bid less than my willingness to pay.'],
+        [2, 'I would bid my willingness to pay.'],
+        [3, 'I would bid more than my willingness to pay']], widget=widgets.RadioSelect)
     q2exp = models.LongStringField()
     q3 = models.IntegerField()
     q4 = models.IntegerField(choices=[

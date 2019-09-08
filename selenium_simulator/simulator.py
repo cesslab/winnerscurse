@@ -78,7 +78,7 @@ def lottery_valuation(browser, round_number):
     input_field = browser.find_element(By.XPATH, "//input[@id='id_expected_value']")
     input_field.clear()
     random_bid = random.randint(min_value, max_value)
-    print("Phase 1: Entered Valuation {}".format(random_bid))
+    print("Phase 1: Entered Willingness to Pay {}".format(random_bid))
     input_field.send_keys(str(random_bid))
     browser.find_element(By.XPATH, '//button').click()
 

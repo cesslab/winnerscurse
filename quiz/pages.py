@@ -27,7 +27,7 @@ class QuizPartOne(Page):
             'treatment': treatment,
             'questions': {
                 'q1': {
-                    'question': 'What happens if the random price falls above your valuation in a given round?',
+                    'question': 'What happens if the random price falls above your willingness to pay in a given round?',
                     'labels': ['You play the lottery.', 'You do not play the lottery.']
                 },
                 'q2': {

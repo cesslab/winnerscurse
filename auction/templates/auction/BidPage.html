@@ -11,24 +11,26 @@
 
 {% block content %}
     <div>
-        <p>In this round your starting balance is {{ endowment }}.</p>
+        <h4 class="text-center lottery-header"><u>Your Balance</u></h4>
+        <p class="text-center">
+            {{ endowment }}
+        </p>
+    </div>
+    <div class="lottery-header">
+        <h4 class="text-center"><u>Lottery of type {{ lottery_display_type }}</u></h4>
     </div>
     <div>
         <p>Consider the following lottery ticket with two possible prizes,
             0 and a value v.</p>
     </div>
-
-    <div class="lottery-header">
-        <h4 class="text-center"><u>Lottery of type {{ lottery_display_type }}</u></h4>
-    </div>
     <div class="lottery">
         <p class="text-center">
             {% if treatment == 'cv' %}
-                With a probability of {{ p }}% you get a value v between {{ alpha }} and {{ beta }} Credits,
-                <br>otherwise you get 0 Credits.
+                With a probability of {{ p }}% you get a value v between {{ alpha }} and {{ beta }} credits,
+                <br>otherwise you get 0 credits.
             {% else %}
-                With a probability p between {{ alpha }}% and {{ beta }}%, you get a value v = {{ value }}, <br>otherwise
-                you get 0 Credits.
+                With a probability p between {{ alpha }}% and {{ beta }}%, you get a value v = {{ value }} credits, <br>otherwise
+                you get 0 credits.
             {% endif %}
         </p>
     </div>
@@ -60,7 +62,7 @@
 
     <div class="grid-bid-container">
         <div class="text-center lottery-header">
-            <h4><u>Your Valuation</u></h4>
+            <h4><u>Your Willingness to Pay</u></h4>
         </div>
         <div>
             <input
@@ -94,8 +96,8 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p>Your valuation is larger than the highest possible outcome of the lottery.</p>
-                    <p>Please submit a reasonable valuation that does not exceed the highest possible outcome of the lottery.</p>
+                    <p>Your willingness to pay is larger than the highest possible outcome of the lottery.</p>
+                    <p>Please submit a reasonable willingness to pay that does not exceed the highest possible outcome of the lottery.</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="modal-btn btn btn-secondary" data-dismiss="modal">Back</button>

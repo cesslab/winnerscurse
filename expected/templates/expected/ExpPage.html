@@ -18,21 +18,6 @@
             <div>
                 <h5>Consider the following lottery wheel. </h5>
             </div>
-
-{#            <div class="lottery-header">#}
-{#                <h4 class="text-center"><u>Lottery of type {{ display_round_number }}</u></h4>#}
-{#            </div>#}
-{#            <div class="lottery">#}
-{#                <p class="text-center">#}
-{#                    {% if treatment == 'cv' %}#}
-{#                        With a probability of {{ p }}% you get a value v between {{ alpha }} and {{ beta }}, <br>otherwise you#}
-{#                        get 0.#}
-{#                    {% else %}#}
-{#                        With a probability p between {{ alpha }}% and {{ beta }}%, you get a value of {{ value }}, <br>otherwise#}
-{#                        you get 0.#}
-{#                    {% endif %}#}
-{#                </p>#}
-{#            </div>#}
         </div>
         <div class="item item-2">
 
@@ -47,16 +32,19 @@
                 </div>
                 <div class="prompt-container">
                     <div class="item">
-                        <h5>Your Starting Balance: {{ endowment }}</h5>
-                        <br>
-                        <h5>How much are you willing to pay for this lottery?</h5>
+                        <div class="text-center lottery-header"><h4><u>Your Starting Balance</u></h4></div>
+                        <div class="text-center">
+                            <h5>{{ endowment }}</h5>
+                        </div>
+{#                        <br>#}
+{#                        <h5>How much are you willing to pay for this lottery?</h5>#}
                     </div>
                     <div class="item">
                     </div>
                     <div class="item">
                         <div class="grid-bid-container">
                             <div class="text-center lottery-header">
-                                <h4><u>Your Valuation</u></h4>
+                                <h4><u>Your Willingness to Pay</u></h4>
                             </div>
                             <div>
                                 <input
@@ -68,7 +56,7 @@
                                         step="1"
                                         class="center-input form-control"
                                         value="{{ form.expected_value.value|default_if_none:"" }}"
-                                        placeholder="Enter Your Expected Value" required>
+                                        placeholder="Enter how much you are willing to pay" required>
 
                                 {% if form.expected_value.errors %}
                                     <div class="alert alert-danger">
@@ -101,8 +89,8 @@
             </button>
           </div>
           <div class="modal-body">
-            <p>Your valuation is larger than the highest possible outcome of the lottery.</p>
-            <p>Please submit a reasonable valuation that does not exceed the highest possible outcome of the lottery.</p>
+            <p>Your willingness to pay is larger than the highest possible outcome of the lottery.</p>
+            <p>Please submit a reasonable willingness to pay that does not exceed the highest possible outcome of the lottery.</p>
           </div>
           <div class="modal-footer">
             <button type="button" class="modal-btn btn btn-secondary" data-dismiss="modal">Back</button>

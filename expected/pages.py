@@ -49,15 +49,15 @@ class QuizPartOne(Page):
             'treatment': treatment,
             'questions': {
                 'q1': {
-                    'question': 'What happens if the lottery price lies above your valuation in a given round?',
+                    'question': 'What happens if the lottery price lies above your willingness to pay in a given round?',
                     'labels': ['You play the lottery.', 'You do not play the lottery.']
                 },
                 'q2': {
                     'question': 'Suppose you play the lottery in a given round. What are your earnings in that round?',
                     'labels': [
-                        '100 Credits.',
-                        '100 Credits + the outcome of the lottery - the lottery price.',
-                        '100 Credits + the outcome of the lottery.'
+                        '100 credits.',
+                        '100 credits + the outcome of the lottery - the lottery price.',
+                        '100 credits + the outcome of the lottery.'
                     ],
                 },
             },
