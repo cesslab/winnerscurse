@@ -161,6 +161,7 @@ class Player(BasePlayer):
                 'part_1_2_payment_round': self.round_number,
                 'round_number': self.round_number,
                 'display_round_number': self.round_number,
+                'total_payoff': self.payoff + c(self.session.config['endowment_tokens']),
                 'tie': self.tie
             }
 
