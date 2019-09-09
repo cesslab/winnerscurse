@@ -30,40 +30,19 @@ class ExpPage(Page):
         self.player.set_payoffs()
 
 
-class QuizPartOne(Page):
+class PasswordWaitPage(Page):
     form_model = 'player'
-    form_fields = ['q1', 'q2']
+    form_fields = ['pass_code']
 
     def is_displayed(self):
         return self.round_number == 1
 
-    def vars_for_template(self):
-        treatment = self.session.config['treatment']
-        if treatment != 'cp' and treatment != 'cv':
-            treatment = 'cp'
+    def error_message(self, values):
+        if 'pass_code' not in values:
+            return ' You must wait for the researcher to provide you with the correct password'
+        elif not (values['pass_code'] == 42):
+            return ' You must wait for the researcher to provide you with the correct password'
 
-        ttype = "Value" if treatment == 'cv' else "Probability"
-        cterm = "Selected Value" if treatment == 'cv' else "non-zero value"
-        nf = '%' if treatment == 'cp' else ''
-        template_vars = {
-            'treatment': treatment,
-            'questions': {
-                'q1': {
-                    'question': 'What happens if the lottery price lies above your willingness to pay in a given round?',
-                    'labels': ['You play the lottery.', 'You do not play the lottery.']
-                },
-                'q2': {
-                    'question': 'Suppose you play the lottery in a given round. What are your earnings in that round?',
-                    'labels': [
-                        '100 credits.',
-                        '100 credits + the outcome of the lottery - the lottery price.',
-                        '100 credits + the outcome of the lottery.'
-                    ],
-                },
-            },
-        }
-
-        return template_vars
 
 
     def q1_error_message(self, value):
@@ -90,5 +69,5 @@ class QuizPartOne(Page):
 
 
 page_sequence = [
-    QuizPartOne, ExpPage,
+    PasswordWaitPage, ExpPage,
 ]

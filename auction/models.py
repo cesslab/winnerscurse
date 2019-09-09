@@ -18,7 +18,7 @@ Phase 1: Auction Phase: Set to 80 rounds, 10 for each lottery.
 class Constants(BaseConstants):
     name_in_url = 'auction'
     players_per_group = None
-    rounds_per_lottery = 10  # 10
+    rounds_per_lottery = 1  # 10
     num_lottery_types = 8
     num_part_one_rounds = 4
     num_rounds = num_lottery_types + rounds_per_lottery * num_lottery_types
@@ -85,11 +85,15 @@ class Player(BasePlayer):
     value = models.IntegerField()
     random_value = models.IntegerField()
     outcome = models.IntegerField()
-    pass_code = models.IntegerField(blank=True)
+
+    # Quiz 1
+    q1 = models.StringField(widget=forms.CheckboxSelectMultiple(choices=(("1", "1"), ("2", "2"))), )
+    q2 = models.StringField(widget=forms.CheckboxSelectMultiple(choices=(("1", "1"), ("2", "2"))), )
 
     # Quiz 2
     q3 = models.StringField(widget=forms.CheckboxSelectMultiple(choices=(("1", "1"), ("2", "2"), ("3", "3"), ("4", "4"), ("5", "5"))), )
     q4 = models.StringField(widget=forms.CheckboxSelectMultiple(choices=(("1", "1"), ("2", "2"), ("3", "3"))), )
+
 
     def set_round_lottery(self):
         stage_number = math.floor((self.round_number - 1) / (Constants.rounds_per_lottery + 1)) + 1

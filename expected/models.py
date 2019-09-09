@@ -95,9 +95,7 @@ class Player(BasePlayer):
     winner = models.BooleanField()
     payoff = models.IntegerField()
 
-    # Quiz
-    q1 = models.StringField(widget=forms.CheckboxSelectMultiple(choices=(("1", "1"), ("2", "2"))), )
-    q2 = models.StringField(widget=forms.CheckboxSelectMultiple(choices=(("1", "1"), ("2", "2"))), )
+    pass_code = models.IntegerField(blank=True)
 
     def set_round_lottery(self):
         self.treatment = self.session.config['treatment']

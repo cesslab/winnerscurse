@@ -96,6 +96,41 @@ class BidPage(Page):
         self.player.becker_degroot_marschak_payment_method()
         self.player.set_payoffs(2, 2)
 
+class QuizPartOne(Page):
+    form_model = 'player'
+    form_fields = ['q1', 'q2']
+
+    def is_displayed(self):
+        return self.round_number == 1
+
+    def vars_for_template(self):
+        treatment = self.session.config['treatment']
+        if treatment != 'cp' and treatment != 'cv':
+            treatment = 'cp'
+
+        ttype = "Value" if treatment == 'cv' else "Probability"
+        cterm = "Selected Value" if treatment == 'cv' else "non-zero value"
+        nf = '%' if treatment == 'cp' else ''
+        template_vars = {
+            'treatment': treatment,
+            'questions': {
+                'q1': {
+                    'question': 'What happens if the lottery price lies above your willingness to pay in a given round?',
+                    'labels': ['You play the lottery.', 'You do not play the lottery.']
+                },
+                'q2': {
+                    'question': 'Suppose you play the lottery in a given round. What are your earnings in that round?',
+                    'labels': [
+                        '100 credits.',
+                        '100 credits + the outcome of the lottery - the lottery price.',
+                        '100 credits + the outcome of the lottery.'
+                    ],
+                },
+            },
+        }
+
+        return template_vars
+
 
 class OutcomePage(Page):
 
@@ -123,20 +158,6 @@ class OutcomePage(Page):
             'lottery_display_type': self.player.lottery_display_type,
             'display_round_number': self.round_number + ExpectedConstants.num_rounds,
         }
-
-
-class PasswordWaitPage(Page):
-    form_model = 'player'
-    form_fields = ['pass_code']
-
-    def is_displayed(self):
-        return self.round_number == 1
-
-    def error_message(self, values):
-        if 'pass_code' not in values:
-            return ' You must wait for the researcher to provide you with the correct password'
-        elif not (values['pass_code'] == 42):
-            return ' You must wait for the researcher to provide you with the correct password'
 
 
 class QuizPartTwo(Page):
@@ -204,5 +225,5 @@ class QuizPartTwo(Page):
             return "Your selection for question 4 was incorrect."
 
 page_sequence = [
-   PasswordWaitPage, QuizPartTwo, InstructionPage, NewLotteryReminder, ValuationPage, NewSignalReminder, BidPage, OutcomePage
+   QuizPartOne, QuizPartTwo, InstructionPage, NewLotteryReminder, ValuationPage, NewSignalReminder, BidPage, OutcomePage
 ]
