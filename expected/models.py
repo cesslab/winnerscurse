@@ -91,7 +91,6 @@ class Player(BasePlayer):
 
     # BDM
     computer_random_val = models.IntegerField()
-    tie = models.BooleanField()
     winner = models.BooleanField()
     payoff = models.IntegerField()
 
@@ -114,29 +113,14 @@ class Player(BasePlayer):
 
     def becker_degroot_marschak_payment_method(self):
         self.computer_random_val = random.randint(0, 100)
-        # The Player's valuation is the same as the computers, and a coin is flipped to break the tie
-        if self.expected_value == self.computer_random_val:
-            winner = random.randint(1, 2)
-            # The player wins the coin toss
-            if winner == 1:
-                self.payoff = self.outcome - self.computer_random_val
-                self.winner = True
-                self.tie = True
-            # The player loses the coin toss
-            else:
-                self.payoff = 0
-                self.winner = False
-                self.tie = True
-        # The Player's valuation is greater than computer, and she wins the lottery
-        if self.expected_value > self.computer_random_val:
+        # If the player's bid is equal to the random lottery price, a coin is flipped to break the tie.
+        if self.expected_value >= self.computer_random_val:
             self.payoff = self.outcome - self.computer_random_val
             self.winner = True
-            self.tie = False
         # The Player's valuation is lower than the computers
         else:
             self.payoff = 0
             self.winner = False
-            self.tie = False
 
     def set_payoffs(self):
         part_1_2_payment_round = self.participant.vars["part_1_2_payment_round"]
@@ -145,7 +129,7 @@ class Player(BasePlayer):
             print("Saving payment for phase 1 round {}".format(part_1_2_payment_round))
             self.participant.vars['auction_data'] = {
                 'phase': 1,
-                'winner': None,
+                'winner': self.winner,
                 'bid': self.expected_value, # different
                 'computer_random_val': self.random_value,
                 'alpha': self.alpha,
@@ -160,7 +144,6 @@ class Player(BasePlayer):
                 'round_number': self.round_number,
                 'display_round_number': self.round_number,
                 'total_payoff': self.payoff + c(self.session.config['endowment_tokens']),
-                'tie': self.tie
             }
 
 

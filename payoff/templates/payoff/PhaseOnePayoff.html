@@ -41,21 +41,10 @@
     </div>
     <div class="text-center">
         <span>
-        {% if tie %}
-            {% if winner %}
-                You and at least one other bidder submitted identical highest bids. The computer randomly selected
-                you as the winner.
-            {% else %}
-                You and at least one other bidder submitted identical highest bids. The computer randomly selected
-                one other bidder
-                as the winner.
-            {% endif %}
+        {% if winner %}
+            You bought the lottery.
         {% else %}
-            {% if winner %}
-                You bought the lottery.
-            {% else %}
-                You did not buy the lottery.
-            {% endif %}
+            You did not buy the lottery.
         {% endif %}
         </span>
     </div>

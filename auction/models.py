@@ -69,7 +69,6 @@ class Player(BasePlayer):
 
     # BDM
     computer_random_val = models.IntegerField()
-    tie = models.BooleanField(default=False)
     winner = models.BooleanField()
     payoff = models.IntegerField()
 
@@ -115,29 +114,15 @@ class Player(BasePlayer):
         self.signal = lottery.signal
 
     def becker_degroot_marschak_payment_method(self):
+        # random lottery price
         self.computer_random_val = random.randint(0, 100)
-        if self.bid == self.computer_random_val:
-            # Break tie
-            winner = random.randint(1, 2)
-            # player wins
-            if winner == 1:
-                self.payoff = self.outcome - self.computer_random_val
-                self.winner = True
-                self.tie = True
-            else:
-                self.payoff = 0
-                self.winner = False
-                self.tie = True
-        # win the lottery ticket
-        if self.bid > self.computer_random_val:
+        if self.bid >= self.computer_random_val:
             self.payoff = self.outcome - self.computer_random_val
             self.winner = True
-            self.tie = False
         # lose
         else:
             self.payoff = self.computer_random_val - self.computer_random_val
             self.winner = False
-            self.tie = False
 
     def set_payoffs(self, phase, stage):
         part_1_2_payment_round = self.participant.vars["part_1_2_payment_round"]
@@ -164,7 +149,6 @@ class Player(BasePlayer):
                 'part_1_2_payment_round': part_1_2_payment_round,
                 'lottery_display_type': self.lottery_display_type,
                 'round_number': part_1_2_payment_round,
-                'tie': self.tie,
                 'total_payoff': self.payoff + c(self.session.config['endowment_tokens']),
                 'endowment': c(self.session.config['endowment_tokens'])
             }
