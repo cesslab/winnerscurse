@@ -119,7 +119,6 @@ class OutcomePage(Page):
             'outcome': self.player.outcome,
             'payoff': self.player.payoff,
             'round_number': self.round_number,
-            'tie': self.player.tie,
             'lottery_display_type': self.player.lottery_display_type,
             'display_round_number': self.round_number + ExpectedConstants.num_rounds,
         }
