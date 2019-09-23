@@ -7,7 +7,6 @@ from otree.api import (
 )
 
 from experiment.lottery import LotterySpecification, Lottery
-from auction.models import Constants as AuctionConstants
 from django import forms
 
 author = 'Anwar A. Ruff'
@@ -47,17 +46,6 @@ class Subsession(BaseSubsession):
         treatment = self.session.config['treatment']
         for player in self.get_players():  # type: Group
             if self.round_number == 1:
-                # --------------------------------------------------
-                #  Random payoff determination for phase one and two
-                # --------------------------------------------------
-                total_rounds = Constants.num_lottery_types + AuctionConstants.num_rounds
-                rround = random.randint(1, total_rounds)
-                player.participant.vars["part_1_2_payment_round"] = rround
-                print("*******************************************")
-                print("Selecting a random round between 1 and {}".format(total_rounds))
-                print("Payment Round: {}".format(rround))
-                print("*******************************************")
-
                 player.participant.vars["phase_one_lottery_order"] = []
                 player.participant.vars["phase_one_lotteries"] = []
                 for l in range(1, Constants.num_lottery_types + 1):

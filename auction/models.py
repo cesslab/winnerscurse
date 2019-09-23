@@ -9,6 +9,7 @@ from otree.api import (
 
 from django import forms
 from experiment.lottery import LotterySpecification, Lottery
+from expected.models import Constants as ExpectedConstants
 
 doc = """
 Phase 1: Auction Phase: Set to 80 rounds, 10 for each lottery.
@@ -38,6 +39,13 @@ class Subsession(BaseSubsession):
     def creating_session(self):
         for player in self.get_players():  # type: Group
             if self.round_number == 1:
+                # --------------------------------------------------
+                #  Random payoff determination for phase one and two
+                # --------------------------------------------------
+                total_rounds = Constants.num_lottery_types + ExpectedConstants.num_rounds
+                rround = random.randint(1, total_rounds)
+                player.participant.vars["part_1_2_payment_round"] = rround
+
                 # Get and save the order in which the lottery types should be viewed
                 player.participant.vars["lottery_display_type"] = 1
                 player.participant.vars["lottery_type_order"] = []
