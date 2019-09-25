@@ -60,7 +60,7 @@ class ValuationPage(Page):
 
     def before_next_page(self):
         self.player.becker_degroot_marschak_payment_method()
-        self.player.set_payoffs(2, 1)
+        self.player.set_payoffs(1, 1)
 
 
 class BidPage(Page):
@@ -93,7 +93,7 @@ class BidPage(Page):
 
     def before_next_page(self):
         self.player.becker_degroot_marschak_payment_method()
-        self.player.set_payoffs(2, 2)
+        self.player.set_payoffs(1, 2)
 
 class QuizPartOne(Page):
     form_model = 'player'
