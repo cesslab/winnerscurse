@@ -132,6 +132,12 @@ class Player(BasePlayer):
             self.winner = False
 
     def set_payoffs(self, phase, stage):
+        """
+        Note: The first and second app, in this case auction and expected, are referred to as phase 1 and 2, respectively.
+                 The auction app itself consists of two phases:
+                    - Stage 1: No signal (one round per each lottery type)
+                    - Stage 2: With signal (rounds_per_lottery rounds per each lottery type)
+        """
         part_1_2_payment_round = self.participant.vars["part_1_2_payment_round"]
 
         if self.round_number == part_1_2_payment_round:
