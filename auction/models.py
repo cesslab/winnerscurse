@@ -9,7 +9,6 @@ from otree.api import (
 
 from django import forms
 from experiment.lottery import LotterySpecification, Lottery
-from expected.models import Constants as ExpectedConstants
 
 doc = """
 Phase 1: Auction Phase: Set to 80 rounds, 10 for each lottery.
@@ -21,8 +20,8 @@ class Constants(BaseConstants):
     players_per_group = None
     rounds_per_lottery = 1  # 10
     num_lottery_types = 8
-    num_part_one_rounds = 4
-    num_rounds = num_lottery_types + rounds_per_lottery * num_lottery_types
+    expected_phase_rounds = 4
+    num_rounds = rounds_per_lottery * num_lottery_types
     lottery_types = [
         LotterySpecification(30, 90, 60, 4),
         LotterySpecification(10, 70, 40, 4),
@@ -42,7 +41,7 @@ class Subsession(BaseSubsession):
                 # --------------------------------------------------
                 #  Random payoff determination for phase one and two
                 # --------------------------------------------------
-                total_rounds = Constants.num_lottery_types + ExpectedConstants.num_rounds
+                total_rounds = Constants.num_rounds + Constants.expected_phase_rounds
                 rround = random.randint(1, total_rounds)
                 player.participant.vars["part_1_2_payment_round"] = rround
 
@@ -134,11 +133,8 @@ class Player(BasePlayer):
 
     def set_payoffs(self, phase, stage):
         part_1_2_payment_round = self.participant.vars["part_1_2_payment_round"]
-        display_round_number = self.round_number + Constants.num_part_one_rounds
 
-        print("Phase {} Stage {} Round: {}, payment round: {}".format(phase, stage, display_round_number, part_1_2_payment_round))
-        if display_round_number == part_1_2_payment_round:
-            print("Saving payment: for phase {}, stage {}, round {}".format(phase, stage, display_round_number))
+        if self.round_number == part_1_2_payment_round:
             self.participant.vars['auction_data'] = {
                 'phase': phase,
                 'stage': stage,
@@ -156,7 +152,8 @@ class Player(BasePlayer):
                 'payoff': self.payoff,
                 'part_1_2_payment_round': part_1_2_payment_round,
                 'lottery_display_type': self.lottery_display_type,
-                'round_number': part_1_2_payment_round,
+                'display_round_number': self.round_number,
+                'round_number': self.round_number,
                 'total_payoff': self.payoff + c(self.session.config['endowment_tokens']),
                 'endowment': c(self.session.config['endowment_tokens'])
             }

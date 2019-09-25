@@ -7,7 +7,7 @@ from otree.api import (
 )
 
 from experiment.lottery import LotterySpecification, Lottery
-from django import forms
+from auction.models import Constants as AuctionConstants
 
 author = 'Anwar A. Ruff'
 
@@ -30,15 +30,15 @@ class Constants(BaseConstants):
         # 4
         LotterySpecification(10, 70, 60, 4),
         # 5
-        LotterySpecification(30, 90, 60, 8),
+        # LotterySpecification(30, 90, 60, 8),
         # 6
-        LotterySpecification(10, 70, 40, 8),
+        # LotterySpecification(10, 70, 40, 8),
         # 7
-        LotterySpecification(30, 90, 40, 8),
+        # LotterySpecification(30, 90, 40, 8),
         # 8
-        LotterySpecification(10, 70, 60, 8),
+        # LotterySpecification(10, 70, 60, 8),
     ]
-    num_rounds = 4
+    num_rounds = num_lottery_types
 
 
 class Subsession(BaseSubsession):
@@ -48,8 +48,8 @@ class Subsession(BaseSubsession):
             if self.round_number == 1:
                 player.participant.vars["phase_one_lottery_order"] = []
                 player.participant.vars["phase_one_lotteries"] = []
-                for l in range(1, Constants.num_lottery_types + 1):
-                    lottery_id = int(self.session.config["lottery_{}".format(l)].strip())
+                for lid in range(1, Constants.num_lottery_types + 1):
+                    lottery_id = int(self.session.config["lottery_{}".format(lid)].strip())
                     lottery_type = Constants.lottery_types[lottery_id-1]
                     player.participant.vars["phase_one_lottery_order"].append(lottery_id)
                     player.participant.vars["phase_one_lotteries"].append(Lottery(lottery_type, treatment, with_signal=False))
@@ -112,9 +112,7 @@ class Player(BasePlayer):
 
     def set_payoffs(self):
         part_1_2_payment_round = self.participant.vars["part_1_2_payment_round"]
-        print("Phase 1 Test: payment round {} == current round {}".format(part_1_2_payment_round, self.round_number))
-        if part_1_2_payment_round == self.round_number:
-            print("Saving payment for phase 1 round {}".format(part_1_2_payment_round))
+        if part_1_2_payment_round == self.round_number + AuctionConstants.num_rounds:
             self.participant.vars['auction_data'] = {
                 'phase': 1,
                 'winner': self.winner,
@@ -128,9 +126,9 @@ class Player(BasePlayer):
                 'value': self.value,
                 'outcome': self.outcome,
                 'payoff': self.payoff,
-                'part_1_2_payment_round': self.round_number,
+                'part_1_2_payment_round': part_1_2_payment_round,
+                'display_round_number': self.round_number + AuctionConstants.num_rounds,
                 'round_number': self.round_number,
-                'display_round_number': self.round_number,
                 'total_payoff': self.payoff + c(self.session.config['endowment_tokens']),
             }
 

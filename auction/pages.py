@@ -2,7 +2,6 @@ import ast
 
 from ._builtin import Page, WaitPage
 from .models import Constants
-from expected.models import Constants as ExpectedConstants
 
 from otree.api import (Currency as c)
 
@@ -46,7 +45,7 @@ class ValuationPage(Page):
     def vars_for_template(self):
         return {
             'endowment': c(self.session.config['endowment_tokens']),
-            'display_round_number': self.round_number + ExpectedConstants.num_rounds,
+            'display_round_number': self.round_number,
             'lottery_display_type': self.player.lottery_display_type,
             'max_outcome': self.player.c if self.player.treatment == 'cp' else self.player.beta,
             'alpha': self.player.alpha,
@@ -74,7 +73,7 @@ class BidPage(Page):
     def vars_for_template(self):
         return {
             'endowment': c(self.session.config['endowment_tokens']),
-            'display_round_number': self.round_number + ExpectedConstants.num_rounds,
+            'display_round_number': self.round_number,
             'max_outcome': self.player.c if self.player.treatment == 'cp' else self.player.beta,
             'signal': self.player.signal,
             'alpha': self.player.alpha,
@@ -153,9 +152,8 @@ class OutcomePage(Page):
             'value': self.player.value,
             'outcome': self.player.outcome,
             'payoff': self.player.payoff,
-            'round_number': self.round_number,
             'lottery_display_type': self.player.lottery_display_type,
-            'display_round_number': self.round_number + ExpectedConstants.num_rounds,
+            'display_round_number': self.round_number,
         }
 
 

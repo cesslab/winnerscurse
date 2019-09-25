@@ -2,6 +2,7 @@ from otree.api import Currency as c, currency_range
 from ._builtin import Page, WaitPage
 from .models import Constants
 from otree.api import (Currency as c)
+from auction.models import Constants as AuctionConstants
 
 import ast
 
@@ -12,7 +13,7 @@ class ExpPage(Page):
     def vars_for_template(self):
         return {
             'endowment': c(self.session.config['endowment_tokens']),
-            'display_round_number': self.round_number,
+            'display_round_number': self.round_number + AuctionConstants.num_rounds,
             'alpha': self.player.alpha,
             'beta': self.player.beta,
             'p': '' if self.player.treatment == 'cp' else self.player.c,
@@ -20,7 +21,6 @@ class ExpPage(Page):
             'value': '' if self.player.treatment == 'cv' else self.player.c,
             'max_outcome': self.player.c if self.player.treatment == 'cp' else self.player.beta,
             'min_bid': 0,
-            'round_number': self.round_number,
             'img': "expected/{}{}.png".format(self.player.treatment, self.player.lottery_id),
             'legend': "expected/{}l{}.png".format(self.player.treatment, self.player.lottery_id),
         }
