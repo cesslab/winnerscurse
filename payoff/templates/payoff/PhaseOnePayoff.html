@@ -16,8 +16,8 @@
         <div class="sp1"><span>Round {{ part_1_2_payment_round }} from part {{ phase }} was randomly selected.</span></div>
         <div>
             <span>
-            {% if phase != 1 %}
-            Lottery {{ lottery_display_type }} was shown {% if phase == 2 and stage == 1 %} without
+            {% if phase == 1 %}
+            Lottery {{ lottery_display_type }} was shown {% if stage == 1 %} without
             {% else %} with {% endif %} a signal.
             {% endif %}
             </span>
