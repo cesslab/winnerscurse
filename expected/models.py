@@ -30,13 +30,13 @@ class Constants(BaseConstants):
         # 4
         LotterySpecification(10, 70, 60, 4),
         # 5
-        # LotterySpecification(30, 90, 60, 8),
+        LotterySpecification(30, 90, 60, 8),
         # 6
-        # LotterySpecification(10, 70, 40, 8),
+        LotterySpecification(10, 70, 40, 8),
         # 7
-        # LotterySpecification(30, 90, 40, 8),
+        LotterySpecification(30, 90, 40, 8),
         # 8
-        # LotterySpecification(10, 70, 60, 8),
+        LotterySpecification(10, 70, 60, 8),
     ]
     num_rounds = num_lottery_types
 
