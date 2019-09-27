@@ -21,7 +21,7 @@ class Constants(BaseConstants):
     rounds_per_lottery = 10  # 10
     num_lottery_types = 8
     expected_phase_rounds = 4
-    num_rounds = rounds_per_lottery * num_lottery_types
+    num_rounds = rounds_per_lottery * num_lottery_types + num_lottery_types
     lottery_types = [
         LotterySpecification(30, 90, 60, 4),
         LotterySpecification(10, 70, 40, 4),
