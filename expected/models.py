@@ -8,7 +8,6 @@ from otree.api import (
 
 from experiment.lottery import LotterySpecification, Lottery
 from auction.models import Constants as AuctionConstants
-from django import forms
 
 author = 'Anwar A. Ruff'
 
@@ -31,15 +30,15 @@ class Constants(BaseConstants):
         # 4
         LotterySpecification(10, 70, 60, 4),
         # 5
-        LotterySpecification(30, 90, 60, 8),
+        # LotterySpecification(30, 90, 60, 8),
         # 6
-        LotterySpecification(10, 70, 40, 8),
+        # LotterySpecification(10, 70, 40, 8),
         # 7
-        LotterySpecification(30, 90, 40, 8),
+        # LotterySpecification(30, 90, 40, 8),
         # 8
-        LotterySpecification(10, 70, 60, 8),
+        # LotterySpecification(10, 70, 60, 8),
     ]
-    num_rounds = 4
+    num_rounds = num_lottery_types
 
 
 class Subsession(BaseSubsession):
@@ -47,21 +46,10 @@ class Subsession(BaseSubsession):
         treatment = self.session.config['treatment']
         for player in self.get_players():  # type: Group
             if self.round_number == 1:
-                # --------------------------------------------------
-                #  Random payoff determination for phase one and two
-                # --------------------------------------------------
-                total_rounds = Constants.num_lottery_types + AuctionConstants.num_rounds
-                rround = random.randint(1, total_rounds)
-                player.participant.vars["part_1_2_payment_round"] = rround
-                print("*******************************************")
-                print("Selecting a random round between 1 and {}".format(total_rounds))
-                print("Payment Round: {}".format(rround))
-                print("*******************************************")
-
                 player.participant.vars["phase_one_lottery_order"] = []
                 player.participant.vars["phase_one_lotteries"] = []
-                for l in range(1, Constants.num_lottery_types + 1):
-                    lottery_id = int(self.session.config["lottery_{}".format(l)].strip())
+                for lid in range(1, Constants.num_lottery_types + 1):
+                    lottery_id = int(self.session.config["lottery_{}".format(lid)].strip())
                     lottery_type = Constants.lottery_types[lottery_id-1]
                     player.participant.vars["phase_one_lottery_order"].append(lottery_id)
                     player.participant.vars["phase_one_lotteries"].append(Lottery(lottery_type, treatment, with_signal=False))
@@ -94,9 +82,7 @@ class Player(BasePlayer):
     winner = models.BooleanField()
     payoff = models.IntegerField()
 
-    # Quiz
-    q1 = models.StringField(widget=forms.CheckboxSelectMultiple(choices=(("1", "1"), ("2", "2"))), )
-    q2 = models.StringField(widget=forms.CheckboxSelectMultiple(choices=(("1", "1"), ("2", "2"))), )
+    pass_code = models.IntegerField(blank=True)
 
     def set_round_lottery(self):
         self.treatment = self.session.config['treatment']
@@ -115,6 +101,10 @@ class Player(BasePlayer):
 
     def becker_degroot_marschak_payment_method(self):
         self.computer_random_val = random.randint(0, 100)
+<<<<<<< HEAD
+=======
+        # If the player's bid is equal to the random lottery price, a coin is flipped to break the tie.
+>>>>>>> dev_6.0
         if self.expected_value >= self.computer_random_val:
             self.payoff = self.outcome - self.computer_random_val
             self.winner = True
@@ -125,11 +115,13 @@ class Player(BasePlayer):
 
     def set_payoffs(self):
         part_1_2_payment_round = self.participant.vars["part_1_2_payment_round"]
-        print("Phase 1 Test: payment round {} == current round {}".format(part_1_2_payment_round, self.round_number))
-        if part_1_2_payment_round == self.round_number:
-            print("Saving payment for phase 1 round {}".format(part_1_2_payment_round))
+        if part_1_2_payment_round == self.round_number + AuctionConstants.num_rounds:
             self.participant.vars['auction_data'] = {
+<<<<<<< HEAD
                 'phase': 1,
+=======
+                'phase': 2,
+>>>>>>> dev_6.0
                 'winner': self.winner,
                 'bid': self.expected_value, # different
                 'computer_random_val': self.random_value,
@@ -141,9 +133,9 @@ class Player(BasePlayer):
                 'value': self.value,
                 'outcome': self.outcome,
                 'payoff': self.payoff,
-                'part_1_2_payment_round': self.round_number,
+                'part_1_2_payment_round': part_1_2_payment_round,
+                'display_round_number': self.round_number + AuctionConstants.num_rounds,
                 'round_number': self.round_number,
-                'display_round_number': self.round_number,
                 'total_payoff': self.payoff + c(self.session.config['endowment_tokens']),
             }
 

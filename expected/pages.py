@@ -2,6 +2,7 @@ from otree.api import Currency as c, currency_range
 from ._builtin import Page, WaitPage
 from .models import Constants
 from otree.api import (Currency as c)
+from auction.models import Constants as AuctionConstants
 
 import ast
 
@@ -12,7 +13,7 @@ class ExpPage(Page):
     def vars_for_template(self):
         return {
             'endowment': c(self.session.config['endowment_tokens']),
-            'display_round_number': self.round_number,
+            'display_round_number': self.round_number + AuctionConstants.num_rounds,
             'alpha': self.player.alpha,
             'beta': self.player.beta,
             'p': '' if self.player.treatment == 'cp' else self.player.c,
@@ -20,7 +21,6 @@ class ExpPage(Page):
             'value': '' if self.player.treatment == 'cv' else self.player.c,
             'max_outcome': self.player.c if self.player.treatment == 'cp' else self.player.beta,
             'min_bid': 0,
-            'round_number': self.round_number,
             'img': "expected/{}{}.png".format(self.player.treatment, self.player.lottery_id),
             'legend': "expected/{}l{}.png".format(self.player.treatment, self.player.lottery_id),
         }
@@ -30,40 +30,19 @@ class ExpPage(Page):
         self.player.set_payoffs()
 
 
-class QuizPartOne(Page):
+class PasswordWaitPage(Page):
     form_model = 'player'
-    form_fields = ['q1', 'q2']
+    form_fields = ['pass_code']
 
     def is_displayed(self):
         return self.round_number == 1
 
-    def vars_for_template(self):
-        treatment = self.session.config['treatment']
-        if treatment != 'cp' and treatment != 'cv':
-            treatment = 'cp'
+    def error_message(self, values):
+        if 'pass_code' not in values:
+            return ' You must wait for the researcher to provide you with the correct password'
+        elif not (values['pass_code'] == 42):
+            return ' You must wait for the researcher to provide you with the correct password'
 
-        ttype = "Value" if treatment == 'cv' else "Probability"
-        cterm = "Selected Value" if treatment == 'cv' else "non-zero value"
-        nf = '%' if treatment == 'cp' else ''
-        template_vars = {
-            'treatment': treatment,
-            'questions': {
-                'q1': {
-                    'question': 'What happens if the lottery price lies above your willingness to pay in a given round?',
-                    'labels': ['You play the lottery.', 'You do not play the lottery.']
-                },
-                'q2': {
-                    'question': 'Suppose you play the lottery in a given round. What are your earnings in that round?',
-                    'labels': [
-                        '100 credits.',
-                        '100 credits + the outcome of the lottery - the lottery price.',
-                        '100 credits + the outcome of the lottery.'
-                    ],
-                },
-            },
-        }
-
-        return template_vars
 
 
     def q1_error_message(self, value):
@@ -90,5 +69,5 @@ class QuizPartOne(Page):
 
 
 page_sequence = [
-    QuizPartOne, ExpPage,
+    PasswordWaitPage, ExpPage,
 ]

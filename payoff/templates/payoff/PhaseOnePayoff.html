@@ -16,8 +16,8 @@
         <div class="sp1"><span>Round {{ part_1_2_payment_round }} from part {{ phase }} was randomly selected.</span></div>
         <div>
             <span>
-            {% if phase != 1 %}
-            Lottery {{ lottery_display_type }} was shown {% if phase == 2 and stage == 1 %} without
+            {% if phase == 1 %}
+            Lottery {{ lottery_display_type }} was shown {% if stage == 1 %} without
             {% else %} with {% endif %} a signal.
             {% endif %}
             </span>
@@ -50,7 +50,7 @@
     </div>
     <div class="lottery-header text-center">
 
-    {% if phase == 2 %}
+    {% if phase == 1 %}
         {% if treatment == 'cv' %}
         <h4>Actual Lottery with Selected Value</h4>
         {% else %}
@@ -64,15 +64,17 @@
                 The Selected Probability was {{ p }}%. Therefore, the actual lottery ticket was:
             {% endif %}
         </p>
-    {% else %}
-        <h4>The lottery was:</h4>
     {% endif %}
     </div>
-    <div class="text-center">
-        <p>
-            With a probability p of {{ p }}% you get a value v of {{ value }} credits, <br>otherwise you get 0 credits.
-        </p>
-    </div>
+
+    {% if phase == 1 %}
+        <div class="text-center">
+            <h4>The lottery was:</h4>
+            <p>
+                With a probability p of {{ p }}% you get a value v of {{ value }} credits, <br>otherwise you get 0 credits.
+            </p>
+        </div>
+    {% endif %}
 
     <div id="played-outcome" class="text-center">
         <p>The lottery was played and its outcome was {{ outcome }} credits.</p>
