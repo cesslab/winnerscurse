@@ -114,7 +114,7 @@ class Player(BasePlayer):
         part_1_2_payment_round = self.participant.vars["part_1_2_payment_round"]
         if part_1_2_payment_round == self.round_number + AuctionConstants.num_rounds:
             self.participant.vars['auction_data'] = {
-                'phase': 1,
+                'phase': 2,
                 'winner': self.winner,
                 'bid': self.expected_value, # different
                 'computer_random_val': self.random_value,
