@@ -152,10 +152,6 @@ class OutcomePage(Page):
             'value': self.player.value,
             'outcome': self.player.outcome,
             'payoff': self.player.payoff,
-<<<<<<< HEAD
-            'round_number': self.round_number,
-=======
->>>>>>> dev_6.0
             'lottery_display_type': self.player.lottery_display_type,
             'display_round_number': self.round_number,
         }

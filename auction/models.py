@@ -158,12 +158,8 @@ class Player(BasePlayer):
                 'payoff': self.payoff,
                 'part_1_2_payment_round': part_1_2_payment_round,
                 'lottery_display_type': self.lottery_display_type,
-<<<<<<< HEAD
-                'round_number': part_1_2_payment_round,
-=======
                 'display_round_number': self.round_number,
                 'round_number': self.round_number,
->>>>>>> dev_6.0
                 'total_payoff': self.payoff + c(self.session.config['endowment_tokens']),
                 'endowment': c(self.session.config['endowment_tokens'])
             }

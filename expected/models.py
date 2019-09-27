@@ -101,10 +101,7 @@ class Player(BasePlayer):
 
     def becker_degroot_marschak_payment_method(self):
         self.computer_random_val = random.randint(0, 100)
-<<<<<<< HEAD
-=======
         # If the player's bid is equal to the random lottery price, a coin is flipped to break the tie.
->>>>>>> dev_6.0
         if self.expected_value >= self.computer_random_val:
             self.payoff = self.outcome - self.computer_random_val
             self.winner = True
@@ -117,11 +114,7 @@ class Player(BasePlayer):
         part_1_2_payment_round = self.participant.vars["part_1_2_payment_round"]
         if part_1_2_payment_round == self.round_number + AuctionConstants.num_rounds:
             self.participant.vars['auction_data'] = {
-<<<<<<< HEAD
-                'phase': 1,
-=======
                 'phase': 2,
->>>>>>> dev_6.0
                 'winner': self.winner,
                 'bid': self.expected_value, # different
                 'computer_random_val': self.random_value,
