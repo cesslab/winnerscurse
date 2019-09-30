@@ -44,30 +44,6 @@ class PasswordWaitPage(Page):
             return ' You must wait for the researcher to provide you with the correct password'
 
 
-
-    def q1_error_message(self, value):
-        values = ast.literal_eval(value)
-        if len(values) == 0:
-            return "An error was found in question 1."
-
-        if len(values) == 1 and '2' in values:
-            return
-        else:
-            print(values)
-            return "Your selection for question 1 was incorrect."
-
-    def q2_error_message(self, value):
-        values = ast.literal_eval(value)
-        if len(values) == 0:
-            return 'An error was found in question 2.'
-
-        if len(values) == 1 and '2' in values:
-            return
-        else:
-            print(values)
-            return 'Your selection for question 2 was incorrect.'
-
-
 page_sequence = [
     PasswordWaitPage, ExpPage,
 ]
