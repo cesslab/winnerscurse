@@ -77,7 +77,6 @@ class Player(BasePlayer):
     # BDM
     computer_random_val = models.IntegerField()
     winner = models.BooleanField()
-    payoff = models.IntegerField()
 
     # Lottery values
     lottery_id = models.IntegerField()
@@ -124,11 +123,11 @@ class Player(BasePlayer):
         # random lottery price
         self.computer_random_val = random.randint(0, 100)
         if self.bid >= self.computer_random_val:
-            self.payoff = self.outcome - self.computer_random_val
+            self.payoff = c(self.outcome - self.computer_random_val)
             self.winner = True
         # lose
         else:
-            self.payoff = self.computer_random_val - self.computer_random_val
+            self.payoff = c(0)
             self.winner = False
 
     def set_payoffs(self, phase, stage):

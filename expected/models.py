@@ -80,7 +80,6 @@ class Player(BasePlayer):
     # BDM
     computer_random_val = models.IntegerField()
     winner = models.BooleanField()
-    payoff = models.IntegerField()
 
     pass_code = models.IntegerField(blank=True)
 
@@ -103,11 +102,11 @@ class Player(BasePlayer):
         self.computer_random_val = random.randint(0, 100)
         # If the player's bid is equal to the random lottery price, a coin is flipped to break the tie.
         if self.expected_value >= self.computer_random_val:
-            self.payoff = self.outcome - self.computer_random_val
+            self.payoff = c(self.outcome - self.computer_random_val)
             self.winner = True
         # The Player's valuation is lower than the computers
         else:
-            self.payoff = 0
+            self.payoff = c(0)
             self.winner = False
 
     def set_payoffs(self):
