@@ -15,6 +15,13 @@ def instructions(browser, phase):
     browser.save_screenshot('{}/phase_{}_instructions.png'.format(SCREEN_SHOT_PATH, phase))
     browser.find_element(By.XPATH, '//button').click()
 
+def new_lottery_update(browser, phase):
+    browser.save_screenshot('{}/phase_{}_new_lottery.png'.format(SCREEN_SHOT_PATH, phase))
+    browser.find_element(By.XPATH, '//button').click()
+
+def new_signal_update(browser, phase):
+    browser.save_screenshot('{}/phase_{}_new_signal_update.png'.format(SCREEN_SHOT_PATH, phase))
+    browser.find_element(By.XPATH, '//button').click()
 
 def auction_outcome(browser, phase):
     browser.save_screenshot('{}/auction_outcome_round_{}.png'.format(SCREEN_SHOT_PATH, phase))
@@ -54,6 +61,18 @@ def quiz_part_two(browser):
     browser.find_element(By.XPATH, "//input[@id='id_q4_2']").click()
     browser.find_element(By.XPATH, '//button').click()
 
+def valuation_without_signal(browser, round_number):
+    if round_number == 1:
+        browser.save_screenshot('{}/valuation_without_signal.png'.format(SCREEN_SHOT_PATH))
+
+    min_value = int(browser.find_element_by_id("id_bid").get_attribute('min'))
+    max_value = int(browser.find_element_by_id("id_bid").get_attribute('max'))
+    input_field = browser.find_element(By.XPATH, "//input[@id='id_bid']")
+    input_field.clear()
+    random_bid = random.randint(min_value, max_value)
+    print("Auction Phase: Entered Valuation {}".format(random_bid))
+    input_field.send_keys(str(random_bid))
+    browser.find_element(By.XPATH, '//button').click()
 
 def auction_bid(browser, round_number):
     if round_number == 1:
@@ -138,9 +157,9 @@ def delete_old_screen_shots():
 if __name__ == "__main__":
     EXPERIMENT_URL = environ.get('EXPERIMENT_URL')
     NUMBER_OF_LOTTERIES = 8
-    LOTTERIES_PER_ROUND = 3
+    ROUNDS_PER_LOTTERY = 10
     PHASE_ONE_ROUNDS = 4
-    PHASE_TWO_ROUNDS = NUMBER_OF_LOTTERIES * LOTTERIES_PER_ROUND
+    PHASE_TWO_ROUNDS = NUMBER_OF_LOTTERIES * ROUNDS_PER_LOTTERY + NUMBER_OF_LOTTERIES
     NUMBER_OF_TASKS = 6
 
     delete_old_screen_shots()
@@ -165,25 +184,12 @@ if __name__ == "__main__":
         driver.switch_to.window(driver.window_handles[player])
         quiz_part_one(driver)
 
-    # Phase 1
-    for round_id in range(1, PHASE_ONE_ROUNDS + 1):
-        for player in range(1, len(player_links) + 1):
-            # switch to new tab
-            driver.switch_to.window(driver.window_handles[player])
-            lottery_valuation(driver, round_id)
-
-    # Phase 1 Password
-    for player in range(1, len(player_links) + 1):
-        # switch to new tab
-        driver.switch_to.window(driver.window_handles[player])
-        enter_phase_one_password(driver)
-
-    # Quiz for part one
+    # Quiz for part two
     for player in range(1, len(player_links) + 1):
         driver.switch_to.window(driver.window_handles[player])
         quiz_part_two(driver)
 
-    # Phase 2
+    # Auction phase
     for round_id in range(1, PHASE_TWO_ROUNDS + 1):
 
         for player in range(1, len(player_links) + 1):
@@ -191,15 +197,35 @@ if __name__ == "__main__":
             driver.switch_to.window(driver.window_handles[player])
             if round_id == 1:
                 instructions(driver, round_id)
-            # new lottery screen
-            elif round_id % LOTTERIES_PER_ROUND == 1:
-                instructions(driver, round_id)
-            auction_bid(driver, round_id)
+
+            if round_id != 1 and ((round_id-1) % (ROUNDS_PER_LOTTERY + 1)) == 0:
+                new_lottery_update(driver, round_id)
+
+            if (round_id - 1) % (ROUNDS_PER_LOTTERY + 1) == 0:
+                valuation_without_signal(driver, round_id)
+
+            if ((round_id - 1) % (ROUNDS_PER_LOTTERY + 1)) == 1:
+                new_signal_update(driver, round_id)
+
+            if ((round_id - 1) % (ROUNDS_PER_LOTTERY + 1)) != 0:
+                auction_bid(driver, round_id)
+                auction_outcome(driver, round_id)
 
         for player in range(1, len(player_links) + 1):
             driver.switch_to.window(driver.window_handles[player])
-            auction_outcome(driver, round_id)
 
+    # Expected Password
+    for player in range(1, len(player_links) + 1):
+        # switch to new tab
+        driver.switch_to.window(driver.window_handles[player])
+        enter_phase_one_password(driver)
+
+    # Expected phase
+    for round_id in range(1, PHASE_ONE_ROUNDS + 1):
+        for player in range(1, len(player_links) + 1):
+            # switch to new tab
+            driver.switch_to.window(driver.window_handles[player])
+            lottery_valuation(driver, round_id)
 
     # Phase 2
     for player in range(1, len(player_links) + 1):
