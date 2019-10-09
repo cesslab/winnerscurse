@@ -2,6 +2,7 @@ import random
 import os
 import glob
 from os import environ
+from os import path
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -11,40 +12,84 @@ from selenium.webdriver.chrome.options import Options
 SCREEN_SHOT_PATH = environ.get('SCREEN_SHOT_PATH')
 
 
-def instructions(browser, phase):
-    browser.save_screenshot('{}/phase_{}_instructions.png'.format(SCREEN_SHOT_PATH, phase))
+def start_session(browser):
+    print("starting session")
+    dropdown = browser.find_element(By.XPATH, "//select[@id='id_session_config']")
+    for option in dropdown.find_elements_by_tag_name('option'):
+        print(option)
+        if option.text == 'Winners Curse':
+            option.click()
+            break
+
+    num_subjects = browser.find_element(By.XPATH, "//input[@id='id_num_participants']")
+    num_subjects.send_keys(str(1))
+
+    browser.find_element(By.XPATH, "//a[@href='#edit-config-table-winners_curse']").click()
+
+    treatment = browser.find_element(By.XPATH, "//input[@name='winners_curse.treatment']")
+    treatment.clear()
+    treatment.send_keys('cv')
+
+    screen_shot_path = '{}/treatment_settings.png'.format(SCREEN_SHOT_PATH)
+    if not path.exists(screen_shot_path):
+        browser.save_screenshot(screen_shot_path)
+
+    browser.find_element(By.XPATH, "//input[@id='btn-create-session']").click()
+
+
+def auction_instructions(browser):
+    screen_shot_path = '{}/auction_instructions.png'.format(SCREEN_SHOT_PATH)
+    if not path.exists(screen_shot_path):
+        browser.save_screenshot(screen_shot_path)
     browser.find_element(By.XPATH, '//button').click()
 
-def new_lottery_update(browser, phase):
-    browser.save_screenshot('{}/phase_{}_new_lottery.png'.format(SCREEN_SHOT_PATH, phase))
-    browser.find_element(By.XPATH, '//button').click()
 
-def new_signal_update(browser, phase):
-    browser.save_screenshot('{}/phase_{}_new_signal_update.png'.format(SCREEN_SHOT_PATH, phase))
-    browser.find_element(By.XPATH, '//button').click()
-
-def auction_outcome(browser, phase):
-    browser.save_screenshot('{}/auction_outcome_round_{}.png'.format(SCREEN_SHOT_PATH, phase))
+def new_lottery_update(browser):
+    screen_shot_path = '{}/new_lottery_update.png'.format(SCREEN_SHOT_PATH)
+    if not path.exists(screen_shot_path):
+        browser.save_screenshot(screen_shot_path)
     browser.find_element(By.XPATH, '//button').click()
 
 
-def final_payoffs(browser, player):
-    browser.save_screenshot('{}/final_payoff_player_{}.png'.format(SCREEN_SHOT_PATH, player))
+def new_signal_update(browser):
+    screen_shot_path = '{}/new_signal_update.png'.format(SCREEN_SHOT_PATH)
+    if not path.exists(screen_shot_path):
+        browser.save_screenshot(screen_shot_path)
     browser.find_element(By.XPATH, '//button').click()
 
 
-def phase_one_outcome(browser, player):
-    browser.save_screenshot('{}/phase_1_outcome_player_{}.png'.format(SCREEN_SHOT_PATH, player))
+def auction_outcome(browser):
+    screen_shot_path = '{}/auction_outcome.png'.format(SCREEN_SHOT_PATH)
+    if not path.exists(screen_shot_path):
+        browser.save_screenshot(screen_shot_path)
     browser.find_element(By.XPATH, '//button').click()
 
 
-def phase_two_outcome(browser, player):
-    browser.save_screenshot('{}/phase_2_outcome_player_{}.png'.format(SCREEN_SHOT_PATH, player))
+def final_payoffs(browser):
+    screen_shot_path = '{}/final_payoff.png'.format(SCREEN_SHOT_PATH)
+    if not path.exists(screen_shot_path):
+        browser.save_screenshot(screen_shot_path)
+    browser.find_element(By.XPATH, '//button').click()
+
+
+def phase_one_outcome(browser):
+    screen_shot_path = '{}/bid_outcome_screen.png'.format(SCREEN_SHOT_PATH)
+    if not path.exists(screen_shot_path):
+        browser.save_screenshot(screen_shot_path)
+    browser.find_element(By.XPATH, '//button').click()
+
+
+def phase_two_outcome(browser):
+    screen_shot_path = '{}/phase_2_outcome.png'.format(SCREEN_SHOT_PATH)
+    if not path.exists(screen_shot_path):
+        browser.save_screenshot(screen_shot_path)
     browser.find_element(By.XPATH, '//button').click()
 
 
 def quiz_part_one(browser):
-    browser.save_screenshot('{}/quiz_part_one.png'.format(SCREEN_SHOT_PATH))
+    screen_shot_path = '{}/quiz_part_one.png'.format(SCREEN_SHOT_PATH)
+    if not path.exists(screen_shot_path):
+        browser.save_screenshot(screen_shot_path)
 
     browser.find_element(By.XPATH, "//input[@id='id_q1_1']").click()
     browser.find_element(By.XPATH, "//input[@id='id_q2_1']").click()
@@ -52,7 +97,9 @@ def quiz_part_one(browser):
 
 
 def quiz_part_two(browser):
-    browser.save_screenshot('{}/quiz_part_two.png'.format(SCREEN_SHOT_PATH))
+    screen_shot_path = '{}/quiz_part_two.png'.format(SCREEN_SHOT_PATH)
+    if not path.exists(screen_shot_path):
+        browser.save_screenshot(screen_shot_path)
 
     browser.find_element(By.XPATH, "//input[@id='id_q3_1']").click()
     browser.find_element(By.XPATH, "//input[@id='id_q3_2']").click()
@@ -61,9 +108,11 @@ def quiz_part_two(browser):
     browser.find_element(By.XPATH, "//input[@id='id_q4_2']").click()
     browser.find_element(By.XPATH, '//button').click()
 
-def valuation_without_signal(browser, round_number):
-    if round_number == 1:
-        browser.save_screenshot('{}/valuation_without_signal.png'.format(SCREEN_SHOT_PATH))
+
+def valuation_without_signal(browser):
+    screen_shot_path = '{}/valuation_without_signal.png'.format(SCREEN_SHOT_PATH)
+    if not path.exists(screen_shot_path):
+        browser.save_screenshot(screen_shot_path)
 
     min_value = int(browser.find_element_by_id("id_bid").get_attribute('min'))
     max_value = int(browser.find_element_by_id("id_bid").get_attribute('max'))
@@ -74,9 +123,11 @@ def valuation_without_signal(browser, round_number):
     input_field.send_keys(str(random_bid))
     browser.find_element(By.XPATH, '//button').click()
 
-def auction_bid(browser, round_number):
-    if round_number == 1:
-        browser.save_screenshot('{}/phase_one_bid_screen.png'.format(SCREEN_SHOT_PATH))
+
+def auction_bid(browser):
+    screen_shot_path = '{}/auction_bid.png'.format(SCREEN_SHOT_PATH)
+    if not path.exists(screen_shot_path):
+        browser.save_screenshot(screen_shot_path)
 
     min_value = int(browser.find_element_by_id("id_bid").get_attribute('min'))
     max_value = int(browser.find_element_by_id("id_bid").get_attribute('max'))
@@ -88,9 +139,10 @@ def auction_bid(browser, round_number):
     browser.find_element(By.XPATH, '//button').click()
 
 
-def lottery_valuation(browser, round_number):
-    if round_number == 1:
-        browser.save_screenshot('{}/stage_one_valuation_screen.png'.format(SCREEN_SHOT_PATH))
+def lottery_valuation(browser):
+    screen_shot_path = '{}/valuation_entry.png'.format(SCREEN_SHOT_PATH)
+    if not path.exists(screen_shot_path):
+        browser.save_screenshot(screen_shot_path)
 
     min_value = int(browser.find_element_by_id("id_expected_value").get_attribute('min'))
     max_value = int(browser.find_element_by_id("id_expected_value").get_attribute('max'))
@@ -101,8 +153,11 @@ def lottery_valuation(browser, round_number):
     input_field.send_keys(str(random_bid))
     browser.find_element(By.XPATH, '//button').click()
 
+
 def enter_password(browser):
-    browser.save_screenshot('{}/phase_two_password_screen.png'.format(SCREEN_SHOT_PATH))
+    screen_shot_path = '{}/phase_two_password_screen.png'.format(SCREEN_SHOT_PATH)
+    if not path.exists(screen_shot_path):
+        browser.save_screenshot(screen_shot_path)
 
     input_field = browser.find_element(By.XPATH, "//input[@id='pass_code']")
     input_field.clear()
@@ -110,8 +165,11 @@ def enter_password(browser):
     input_field.send_keys("2600")
     browser.find_element(By.XPATH, '//button').click()
 
-def enter_phase_one_password(browser):
-    browser.save_screenshot('{}/phase_one_password_screen.png'.format(SCREEN_SHOT_PATH))
+
+def enter_valuation_phase_password(browser):
+    screen_shot_path = '{}/valuation_password_screen.png'.format(SCREEN_SHOT_PATH)
+    if not path.exists(screen_shot_path):
+        browser.save_screenshot(screen_shot_path)
 
     input_field = browser.find_element(By.XPATH, "//input[@id='pass_code']")
     input_field.clear()
@@ -120,9 +178,10 @@ def enter_phase_one_password(browser):
     browser.find_element(By.XPATH, '//button').click()
 
 
-
 def lottery_bet(browser, task_number):
-    browser.save_screenshot('{}/phase_choose_color_bet_task_{}.png'.format(task_number, SCREEN_SHOT_PATH))
+    screen_shot_path = '{}/phase_choose_color_bet_task_{}.png'.format(SCREEN_SHOT_PATH, task_number)
+    if not path.exists(screen_shot_path):
+        browser.save_screenshot(screen_shot_path)
 
     browser.find_element(By.XPATH, "//input[@id='clicked']").value = '1'
     if random.randint(0, 1) == 0:
@@ -139,7 +198,10 @@ def lottery_bet(browser, task_number):
 
 
 def roll_die(browser):
-    browser.save_screenshot('{}/phase_four_roll_die_screen.png'.format(SCREEN_SHOT_PATH))
+    screen_shot_path = '{}/phase_four_roll_die_screen.png'.format(SCREEN_SHOT_PATH)
+    if not path.exists(screen_shot_path):
+        browser.save_screenshot(screen_shot_path)
+
     browser.find_element(By.XPATH, "//button[@id='die-button']").click()
     die_side = int(browser.find_element_by_id("side").get_attribute('value'))
     print("Stage 4: Rolled Die Side {}".format(die_side))
@@ -171,6 +233,9 @@ if __name__ == "__main__":
     driver.implicitly_wait(30)
 
     driver.get(EXPERIMENT_URL)
+
+    start_session(driver)
+
     player_links = driver.find_elements_by_partial_link_text("InitializeParticipant")
     print('there are {} players'.format(len(player_links)))
 
@@ -196,20 +261,20 @@ if __name__ == "__main__":
             # switch to new tab
             driver.switch_to.window(driver.window_handles[player])
             if round_id == 1:
-                instructions(driver, round_id)
+                auction_instructions(driver)
 
             if round_id != 1 and ((round_id-1) % (ROUNDS_PER_LOTTERY + 1)) == 0:
-                new_lottery_update(driver, round_id)
+                new_lottery_update(driver)
 
             if (round_id - 1) % (ROUNDS_PER_LOTTERY + 1) == 0:
-                valuation_without_signal(driver, round_id)
+                valuation_without_signal(driver)
 
             if ((round_id - 1) % (ROUNDS_PER_LOTTERY + 1)) == 1:
-                new_signal_update(driver, round_id)
+                new_signal_update(driver)
 
             if ((round_id - 1) % (ROUNDS_PER_LOTTERY + 1)) != 0:
-                auction_bid(driver, round_id)
-                auction_outcome(driver, round_id)
+                auction_bid(driver)
+                auction_outcome(driver)
 
         for player in range(1, len(player_links) + 1):
             driver.switch_to.window(driver.window_handles[player])
@@ -218,14 +283,14 @@ if __name__ == "__main__":
     for player in range(1, len(player_links) + 1):
         # switch to new tab
         driver.switch_to.window(driver.window_handles[player])
-        enter_phase_one_password(driver)
+        enter_valuation_phase_password(driver)
 
     # Expected phase
     for round_id in range(1, PHASE_ONE_ROUNDS + 1):
         for player in range(1, len(player_links) + 1):
             # switch to new tab
             driver.switch_to.window(driver.window_handles[player])
-            lottery_valuation(driver, round_id)
+            lottery_valuation(driver)
 
     # Phase 2
     for player in range(1, len(player_links) + 1):
@@ -236,8 +301,8 @@ if __name__ == "__main__":
             lottery_bet(driver, task_number)
 
     # Outcome and Payoffs
-    # for player in range(1, len(player_links) + 1):
-    #     phase_one_outcome(driver, player)
-    #     phase_two_outcome(driver, player)
-    #     final_payoffs(driver, player)
+    for player in range(1, len(player_links) + 1):
+        phase_one_outcome(driver)
+        phase_two_outcome(driver)
+        final_payoffs(driver)
 
