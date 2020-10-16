@@ -6,29 +6,29 @@ from os import environ
 # e.g. self.session.config['participation_fee']
 
 SESSION_CONFIG_DEFAULTS = {
-    'real_world_currency_per_point': 1.00,
-    'participation_fee': 10.00,
-    'doc': "",
+    "real_world_currency_per_point": 1.00,
+    "participation_fee": 10.00,
+    "doc": "",
 }
 
 SESSION_CONFIGS = [
     {
-        'name': 'winners_curse',
-        'display_name': "Winners Curse",
-        'num_demo_participants': 1,
+        "name": "winners_curse",
+        "display_name": "Winners Curse",
+        "num_demo_participants": 1,
         # 'app_sequence': ['auction', 'expected', 'dice', 'payoff', 'questionnaire'],
-        'app_sequence': ['auction'],
-        'treatment': 'cp',
-        'lottery_1': '1',
-        'lottery_2': '2',
-        'lottery_3': '3',
-        'lottery_4': '4',
-        'lottery_5': '5',
-        'lottery_6': '6',
-        'lottery_7': '7',
-        'lottery_8': '8',
-        'endowment_tokens': '100',
-        'doc': """
+        "app_sequence": ["lottery"],
+        "treatment": "cp",
+        "lottery_1": "1",
+        "lottery_2": "2",
+        "lottery_3": "3",
+        "lottery_4": "4",
+        "lottery_5": "5",
+        "lottery_6": "6",
+        "lottery_7": "7",
+        "lottery_8": "8",
+        "endowment_tokens": "100",
+        "doc": """
         <h3>Treatments (treatment):</h3> 
         <p>The treatment parameter will determine if either the cp treatment, or the cv treatment will be played this 
         session. If neither is entered, the cp treatment will be played by default.</p> 
@@ -37,29 +37,28 @@ SESSION_CONFIGS = [
         <p>The parameters lottery_1 through lottery_8 will determine the order in which the lotteries are displayed. 
         <b>You must take care not to enter duplicates, or invalid lottery IDs</b>. By default the lotteries will be 
         played sequentially.</p>
-        """
+        """,
     },
 ]
 
 
 # ISO-639 code
 # for example: de, fr, ja, ko, zh-hans
-LANGUAGE_CODE = 'en'
+LANGUAGE_CODE = "en"
 
 # e.g. EUR, GBP, CNY, JPY, USD
-REAL_WORLD_CURRENCY_CODE = 'USD'
+REAL_WORLD_CURRENCY_CODE = "USD"
 USE_POINTS = True
-POINTS_CUSTOM_NAME = 'credits'
+POINTS_CUSTOM_NAME = "credits"
 REAL_WORLD_CURRENCY_DECIMAL_PLACES = 2
 POINTS_DECIMAL_PLACES = 2
 
 ROOMS = [
     {
-        'name': 'cess_lab',
-        'display_name': 'CESS Lab',
+        "name": "cess_lab",
+        "display_name": "CESS Lab",
     },
 ]
-
 
 
 # AUTH_LEVEL:
@@ -73,20 +72,20 @@ ROOMS = [
 #   of the admin interface, set it to DEMO.
 
 # for flexibility, you can set it in the environment variable OTREE_AUTH_LEVEL
-AUTH_LEVEL = environ.get('OTREE_AUTH_LEVEL')
+AUTH_LEVEL = environ.get("OTREE_AUTH_LEVEL")
 
-ADMIN_USERNAME = 'admin'
+ADMIN_USERNAME = "admin"
 # for security, best to set admin password in an environment variable
-ADMIN_PASSWORD = environ.get('OTREE_ADMIN_PASSWORD')
+ADMIN_PASSWORD = environ.get("OTREE_ADMIN_PASSWORD")
 
 
 # Consider '', None, and '0' to be empty/false
-DEBUG = (environ.get('OTREE_PRODUCTION') in {None, '', '0'})
+DEBUG = environ.get("OTREE_PRODUCTION") in {None, "", "0"}
 
 DEMO_PAGE_INTRO_HTML = """ """
 
 # don't share this with anybody.
-SECRET_KEY = '9nu&$q7ze=p96*iguo2_*dy%!j$ifl1m_=%a3ni&+&3ztjumx3'
+SECRET_KEY = "9nu&$q7ze=p96*iguo2_*dy%!j$ifl1m_=%a3ni&+&3ztjumx3"
 
 # if an app is included in SESSION_CONFIGS, you don't need to list it here
-INSTALLED_APPS = ['otree']
+INSTALLED_APPS = ["otree"]
