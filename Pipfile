@@ -5,6 +5,7 @@ verify_ssl = true
 
 [dev-packages]
 selenium = "*"
+black = "*"
 
 [packages]
 otree = ">=2.0.27"
@@ -12,3 +13,6 @@ psycopg2 = ">=2.5.1"
 
 [requires]
 python_version = "3.7"
+
+[pipenv]
+allow_prereleases = true
