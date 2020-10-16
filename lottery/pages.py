@@ -6,7 +6,7 @@ from .models import Constants
 from otree.api import Currency as c
 
 
-class InstructionPage(Page):
+class Instructions(Page):
     def is_displayed(self):
         return self.round_number == 1
 
@@ -25,7 +25,7 @@ class NewSignalReminder(Page):
         }
 
 
-class BidPage(Page):
+class LotteryValuation(Page):
     form_model = "player"
     form_fields = ["bid"]
 
@@ -57,4 +57,4 @@ class BidPage(Page):
         self.player.set_payoffs(1, 2)
 
 
-page_sequence = [InstructionPage, NewSignalReminder, BidPage]
+page_sequence = [Instructions, NewSignalReminder, LotteryValuation]

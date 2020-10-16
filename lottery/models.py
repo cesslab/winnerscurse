@@ -22,7 +22,7 @@ Phase 1: Auction Phase: Set to 80 rounds, 10 for each lottery.
 
 
 class Constants(BaseConstants):
-    name_in_url = "auction"
+    name_in_url = "lottery"
     players_per_group = None
     rounds_per_lottery = 10  # 10
     num_lottery_types = 8
