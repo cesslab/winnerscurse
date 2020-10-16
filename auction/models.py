@@ -3,8 +3,14 @@ import random
 from typing import List
 
 from otree.api import (
-    models, widgets, BaseConstants, BaseSubsession, BaseGroup, BasePlayer,
-    Currency as c, currency_range
+    models,
+    widgets,
+    BaseConstants,
+    BaseSubsession,
+    BaseGroup,
+    BasePlayer,
+    Currency as c,
+    currency_range,
 )
 
 from django import forms
@@ -16,12 +22,11 @@ Phase 1: Auction Phase: Set to 80 rounds, 10 for each lottery.
 
 
 class Constants(BaseConstants):
-    name_in_url = 'auction'
+    name_in_url = "auction"
     players_per_group = None
     rounds_per_lottery = 10  # 10
     num_lottery_types = 8
-    expected_phase_rounds = 4
-    num_rounds = rounds_per_lottery * num_lottery_types + num_lottery_types
+    num_rounds = rounds_per_lottery * num_lottery_types
     lottery_types = [
         LotterySpecification(30, 90, 60, 4),
         LotterySpecification(10, 70, 40, 4),
@@ -41,23 +46,33 @@ class Subsession(BaseSubsession):
                 # --------------------------------------------------
                 #  Random payoff determination for phase one and two
                 # --------------------------------------------------
-                total_rounds = Constants.num_rounds + Constants.expected_phase_rounds
-                rround = random.randint(1, total_rounds)
-                player.participant.vars["part_1_2_payment_round"] = rround
+                total_rounds = Constants.num_rounds
+                player.participant.vars["part_1_2_payment_round"] = random.randint(
+                    1, total_rounds
+                )
 
                 # Get and save the order in which the lottery types should be viewed
                 player.participant.vars["lottery_display_type"] = 1
                 player.participant.vars["lottery_type_order"] = []
+
                 # Get all of the lottery types
                 for l in range(1, Constants.num_lottery_types + 1):
-                    player.participant.vars["lottery_type_order"].append(int(self.session.config["lottery_{}".format(l)].strip()))
+                    player.participant.vars["lottery_type_order"].append(
+                        int(self.session.config["lottery_{}".format(l)].strip())
+                    )
 
                 lotteries = []
                 for l in range(Constants.num_lottery_types):
-                    lottery_type = Constants.lottery_types[player.participant.vars["lottery_type_order"][l] - 1]
-                    lotteries.append(Lottery(lottery_type, self.session.config['treatment']))
+                    lottery_type = Constants.lottery_types[
+                        player.participant.vars["lottery_type_order"][l] - 1
+                    ]
+                    lotteries.append(
+                        Lottery(lottery_type, self.session.config["treatment"])
+                    )
                     for r in range(Constants.rounds_per_lottery):
-                        lotteries.append(Lottery(lottery_type, self.session.config['treatment']))
+                        lotteries.append(
+                            Lottery(lottery_type, self.session.config["treatment"])
+                        )
                 # set the player's lotteries
                 player.participant.vars["lotteries"] = lotteries
 
@@ -71,7 +86,7 @@ class Group(BaseGroup):
 class Player(BasePlayer):
     bid = models.IntegerField()
 
-    treatment = models.StringField(choices=['cp', 'cv'])
+    treatment = models.StringField(choices=["cp", "cv"])
     part_1_2_payment_round = models.IntegerField()
 
     # BDM
@@ -92,19 +107,30 @@ class Player(BasePlayer):
     outcome = models.IntegerField()
 
     # Quiz 1
-    q1 = models.StringField(widget=forms.CheckboxSelectMultiple(choices=(("1", "1"), ("2", "2"))), )
-    q2 = models.StringField(widget=forms.CheckboxSelectMultiple(choices=(("1", "1"), ("2", "2"))), )
+    q1 = models.StringField(
+        widget=forms.CheckboxSelectMultiple(choices=(("1", "1"), ("2", "2"))),
+    )
+    q2 = models.StringField(
+        widget=forms.CheckboxSelectMultiple(choices=(("1", "1"), ("2", "2"))),
+    )
 
     # Quiz 2
-    q3 = models.StringField(widget=forms.CheckboxSelectMultiple(choices=(("1", "1"), ("2", "2"), ("3", "3"), ("4", "4"), ("5", "5"))), )
-    q4 = models.StringField(widget=forms.CheckboxSelectMultiple(choices=(("1", "1"), ("2", "2"), ("3", "3"))), )
-
+    q3 = models.StringField(
+        widget=forms.CheckboxSelectMultiple(
+            choices=(("1", "1"), ("2", "2"), ("3", "3"), ("4", "4"), ("5", "5"))
+        ),
+    )
+    q4 = models.StringField(
+        widget=forms.CheckboxSelectMultiple(choices=(("1", "1"), ("2", "2"), ("3", "3"))),
+    )
 
     def set_round_lottery(self):
-        stage_number = math.floor((self.round_number - 1) / (Constants.rounds_per_lottery + 1)) + 1
+        stage_number = (
+            math.floor((self.round_number - 1) / (Constants.rounds_per_lottery + 1)) + 1
+        )
 
         self.lottery_id = self.participant.vars["lottery_type_order"][stage_number - 1]
-        self.treatment = self.session.config['treatment']
+        self.treatment = self.session.config["treatment"]
 
         lottery = self.participant.vars["lotteries"][self.round_number - 1]
 
@@ -140,25 +166,25 @@ class Player(BasePlayer):
         part_1_2_payment_round = self.participant.vars["part_1_2_payment_round"]
 
         if self.round_number == part_1_2_payment_round:
-            self.participant.vars['auction_data'] = {
-                'phase': phase,
-                'stage': stage,
-                'winner': self.winner,
-                'bid': self.bid, # different
-                'computer_random_val': self.computer_random_val,
-                'signal': self.signal,
-                'alpha': self.alpha,
-                'beta': self.beta,
-                'p': self.p,
-                'comp_p': 100 - self.p,
-                'treatment': self.treatment,
-                'value': self.value,
-                'outcome': self.outcome,
-                'payoff': self.payoff,
-                'part_1_2_payment_round': part_1_2_payment_round,
-                'lottery_display_type': self.lottery_display_type,
-                'display_round_number': self.round_number,
-                'round_number': self.round_number,
-                'total_payoff': self.payoff + c(self.session.config['endowment_tokens']),
-                'endowment': c(self.session.config['endowment_tokens'])
+            self.participant.vars["auction_data"] = {
+                "phase": phase,
+                "stage": stage,
+                "winner": self.winner,
+                "bid": self.bid,  # different
+                "computer_random_val": self.computer_random_val,
+                "signal": self.signal,
+                "alpha": self.alpha,
+                "beta": self.beta,
+                "p": self.p,
+                "comp_p": 100 - self.p,
+                "treatment": self.treatment,
+                "value": self.value,
+                "outcome": self.outcome,
+                "payoff": self.payoff,
+                "part_1_2_payment_round": part_1_2_payment_round,
+                "lottery_display_type": self.lottery_display_type,
+                "display_round_number": self.round_number,
+                "round_number": self.round_number,
+                "total_payoff": self.payoff + c(self.session.config["endowment_tokens"]),
+                "endowment": c(self.session.config["endowment_tokens"]),
             }
