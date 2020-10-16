@@ -12,3 +12,6 @@ __pycache__/
 .DS_Store
 .envrc
 .screenshots/*
+.pytest_cache/v/cache/nodeids
+.pytest_cache/v/cache/stepwise
+.vscode/settings.json
