@@ -14,7 +14,7 @@ class Instructions(Page):
         return {"treatment": self.player.treatment}
 
 
-class NewSignalReminder(Page):
+class Update(Page):
     def is_displayed(self):
         return ((self.round_number - 1) % Constants.rounds_per_lottery) == 0
 
@@ -57,4 +57,4 @@ class LotteryValuation(Page):
         self.player.set_payoffs(1, 2)
 
 
-page_sequence = [Instructions, NewSignalReminder, LotteryValuation]
+page_sequence = [Instructions, Update, LotteryValuation]
