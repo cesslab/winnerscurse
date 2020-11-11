@@ -6,6 +6,7 @@ verify_ssl = true
 [dev-packages]
 selenium = "*"
 black = "*"
+pylint = "*"
 
 [packages]
 otree = ">=2.0.27"
