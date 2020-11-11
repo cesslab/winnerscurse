@@ -40,6 +40,17 @@ output {
     grid-template-columns: auto auto;
 }
 
+.valuation-grid-wrapper {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    column-gap: 10px;
+    row-gap: 10px;
+}
+
+.selected-probability {
+    color: grey;
+}
+
 .grid-bid-container {
     display: grid;
     grid-row-gap: 2em;

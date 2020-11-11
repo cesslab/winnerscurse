@@ -85,6 +85,8 @@ class Group(BaseGroup):
 
 class Player(BasePlayer):
     bid = models.IntegerField()
+    min_worth = models.IntegerField()
+    max_worth = models.IntegerField()
 
     treatment = models.StringField(choices=["cp", "cv"])
     part_1_2_payment_round = models.IntegerField()
@@ -123,6 +125,24 @@ class Player(BasePlayer):
     q4 = models.StringField(
         widget=forms.CheckboxSelectMultiple(choices=(("1", "1"), ("2", "2"), ("3", "3"))),
     )
+
+    @property
+    def is_probability_treatment(self):
+        return self.treatment == "cp"
+
+    @property
+    def mapping_divisor(self):
+        if self.is_probability_treatment:
+            return self.c
+        else:
+            return self.p
+
+    @property
+    def lottery_max_value(self):
+        if self.is_probability_treatment:
+            return self.c
+        else:
+            return self.beta
 
     def set_round_lottery(self):
         stage_number = (
